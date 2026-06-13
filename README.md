@@ -126,12 +126,31 @@ fixed(listings): el precio no se guardaba al editar
 refactored: extraer ProductCard de page.tsx
 ```
 
-## Hooks de Git
+## Hooks de Git (Husky)
 
-- **`pre-commit`** — corre `lint-staged` (ESLint --fix y Prettier sobre lo staged).
-- **`commit-msg`** — corre `commitlint` con la convención de arriba.
+**Husky** sirve para correr scripts automáticamente en eventos de Git ("git hooks") sin tener que configurar cada hook manualmente en `.git/hooks/` — esa carpeta no se versiona, así que los hooks no se compartirían con el equipo. Husky guarda los scripts en `.husky/` (versionado) y los instala con un solo `npm install` gracias al script `"prepare": "husky"` en `package.json`.
 
-Husky se instala automáticamente con `npm install` (vía el script `prepare`).
+En este proyecto hay dos hooks enganchados:
+
+1. **`pre-commit`** — corre **antes** de crear el commit.
+   - Ejecuta `lint-staged`, que pasa **ESLint --fix** y **Prettier** solo sobre los archivos en stage.
+   - Resultado: nunca commiteas código con errores de lint o mal formateado.
+
+2. **`commit-msg`** — corre cuando ya escribiste el mensaje, justo antes de guardarlo.
+   - Ejecuta **commitlint**, que valida que el mensaje siga la convención (`implemented:`, `fixed:`, etc.).
+   - Si pones `feat: algo` o `arreglé el bug`, el commit se rechaza.
+
+Flujo típico:
+
+```bash
+git add app/page.tsx
+git commit -m "implemented: agregar formulario de producto"
+  ↓ pre-commit corre lint-staged → arregla formato/lint en page.tsx
+  ↓ commit-msg corre commitlint → valida el verbo "implemented:"
+  ✓ commit creado
+```
+
+Para saltarte los hooks puntualmente (no recomendado): `git commit --no-verify`.
 
 ## Skills de Claude Code
 
