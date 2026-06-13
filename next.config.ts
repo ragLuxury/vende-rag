@@ -1,7 +1,20 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'admin.ragdev.com.mx',
+        pathname: '/views_yea/uploads/products/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'admin.rag.mx',
+        pathname: '/views_yea/uploads/products/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;
