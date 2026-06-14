@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { buttonStyles } from '@/src/shared/ui/button';
+import { Divider } from '@/src/shared/ui/divider';
 import { AppleIcon, GoogleIcon } from './social-icons';
 
 export function WelcomeScreen() {
@@ -26,10 +27,8 @@ export function WelcomeScreen() {
           Crear cuenta
         </Link>
 
-        <div className="my-2 flex items-center gap-4">
-          <span className="h-px flex-1 bg-neutral-200" />
-          <span className="text-sm text-neutral-400">Continuar con</span>
-          <span className="h-px flex-1 bg-neutral-200" />
+        <div className="my-2">
+          <Divider label="Continuar con" />
         </div>
 
         <button type="button" className={buttonStyles('secondary')}>
