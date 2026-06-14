@@ -14,15 +14,19 @@ import {
   TrashIcon,
   UserIcon,
 } from '@/src/shared/ui/icons';
+import { DeleteAccountDialog } from './delete-account-dialog';
 import { ProfileRow } from './profile-row';
 
 interface ProfileScreenProps {
   name: string;
+  clientId: number;
   onLogout: () => void;
+  onDeleted: () => void;
 }
 
-export function ProfileScreen({ name, onLogout }: ProfileScreenProps) {
+export function ProfileScreen({ name, clientId, onLogout, onDeleted }: ProfileScreenProps) {
   const [logoutOpen, setLogoutOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   return (
     <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col">
@@ -57,7 +61,11 @@ export function ProfileScreen({ name, onLogout }: ProfileScreenProps) {
             <LogoutIcon className="size-6" />
             <span className="text-lg font-medium">Cerrar Sesión</span>
           </button>
-          <button type="button" className="flex items-center gap-3 text-red-600">
+          <button
+            type="button"
+            onClick={() => setDeleteOpen(true)}
+            className="flex items-center gap-3 text-red-600"
+          >
             <TrashIcon className="size-6" />
             <span className="text-lg font-medium">Eliminar Cuenta</span>
           </button>
@@ -84,6 +92,13 @@ export function ProfileScreen({ name, onLogout }: ProfileScreenProps) {
         confirmLabel="Salir"
         onCancel={() => setLogoutOpen(false)}
         onConfirm={onLogout}
+      />
+
+      <DeleteAccountDialog
+        open={deleteOpen}
+        clientId={clientId}
+        onCancel={() => setDeleteOpen(false)}
+        onDeleted={onDeleted}
       />
 
       <BottomNav />

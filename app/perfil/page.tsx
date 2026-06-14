@@ -11,7 +11,12 @@ export default function PerfilPage() {
 
   return (
     <AuthGuard mode="require-auth">
-      <ProfileScreen name={user?.name ?? ''} onLogout={logout} />
+      <ProfileScreen
+        name={user?.name ?? ''}
+        clientId={user?.id ?? 0}
+        onLogout={logout}
+        onDeleted={logout}
+      />
     </AuthGuard>
   );
 }
