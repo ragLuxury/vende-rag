@@ -1,0 +1,46 @@
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { buttonStyles } from '@/src/shared/ui/button';
+import { AppleIcon, GoogleIcon } from './social-icons';
+
+export function WelcomeScreen() {
+  return (
+    <main className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col px-6 py-12">
+      <div className="flex flex-1 items-center justify-center">
+        <Image
+          src="/images/headerv2.png"
+          alt="RAG"
+          width={640}
+          height={139}
+          priority
+          className="h-auto w-full max-w-sm"
+        />
+      </div>
+
+      <div className="flex flex-col gap-4">
+        <Link href="/login" className={buttonStyles('secondary')}>
+          Iniciar Sesión
+        </Link>
+        <Link href="/signup" className={buttonStyles('primary')}>
+          Crear cuenta
+        </Link>
+
+        <div className="my-2 flex items-center gap-4">
+          <span className="h-px flex-1 bg-neutral-200" />
+          <span className="text-sm text-neutral-400">Continuar con</span>
+          <span className="h-px flex-1 bg-neutral-200" />
+        </div>
+
+        <button type="button" className={buttonStyles('secondary')}>
+          <GoogleIcon />
+          Continuar con Google
+        </button>
+        <button type="button" className={buttonStyles('secondary')}>
+          <AppleIcon />
+          Continuar con Apple
+        </button>
+      </div>
+    </main>
+  );
+}
