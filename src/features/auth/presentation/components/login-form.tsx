@@ -3,23 +3,29 @@
 import Link from 'next/link';
 import { useState, type FormEvent } from 'react';
 
+import { UnauthorizedError } from '@/src/shared/domain/errors';
 import { buttonStyles } from '@/src/shared/ui/button';
 import { Divider } from '@/src/shared/ui/divider';
 import { PasswordField } from '@/src/shared/ui/password-field';
 import { TextField } from '@/src/shared/ui/text-field';
+import { useLogin } from '@/src/features/auth/presentation/hooks/use-login';
 import { SocialAuthButtons } from './social-auth-buttons';
 
 export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const login = useLogin();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    login.mutate({ email, password });
   }
+
+  const errorMessage = login.isError ? resolveErrorMessage(login.error) : null;
 
   return (
     <main className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col px-6 py-8">
-      <Link href="/" aria-label="Regresar" className="text-neutral-900">
+      <Link href="/welcome" aria-label="Regresar" className="text-neutral-900">
         <ChevronLeftIcon />
       </Link>
 
@@ -42,8 +48,17 @@ export function LoginForm() {
           value={password}
           onChange={(event) => setPassword(event.target.value)}
         />
-        <button type="submit" className={`${buttonStyles('primary')} mt-2`}>
-          Iniciar Sesión
+        {errorMessage && (
+          <p role="alert" className="text-sm text-red-600">
+            {errorMessage}
+          </p>
+        )}
+        <button
+          type="submit"
+          disabled={login.isPending}
+          className={`${buttonStyles('primary')} mt-2 disabled:opacity-50`}
+        >
+          {login.isPending ? 'Iniciando...' : 'Iniciar Sesión'}
         </button>
       </form>
 
@@ -67,6 +82,13 @@ export function LoginForm() {
       </Link>
     </main>
   );
+}
+
+function resolveErrorMessage(error: unknown): string {
+  if (error instanceof UnauthorizedError) {
+    return 'Credenciales inválidas';
+  }
+  return 'Ocurrió un error. Intenta de nuevo.';
 }
 
 function ChevronLeftIcon() {

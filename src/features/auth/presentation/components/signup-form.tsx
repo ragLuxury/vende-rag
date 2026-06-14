@@ -3,10 +3,12 @@
 import Link from 'next/link';
 import { useState, type FormEvent } from 'react';
 
+import { HttpError } from '@/src/shared/domain/errors';
 import { buttonStyles } from '@/src/shared/ui/button';
 import { Divider } from '@/src/shared/ui/divider';
 import { PasswordField } from '@/src/shared/ui/password-field';
 import { TextField } from '@/src/shared/ui/text-field';
+import { useSignup } from '@/src/features/auth/presentation/hooks/use-signup';
 import { SocialAuthButtons } from './social-auth-buttons';
 
 const MIN_PASSWORD_LENGTH = 5;
@@ -19,6 +21,7 @@ export function SignupForm() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
+  const signup = useSignup();
 
   const passwordLongEnough = password.length >= MIN_PASSWORD_LENGTH;
   const passwordsMatch = password.length > 0 && password === confirmPassword;
@@ -33,7 +36,10 @@ export function SignupForm() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    signup.mutate({ firstName, lastName, phone, email, password });
   }
+
+  const errorMessage = signup.isError ? resolveErrorMessage(signup.error) : null;
 
   return (
     <main className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col px-6 py-12">
@@ -107,12 +113,17 @@ export function SignupForm() {
           </li>
         </ul>
 
+        {errorMessage && (
+          <p role="alert" className="text-sm text-red-600">
+            {errorMessage}
+          </p>
+        )}
         <button
           type="submit"
-          disabled={!canSubmit}
+          disabled={!canSubmit || signup.isPending}
           className={`${buttonStyles('primary')} mt-2 disabled:opacity-50`}
         >
-          Crear Cuenta
+          {signup.isPending ? 'Creando...' : 'Crear Cuenta'}
         </button>
       </form>
 
@@ -124,6 +135,22 @@ export function SignupForm() {
         <SocialAuthButtons />
       </div>
     </main>
+  );
+}
+
+function resolveErrorMessage(error: unknown): string {
+  if (error instanceof HttpError && isMessageBody(error.body)) {
+    return error.body.message;
+  }
+  return 'Ocurrió un error. Intenta de nuevo.';
+}
+
+function isMessageBody(body: unknown): body is { message: string } {
+  return (
+    typeof body === 'object' &&
+    body !== null &&
+    'message' in body &&
+    typeof (body as { message: unknown }).message === 'string'
   );
 }
 

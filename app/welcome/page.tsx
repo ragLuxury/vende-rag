@@ -1,10 +1,10 @@
 import { AuthGuard } from '@/src/features/auth/presentation/components/auth-guard';
-import { LoginForm } from '@/src/features/auth/presentation/components/login-form';
+import { WelcomeScreen } from '@/src/features/auth/presentation/components/welcome-screen';
 
-export default function LoginPage() {
+export default function WelcomePage() {
   return (
     <AuthGuard mode="require-guest">
-      <LoginForm />
+      <WelcomeScreen />
     </AuthGuard>
   );
 }

@@ -41,10 +41,11 @@ const eslintConfig = defineConfig([
         {
           default: 'disallow',
           rules: [
-            { from: 'app', allow: ['presentation', 'shared-ui', 'shared-infra'] },
+            { from: 'app', allow: ['presentation', 'infrastructure', 'shared-ui', 'shared-infra'] },
             {
               from: 'presentation',
               allow: [
+                ['presentation', { feature: '${from.feature}' }],
                 ['application', { feature: '${from.feature}' }],
                 ['domain', { feature: '${from.feature}' }],
                 'shared-ui',
