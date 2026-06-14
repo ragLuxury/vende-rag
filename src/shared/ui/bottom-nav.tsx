@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ComponentType } from 'react';
 
-import { HomeIcon, InfoIcon, SalesIcon, SellIcon, UserIcon } from './home-icons';
+import { HomeIcon, InfoIcon, SalesIcon, SellIcon, UserIcon } from './icons';
 
 interface NavItem {
   label: string;

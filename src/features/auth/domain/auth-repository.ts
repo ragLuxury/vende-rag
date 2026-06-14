@@ -33,4 +33,5 @@ export interface AuthRepository {
   register(data: RegistrationData): Promise<RegistrationResult>;
   getToken(): string | null;
   getUser(): AuthUser | null;
+  logout(): void;
 }

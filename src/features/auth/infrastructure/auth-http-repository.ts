@@ -51,6 +51,13 @@ export const authHttpRepository = {
     cachedUser = raw ? (authUserSchema.safeParse(safeJsonParse(raw)).data ?? null) : null;
     return cachedUser;
   },
+
+  logout() {
+    tokenStorage.clear();
+    userStorage.clear();
+    cachedRaw = null;
+    cachedUser = null;
+  },
 } satisfies AuthRepository;
 
 let cachedRaw: string | null = null;

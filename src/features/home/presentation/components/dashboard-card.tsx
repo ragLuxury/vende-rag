@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { ChevronRightIcon } from './home-icons';
+import { ChevronRightIcon } from '@/src/shared/ui/icons';
 
 export interface DashboardCardProps {
   title: string;

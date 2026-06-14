@@ -1,4 +1,4 @@
-import { UserIcon } from './home-icons';
+import { UserIcon } from '@/src/shared/ui/icons';
 
 interface ProfileHeaderProps {
   name: string;

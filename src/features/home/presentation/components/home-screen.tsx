@@ -1,4 +1,4 @@
-import { BottomNav } from './bottom-nav';
+import { BottomNav } from '@/src/shared/ui/bottom-nav';
 import { DashboardCard, type DashboardCardProps } from './dashboard-card';
 import { ProfileHeader } from './profile-header';
 
