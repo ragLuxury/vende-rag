@@ -31,8 +31,8 @@ export function DashboardCard({ title, href, tone, image }: DashboardCardProps) 
         }`}
       />
       <div className="relative flex w-full items-center justify-between gap-4 px-7">
-        <h2 className="font-editors text-3xl text-white">{title}</h2>
-        <ChevronRightIcon className="size-7 shrink-0 text-white" />
+        <h2 className="text-xl font-medium text-white">{title}</h2>
+        <ChevronRightIcon className="size-6 shrink-0 text-white" />
       </div>
     </Link>
   );
