@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { Icon } from '@iconify/react';
 
-import { LockIcon, WarningIcon } from '@/src/shared/ui/icons';
 import { Modal } from '@/src/shared/ui/modal';
 import { useDeleteAccount } from '@/src/features/account/presentation/hooks/use-delete-account';
 
@@ -40,7 +40,7 @@ export function DeleteAccountDialog({
   return (
     <Modal open={open} label="Eliminar cuenta" onClose={handleCancel}>
       <span className="mb-5 flex size-12 items-center justify-center rounded-xl bg-red-50 text-red-600">
-        <WarningIcon className="size-6" />
+        <Icon icon="ion:warning-outline" className="size-6" />
       </span>
 
       <h2 className="text-2xl font-semibold text-neutral-900">Eliminar cuenta</h2>
@@ -55,7 +55,7 @@ export function DeleteAccountDialog({
       <hr className="my-5 border-neutral-200" />
 
       <div className="flex gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">
-        <LockIcon className="size-5 shrink-0" />
+        <Icon icon="ion:lock-closed-outline" className="size-5 shrink-0" />
         <p>Confirma escribiendo la palabra de seguridad. Esta acción no puede revertirse.</p>
       </div>
 

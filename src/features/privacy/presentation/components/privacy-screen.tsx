@@ -1,8 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { Icon } from '@iconify/react';
 
-import { ChevronLeftIcon } from '@/src/shared/ui/icons';
 import { usePrivacy } from '../hooks/use-privacy';
 
 export function PrivacyScreen() {
@@ -18,7 +18,7 @@ export function PrivacyScreen() {
           aria-label="Volver"
           className="absolute left-6 text-neutral-900"
         >
-          <ChevronLeftIcon className="size-7" />
+          <Icon icon="ion:chevron-back-outline" className="size-7" />
         </button>
         <h1 className="text-lg font-semibold text-neutral-900">Aviso de Privacidad</h1>
       </header>

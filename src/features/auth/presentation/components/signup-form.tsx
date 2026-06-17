@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, type FormEvent } from 'react';
+import { Icon } from '@iconify/react';
 
 import { HttpError } from '@/src/shared/domain/errors';
 import { buttonStyles } from '@/src/shared/ui/button';
@@ -156,31 +157,10 @@ function isMessageBody(body: unknown): body is { message: string } {
 
 function StatusIcon({ valid }: { valid: boolean }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
+    <Icon
+      icon={valid ? 'ion:checkmark-circle' : 'ion:close-circle'}
       aria-hidden="true"
       className={`size-5 shrink-0 ${valid ? 'text-brand' : 'text-neutral-400'}`}
-    >
-      <circle cx="12" cy="12" r="10" fill="currentColor" />
-      {valid ? (
-        <path
-          d="m8 12 3 3 5-6"
-          fill="none"
-          stroke="white"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      ) : (
-        <path
-          d="m9 9 6 6m0-6-6 6"
-          fill="none"
-          stroke="white"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      )}
-    </svg>
+    />
   );
 }

@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { Icon } from '@iconify/react';
 
 import { BottomNav } from '@/src/shared/ui/bottom-nav';
-import { ChevronLeftIcon } from '@/src/shared/ui/icons';
 import { useFaqs } from '../hooks/use-faqs';
 import { FaqAccordion } from './faq-accordion';
 
@@ -20,7 +20,7 @@ export function FaqScreen() {
           aria-label="Volver"
           className="absolute left-6 text-neutral-900"
         >
-          <ChevronLeftIcon className="size-7" />
+          <Icon icon="ion:chevron-back-outline" className="size-7" />
         </button>
         <h1 className="text-lg font-semibold text-neutral-900">Preguntas Frecuentes</h1>
       </header>

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, type FormEvent } from 'react';
+import { Icon } from '@iconify/react';
 
 import { UnauthorizedError } from '@/src/shared/domain/errors';
 import { buttonStyles } from '@/src/shared/ui/button';
@@ -26,7 +27,7 @@ export function LoginForm() {
   return (
     <main className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col px-6 py-8">
       <Link href="/welcome" aria-label="Regresar" className="text-neutral-900">
-        <ChevronLeftIcon />
+        <Icon icon="ion:chevron-back-outline" className="size-7" />
       </Link>
 
       <header className="mt-12 mb-10 text-center">
@@ -89,21 +90,4 @@ function resolveErrorMessage(error: unknown): string {
     return 'Credenciales inválidas';
   }
   return 'Ocurrió un error. Intenta de nuevo.';
-}
-
-function ChevronLeftIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="size-7"
-    >
-      <path d="m15 18-6-6 6-6" />
-    </svg>
-  );
 }

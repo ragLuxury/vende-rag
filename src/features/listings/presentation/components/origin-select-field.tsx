@@ -1,6 +1,7 @@
 'use client';
 
-import { LocationIcon } from '@/src/shared/ui/icons';
+import { Icon } from '@iconify/react';
+
 import { SheetSelectField } from '@/src/shared/ui/sheet-select-field';
 
 const ORIGIN_OPTIONS = [
@@ -23,7 +24,7 @@ export function OriginSelectField({ value, onSelect }: OriginSelectFieldProps) {
       placeholder="Origen del producto *"
       selectedLabel={selected?.label}
       sheetTitle="Información del producto"
-      headerIcon={<LocationIcon className="size-6 text-neutral-900" />}
+      headerIcon={<Icon icon="ion:location-outline" className="size-6 text-neutral-900" />}
       headerLabel="Origen del producto *"
     >
       {(close) =>

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { Icon } from '@iconify/react';
 
-import { ChevronDownIcon } from '@/src/shared/ui/icons';
 import type { FaqItem } from '@/src/features/faq/domain/faq-repository';
 
 interface FaqAccordionProps {
@@ -31,7 +31,8 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
                 {index + 1}
               </span>
               <span className="flex-1 text-base font-medium text-neutral-900">{item.question}</span>
-              <ChevronDownIcon
+              <Icon
+                icon="ion:chevron-down-outline"
                 className={`mt-1 size-4 shrink-0 text-neutral-500 transition-transform ${
                   open ? 'rotate-180' : ''
                 }`}

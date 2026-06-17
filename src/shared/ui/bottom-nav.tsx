@@ -2,22 +2,20 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { ComponentType } from 'react';
-
-import { HomeIcon, InfoIcon, SalesIcon, SellIcon, UserIcon } from './icons';
+import { Icon } from '@iconify/react';
 
 interface NavItem {
   label: string;
   href: string;
-  Icon: ComponentType<{ className?: string }>;
+  icon: string;
 }
 
 const ITEMS: readonly NavItem[] = [
-  { label: 'Inicio', href: '/', Icon: HomeIcon },
-  { label: 'Información', href: '/informacion', Icon: InfoIcon },
-  { label: 'Vender', href: '/vender', Icon: SellIcon },
-  { label: 'Mis Ventas', href: '/mis-ventas', Icon: SalesIcon },
-  { label: 'Mi perfil', href: '/perfil', Icon: UserIcon },
+  { label: 'Inicio', href: '/', icon: 'ion:home-outline' },
+  { label: 'Información', href: '/informacion', icon: 'ion:information-circle-outline' },
+  { label: 'Vender', href: '/vender', icon: 'ion:add-circle-outline' },
+  { label: 'Mis Ventas', href: '/mis-ventas', icon: 'ion:bag-handle-outline' },
+  { label: 'Mi perfil', href: '/perfil', icon: 'ion:person-outline' },
 ];
 
 export function BottomNav() {
@@ -29,7 +27,6 @@ export function BottomNav() {
         {ITEMS.map((item) => {
           const active = pathname === item.href;
           const color = active ? 'text-neutral-900' : 'text-neutral-400';
-          const Icon = item.Icon;
 
           return (
             <li key={item.href}>
@@ -38,7 +35,7 @@ export function BottomNav() {
                 aria-current={active ? 'page' : undefined}
                 className="flex flex-col items-center gap-1"
               >
-                <Icon className={`size-6 ${color}`} />
+                <Icon icon={item.icon} className={`size-6 ${color}`} />
                 <span className={`text-xs ${active ? 'font-medium' : ''} ${color}`}>
                   {item.label}
                 </span>

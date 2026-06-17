@@ -2,18 +2,10 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { Icon } from '@iconify/react';
 
 import { BottomNav } from '@/src/shared/ui/bottom-nav';
 import { ConfirmDialog } from '@/src/shared/ui/confirm-dialog';
-import {
-  CardIcon,
-  DocumentIcon,
-  GridIcon,
-  LogoutIcon,
-  SendIcon,
-  TrashIcon,
-  UserIcon,
-} from '@/src/shared/ui/icons';
 import { DeleteAccountDialog } from './delete-account-dialog';
 import { ProfileRow } from './profile-row';
 
@@ -35,21 +27,36 @@ export function ProfileScreen({ name, clientId, onLogout, onDeleted }: ProfileSc
 
         <div className="mt-6 flex flex-col items-center gap-4">
           <span className="flex size-28 items-center justify-center rounded-full bg-neutral-100 text-neutral-400">
-            <UserIcon className="size-12" />
+            <Icon icon="ion:person-outline" className="size-12" />
           </span>
           <h1 className="font-editors text-4xl text-neutral-900">{name}</h1>
         </div>
 
         <div className="mt-10 flex flex-col gap-4">
           <ProfileRow
-            icon={<UserIcon className="size-6" />}
+            icon={<Icon icon="ion:person-outline" className="size-6" />}
             label="Información Personal"
             expandable
           />
-          <ProfileRow icon={<SendIcon className="size-6" />} label="Mi Dirección" expandable />
-          <ProfileRow icon={<CardIcon className="size-6" />} label="Métodos De Pago" expandable />
-          <ProfileRow icon={<DocumentIcon className="size-6" />} label="Contrato" expandable />
-          <ProfileRow icon={<GridIcon className="size-6" />} label="Dashboard" />
+          <ProfileRow
+            icon={<Icon icon="ion:location-outline" className="size-6" />}
+            label="Mi Dirección"
+            expandable
+          />
+          <ProfileRow
+            icon={<Icon icon="ion:card-outline" className="size-6" />}
+            label="Métodos De Pago"
+            expandable
+          />
+          <ProfileRow
+            icon={<Icon icon="ion:document-text-outline" className="size-6" />}
+            label="Contrato"
+            expandable
+          />
+          <ProfileRow
+            icon={<Icon icon="ion:grid-outline" className="size-6" />}
+            label="Dashboard"
+          />
         </div>
 
         <div className="mt-12 flex flex-col items-center gap-8">
@@ -58,7 +65,7 @@ export function ProfileScreen({ name, clientId, onLogout, onDeleted }: ProfileSc
             onClick={() => setLogoutOpen(true)}
             className="flex items-center gap-3 text-neutral-500"
           >
-            <LogoutIcon className="size-6" />
+            <Icon icon="ion:log-out-outline" className="size-6" />
             <span className="text-lg font-medium">Cerrar Sesión</span>
           </button>
           <button
@@ -66,7 +73,7 @@ export function ProfileScreen({ name, clientId, onLogout, onDeleted }: ProfileSc
             onClick={() => setDeleteOpen(true)}
             className="flex items-center gap-3 text-red-600"
           >
-            <TrashIcon className="size-6" />
+            <Icon icon="ion:trash-outline" className="size-6" />
             <span className="text-lg font-medium">Eliminar Cuenta</span>
           </button>
         </div>
@@ -85,7 +92,7 @@ export function ProfileScreen({ name, clientId, onLogout, onDeleted }: ProfileSc
 
       <ConfirmDialog
         open={logoutOpen}
-        icon={<LogoutIcon className="size-6" />}
+        icon={<Icon icon="ion:log-out-outline" className="size-6" />}
         title="Cerrar sesión"
         description="¿Estás seguro de que deseas salir de tu cuenta?"
         cancelLabel="Cancelar"

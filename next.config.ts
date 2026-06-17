@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         hostname: 'admin.rag.mx',
         pathname: '/views_yea/uploads/products/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'admin.rag.mx',
+        pathname: '/uploads/products/**',
+      },
     ],
   },
 };

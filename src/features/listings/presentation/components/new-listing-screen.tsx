@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, type FormEvent } from 'react';
+import { Icon } from '@iconify/react';
 
 import { BottomNav } from '@/src/shared/ui/bottom-nav';
-import { ChevronLeftIcon, InfoCircleIcon } from '@/src/shared/ui/icons';
 import { BrandSelectField } from './brand-select-field';
 import { OriginSelectField } from './origin-select-field';
 import { useCommission } from '../hooks/use-commission';
@@ -89,7 +89,7 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
           aria-label="Volver"
           className="absolute left-6 text-neutral-900"
         >
-          <ChevronLeftIcon className="size-7" />
+          <Icon icon="ion:chevron-back-outline" className="size-7" />
         </button>
         <h1 className="text-lg font-semibold text-neutral-900">Nueva Solicitud</h1>
       </header>
@@ -117,7 +117,7 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
           <div className="mt-4">
             <label htmlFor="price" className="flex items-center gap-2 text-base text-neutral-800">
               ¿En cuanto te gustaría venderlo?
-              <InfoCircleIcon className="size-5 text-neutral-400" />
+              <Icon icon="ion:information-circle-outline" className="size-5 text-neutral-400" />
             </label>
             <input
               id="price"

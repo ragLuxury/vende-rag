@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-
-import { ChevronRightIcon } from '@/src/shared/ui/icons';
+import { Icon } from '@iconify/react';
 
 export interface DashboardCardProps {
   title: string;
@@ -32,7 +31,7 @@ export function DashboardCard({ title, href, tone, image }: DashboardCardProps) 
       />
       <div className="relative flex w-full items-center justify-between gap-4 px-7">
         <h2 className="text-xl font-medium text-white">{title}</h2>
-        <ChevronRightIcon className="size-6 shrink-0 text-white" />
+        <Icon icon="ion:chevron-forward-outline" className="size-6 shrink-0 text-white" />
       </div>
     </Link>
   );

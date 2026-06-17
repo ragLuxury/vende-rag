@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Icon } from '@iconify/react';
 
 import { BottomSheet } from '@/src/shared/ui/bottom-sheet';
-import { CameraIcon, GalleryIcon, ImagePlusIcon } from '@/src/shared/ui/icons';
 
 export const MIN_PHOTOS = 3;
 export const MAX_PHOTOS = 6;
@@ -73,7 +73,7 @@ export function PhotoUploader({ photos, onChange }: PhotoUploaderProps) {
           onClick={() => setSheetOpen(true)}
           className="flex h-64 w-full flex-col items-center justify-center gap-3 rounded-3xl bg-neutral-100 text-neutral-500"
         >
-          <ImagePlusIcon className="size-9" />
+          <Icon icon="ion:images-outline" className="size-9" />
           <span className="text-base text-neutral-700">Añadir foto</span>
           <span className="text-sm text-neutral-400">
             Sube entre {MIN_PHOTOS} y {MAX_PHOTOS} imágenes
@@ -106,7 +106,7 @@ export function PhotoUploader({ photos, onChange }: PhotoUploaderProps) {
               onClick={() => setSheetOpen(true)}
               className="flex aspect-square flex-col items-center justify-center gap-2 rounded-2xl bg-neutral-200/60 px-3 text-center text-neutral-500"
             >
-              <ImagePlusIcon className="size-8" />
+              <Icon icon="ion:images-outline" className="size-8" />
               <span className="text-sm text-neutral-700">Añadir foto</span>
               <span className="text-xs text-neutral-400">
                 Sube entre {MIN_PHOTOS} y {MAX_PHOTOS} imágenes
@@ -128,7 +128,7 @@ export function PhotoUploader({ photos, onChange }: PhotoUploaderProps) {
               onClick={() => pickFrom(cameraInputRef)}
               className="flex w-full items-center gap-4 px-6 py-5 text-left text-neutral-900"
             >
-              <CameraIcon className="size-6 text-neutral-700" />
+              <Icon icon="ion:camera-outline" className="size-6 text-neutral-700" />
               <span className="text-lg">Tomar Foto</span>
             </button>
           </li>
@@ -138,7 +138,7 @@ export function PhotoUploader({ photos, onChange }: PhotoUploaderProps) {
               onClick={() => pickFrom(galleryInputRef)}
               className="flex w-full items-center gap-4 px-6 py-5 text-left text-neutral-900"
             >
-              <GalleryIcon className="size-6 text-neutral-700" />
+              <Icon icon="ion:images-outline" className="size-6 text-neutral-700" />
               <span className="text-lg">Seleccionar de la Galería</span>
             </button>
           </li>

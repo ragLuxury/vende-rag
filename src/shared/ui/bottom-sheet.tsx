@@ -2,8 +2,7 @@
 
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-
-import { ChevronLeftIcon } from './icons';
+import { Icon } from '@iconify/react';
 
 interface BottomSheetProps {
   open: boolean;
@@ -89,7 +88,7 @@ export function BottomSheet({ open, label, onClose, children }: BottomSheetProps
               aria-label="Volver"
               className="absolute left-6 text-neutral-900"
             >
-              <ChevronLeftIcon className="size-6" />
+              <Icon icon="ion:chevron-back-outline" className="size-6" />
             </button>
             <h2 className="text-lg font-semibold text-neutral-900">{label}</h2>
           </div>

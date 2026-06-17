@@ -1,7 +1,8 @@
 'use client';
 
+import { Icon } from '@iconify/react';
+
 import type { Brand } from '@/src/features/listings/domain/brand-repository';
-import { TagIcon } from '@/src/shared/ui/icons';
 import { SheetSelectField } from '@/src/shared/ui/sheet-select-field';
 import { useBrands } from '../hooks/use-brands';
 
@@ -21,7 +22,7 @@ export function BrandSelectField({ value, onSelect }: BrandSelectFieldProps) {
       placeholder="Marca *"
       selectedLabel={selected?.name}
       sheetTitle="Información del producto"
-      headerIcon={<TagIcon className="size-6 text-neutral-900" />}
+      headerIcon={<Icon icon="ion:pricetag-outline" className="size-6 text-neutral-900" />}
       headerLabel="Marca *"
     >
       {(close) => (

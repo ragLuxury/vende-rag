@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import { Icon } from '@iconify/react';
 
-import { ChevronDownIcon } from '@/src/shared/ui/icons';
 import type { ValuationItem } from '../content';
 
 interface ValuationAccordionProps {
@@ -36,7 +36,8 @@ export function ValuationAccordion({ items }: ValuationAccordionProps) {
                 className="size-9 shrink-0 object-contain"
               />
               <span className="flex-1 text-base text-neutral-800">{item.title}</span>
-              <ChevronDownIcon
+              <Icon
+                icon="ion:chevron-down-outline"
                 className={`size-4 shrink-0 text-neutral-500 transition-transform ${
                   open ? 'rotate-180' : ''
                 }`}

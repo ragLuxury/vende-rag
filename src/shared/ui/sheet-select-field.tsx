@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
+import { Icon } from '@iconify/react';
 
 import { BottomSheet } from './bottom-sheet';
-import { ChevronDownIcon } from './icons';
 
 interface SheetSelectFieldProps {
   fieldLabel: string;
@@ -38,7 +38,7 @@ export function SheetSelectField({
         }`}
       >
         <span>{selectedLabel ?? placeholder}</span>
-        <ChevronDownIcon className="size-5 shrink-0 text-neutral-500" />
+        <Icon icon="ion:chevron-down-outline" className="size-5 shrink-0 text-neutral-500" />
       </button>
 
       <BottomSheet open={open} label={sheetTitle} onClose={close}>
