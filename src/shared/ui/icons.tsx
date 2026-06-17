@@ -34,6 +34,65 @@ export function ChevronDownIcon({ className }: IconProps) {
   );
 }
 
+export function TagIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} {...STROKE_PROPS}>
+      <path d="M3 11V5a2 2 0 0 1 2-2h6l9 9a2 2 0 0 1 0 2.8l-5.2 5.2a2 2 0 0 1-2.8 0L3 11Z" />
+      <path d="M7.5 7.5h.01" />
+    </svg>
+  );
+}
+
+export function LocationIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} {...STROKE_PROPS}>
+      <path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10Z" />
+      <circle cx="12" cy="11" r="2.2" />
+    </svg>
+  );
+}
+
+export function ImagePlusIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} {...STROKE_PROPS}>
+      <path d="M19 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h6" />
+      <path d="m3 16 4-4a2 2 0 0 1 2.8 0L14 16" />
+      <path d="m13 15 1.5-1.5a2 2 0 0 1 2.8 0L20 16" />
+      <circle cx="8.5" cy="9" r="1" />
+      <path d="M18 3v6M21 6h-6" />
+    </svg>
+  );
+}
+
+export function CameraIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} {...STROKE_PROPS}>
+      <path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+      <circle cx="12" cy="13" r="3.5" />
+    </svg>
+  );
+}
+
+export function GalleryIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} {...STROKE_PROPS}>
+      <rect x="3" y="3" width="14" height="14" rx="2" />
+      <path d="m3 13 3.5-3.5a2 2 0 0 1 2.8 0L14 14" />
+      <circle cx="8" cy="8" r="1.2" />
+      <path d="M21 7v12a2 2 0 0 1-2 2H7" />
+    </svg>
+  );
+}
+
+export function InfoCircleIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} {...STROKE_PROPS}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5M12 8h.01" />
+    </svg>
+  );
+}
+
 export function UserIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className={className} {...STROKE_PROPS}>

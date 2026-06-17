@@ -7,6 +7,18 @@ import { AuthRepositoryProvider } from '@/src/features/auth/presentation/auth-re
 import { authHttpRepository } from '@/src/features/auth/infrastructure/auth-http-repository';
 import { FaqRepositoryProvider } from '@/src/features/faq/presentation/faq-repository-provider';
 import { faqHttpRepository } from '@/src/features/faq/infrastructure/faq-http-repository';
+import { BrandRepositoryProvider } from '@/src/features/listings/presentation/brand-repository-provider';
+import { brandHttpRepository } from '@/src/features/listings/infrastructure/brand-http-repository';
+import { CommissionRepositoryProvider } from '@/src/features/listings/presentation/commission-repository-provider';
+import { commissionHttpRepository } from '@/src/features/listings/infrastructure/commission-http-repository';
+import { ProductRepositoryProvider } from '@/src/features/listings/presentation/product-repository-provider';
+import { productHttpRepository } from '@/src/features/listings/infrastructure/product-http-repository';
+import { ImageRepositoryProvider } from '@/src/features/listings/presentation/image-repository-provider';
+import { imageHttpRepository } from '@/src/features/listings/infrastructure/image-http-repository';
+import { TermsRepositoryProvider } from '@/src/features/terms/presentation/terms-repository-provider';
+import { termsHttpRepository } from '@/src/features/terms/infrastructure/terms-http-repository';
+import { PrivacyRepositoryProvider } from '@/src/features/privacy/presentation/privacy-repository-provider';
+import { privacyHttpRepository } from '@/src/features/privacy/infrastructure/privacy-http-repository';
 import { QueryProvider } from '@/src/shared/infrastructure/query/query-provider';
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -14,7 +26,21 @@ export function Providers({ children }: { children: ReactNode }) {
     <QueryProvider>
       <AuthRepositoryProvider repository={authHttpRepository}>
         <AccountRepositoryProvider repository={accountHttpRepository}>
-          <FaqRepositoryProvider repository={faqHttpRepository}>{children}</FaqRepositoryProvider>
+          <FaqRepositoryProvider repository={faqHttpRepository}>
+            <BrandRepositoryProvider repository={brandHttpRepository}>
+              <CommissionRepositoryProvider repository={commissionHttpRepository}>
+                <ImageRepositoryProvider repository={imageHttpRepository}>
+                  <ProductRepositoryProvider repository={productHttpRepository}>
+                    <TermsRepositoryProvider repository={termsHttpRepository}>
+                      <PrivacyRepositoryProvider repository={privacyHttpRepository}>
+                        {children}
+                      </PrivacyRepositoryProvider>
+                    </TermsRepositoryProvider>
+                  </ProductRepositoryProvider>
+                </ImageRepositoryProvider>
+              </CommissionRepositoryProvider>
+            </BrandRepositoryProvider>
+          </FaqRepositoryProvider>
         </AccountRepositoryProvider>
       </AuthRepositoryProvider>
     </QueryProvider>
