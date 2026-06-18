@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Icon } from '@iconify/react';
 
 import { BottomNav } from '@/src/shared/ui/bottom-nav';
@@ -12,6 +12,8 @@ import { matchesStatus } from './solicitud-status';
 
 type SortOrder = 'desc' | 'asc';
 
+const SEARCH_DEBOUNCE_MS = 400;
+
 interface SolicitudesScreenProps {
   clientId: number | null;
 }
@@ -19,25 +21,35 @@ interface SolicitudesScreenProps {
 export function SolicitudesScreen({ clientId }: SolicitudesScreenProps) {
   const router = useRouter();
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  const [statusFilter, setStatusFilter] = useState<string | null>(null);
 
-  const { data: solicitudes, isLoading, isError } = useSolicitudes(clientId);
+  useEffect(() => {
+    const timeout = setTimeout(() => setDebouncedSearch(search), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timeout);
+  }, [search]);
+
+  const { data: solicitudes, isLoading, isError } = useSolicitudes(clientId, debouncedSearch);
 
   const summary = useMemo<readonly SummaryItem[]>(() => {
     const list = solicitudes ?? [];
     return [
       {
         label: 'Aprobada',
+        status: 'Aprobada',
         icon: 'ion:checkmark-circle-outline',
         count: list.filter((item) => matchesStatus(item.status, 'Aprobada')).length,
       },
       {
         label: 'Negociación',
+        status: 'Negociación',
         icon: 'ion:sync-outline',
         count: list.filter((item) => matchesStatus(item.status, 'Negociación')).length,
       },
       {
         label: 'En Revisión',
+        status: 'En revisión',
         icon: 'ion:refresh-outline',
         count: list.filter((item) => matchesStatus(item.status, 'En revisión')).length,
       },
@@ -45,16 +57,18 @@ export function SolicitudesScreen({ clientId }: SolicitudesScreenProps) {
   }, [solicitudes]);
 
   const visibleSolicitudes = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    const filtered = (solicitudes ?? []).filter((item) => {
-      if (query === '') return true;
-      return item.name.toLowerCase().includes(query) || item.brand.toLowerCase().includes(query);
-    });
+    const filtered = (solicitudes ?? []).filter(
+      (item) => statusFilter === null || matchesStatus(item.status, statusFilter),
+    );
 
     return [...filtered].sort((a, b) =>
       sortOrder === 'desc' ? b.price - a.price : a.price - b.price,
     );
-  }, [solicitudes, search, sortOrder]);
+  }, [solicitudes, sortOrder, statusFilter]);
+
+  function handleStatusSelect(status: string) {
+    setStatusFilter((current) => (current === status ? null : status));
+  }
 
   return (
     <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col">
@@ -86,7 +100,11 @@ export function SolicitudesScreen({ clientId }: SolicitudesScreenProps) {
         </div>
 
         <div className="mt-6">
-          <SolicitudSummary items={summary} />
+          <SolicitudSummary
+            items={summary}
+            selectedStatus={statusFilter}
+            onSelect={handleStatusSelect}
+          />
         </div>
 
         <div className="mt-6 flex justify-end">

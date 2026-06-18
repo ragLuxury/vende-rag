@@ -8,6 +8,14 @@ export interface Solicitud {
   image: string;
 }
 
+export interface SolicitudQuery {
+  q?: string;
+}
+
 export interface SolicitudRepository {
-  getSolicitudes(clientId: number, signal?: AbortSignal): Promise<readonly Solicitud[]>;
+  getSolicitudes(
+    clientId: number,
+    query: SolicitudQuery,
+    signal?: AbortSignal,
+  ): Promise<readonly Solicitud[]>;
 }

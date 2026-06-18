@@ -3,8 +3,15 @@ import { httpRequest } from '@/src/shared/infrastructure/http/http-client';
 import { solicitudesResponseSchema } from './solicitud-schemas';
 
 export const solicitudHttpRepository = {
-  async getSolicitudes(clientId, signal) {
-    const response = await httpRequest(`/mobile/products/solicitudes/${clientId}`, {
+  async getSolicitudes(clientId, query, signal) {
+    const params = new URLSearchParams();
+    const q = query.q?.trim();
+    if (q) params.set('q', q);
+
+    const search = params.toString();
+    const path = `/mobile/products/solicitudes/${clientId}${search ? `?${search}` : ''}`;
+
+    const response = await httpRequest(path, {
       schema: solicitudesResponseSchema,
       ...(signal ? { signal } : {}),
     });
