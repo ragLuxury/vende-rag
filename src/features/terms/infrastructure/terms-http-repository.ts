@@ -5,7 +5,7 @@ import { termsResponseSchema } from './terms-schemas';
 
 export const termsHttpRepository = {
   async getTerms(signal) {
-    const response = await httpRequest('/mobile/terminos-y-condiciones', {
+    const response = await httpRequest('/web/terminos-y-condiciones', {
       schema: termsResponseSchema,
       ...(signal ? { signal } : {}),
     });

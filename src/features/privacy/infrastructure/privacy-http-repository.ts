@@ -5,7 +5,7 @@ import { privacyResponseSchema } from './privacy-schemas';
 
 export const privacyHttpRepository = {
   async getPrivacy(signal) {
-    const response = await httpRequest('/mobile/aviso-de-privacidad', {
+    const response = await httpRequest('/web/aviso-de-privacidad', {
       schema: privacyResponseSchema,
       ...(signal ? { signal } : {}),
     });

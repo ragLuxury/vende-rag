@@ -9,7 +9,7 @@ export const solicitudHttpRepository = {
     if (q) params.set('q', q);
 
     const search = params.toString();
-    const path = `/mobile/products/solicitudes/${clientId}${search ? `?${search}` : ''}`;
+    const path = `/web/products/solicitudes/${clientId}${search ? `?${search}` : ''}`;
 
     const response = await httpRequest(path, {
       schema: solicitudesResponseSchema,

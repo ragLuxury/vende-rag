@@ -11,7 +11,7 @@ import { authUserSchema, loginResponseSchema, registerResponseSchema } from './a
 
 export const authHttpRepository = {
   async login(credentials: LoginCredentials) {
-    const response = await httpRequest('/mobile/login', {
+    const response = await httpRequest('/web/login', {
       method: 'POST',
       body: { user: credentials.email, pass: credentials.password },
       schema: loginResponseSchema,
@@ -24,7 +24,7 @@ export const authHttpRepository = {
   },
 
   async register(data: RegistrationData) {
-    const response = await httpRequest('/mobile/client/register', {
+    const response = await httpRequest('/web/client/register', {
       method: 'POST',
       body: {
         email: data.email,

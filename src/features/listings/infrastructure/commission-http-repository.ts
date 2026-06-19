@@ -5,7 +5,7 @@ import { commissionResponseSchema } from './commission-schemas';
 export const commissionHttpRepository = {
   async getCommission({ price, userId }, signal) {
     const params = new URLSearchParams({ price: String(price), user_id: String(userId) });
-    const response = await httpRequest(`/mobile/products/comission?${params.toString()}`, {
+    const response = await httpRequest(`/web/products/comission?${params.toString()}`, {
       schema: commissionResponseSchema,
       ...(signal ? { signal } : {}),
     });

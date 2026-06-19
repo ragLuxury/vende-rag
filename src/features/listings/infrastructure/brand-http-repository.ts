@@ -4,7 +4,7 @@ import { brandsResponseSchema } from './brand-schemas';
 
 export const brandHttpRepository = {
   async getBrands(signal) {
-    const response = await httpRequest('/mobile/brands', {
+    const response = await httpRequest('/web/brands', {
       schema: brandsResponseSchema,
       ...(signal ? { signal } : {}),
     });

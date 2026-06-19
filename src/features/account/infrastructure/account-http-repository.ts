@@ -4,7 +4,7 @@ import { deleteAccountResponseSchema } from './account-schemas';
 
 export const accountHttpRepository = {
   async deleteAccount(clientId: number) {
-    await httpRequest(`/mobile/client/${clientId}`, {
+    await httpRequest(`/web/client/${clientId}`, {
       method: 'DELETE',
       schema: deleteAccountResponseSchema,
     });

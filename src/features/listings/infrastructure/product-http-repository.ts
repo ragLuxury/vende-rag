@@ -16,7 +16,7 @@ export const productHttpRepository = {
       })),
     };
 
-    const response = await httpRequest('/mobile/products', {
+    const response = await httpRequest('/web/products', {
       method: 'POST',
       body,
       schema: createProductsResponseSchema,

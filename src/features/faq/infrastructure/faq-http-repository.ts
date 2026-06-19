@@ -4,7 +4,7 @@ import { faqResponseSchema } from './faq-schemas';
 
 export const faqHttpRepository = {
   async getFaqs(signal) {
-    const response = await httpRequest('/mobile/faq', {
+    const response = await httpRequest('/web/faq', {
       schema: faqResponseSchema,
       ...(signal ? { signal } : {}),
     });
