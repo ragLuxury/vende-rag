@@ -19,8 +19,8 @@ import { TermsRepositoryProvider } from '@/src/features/terms/presentation/terms
 import { termsHttpRepository } from '@/src/features/terms/infrastructure/terms-http-repository';
 import { PrivacyRepositoryProvider } from '@/src/features/privacy/presentation/privacy-repository-provider';
 import { privacyHttpRepository } from '@/src/features/privacy/infrastructure/privacy-http-repository';
-import { SolicitudRepositoryProvider } from '@/src/features/solicitudes/presentation/solicitud-repository-provider';
-import { solicitudHttpRepository } from '@/src/features/solicitudes/infrastructure/solicitud-http-repository';
+import { ProductViewRepositoryProvider } from '@/src/features/product-views/presentation/product-view-repository-provider';
+import { productViewHttpRepository } from '@/src/features/product-views/infrastructure/product-view-http-repository';
 import { QueryProvider } from '@/src/shared/infrastructure/query/query-provider';
 import '@/src/shared/ui/register-icons';
 
@@ -36,9 +36,9 @@ export function Providers({ children }: { children: ReactNode }) {
                   <ProductRepositoryProvider repository={productHttpRepository}>
                     <TermsRepositoryProvider repository={termsHttpRepository}>
                       <PrivacyRepositoryProvider repository={privacyHttpRepository}>
-                        <SolicitudRepositoryProvider repository={solicitudHttpRepository}>
+                        <ProductViewRepositoryProvider repository={productViewHttpRepository}>
                           {children}
-                        </SolicitudRepositoryProvider>
+                        </ProductViewRepositoryProvider>
                       </PrivacyRepositoryProvider>
                     </TermsRepositoryProvider>
                   </ProductRepositoryProvider>
