@@ -22,32 +22,35 @@ import { privacyHttpRepository } from '@/src/features/privacy/infrastructure/pri
 import { ProductViewRepositoryProvider } from '@/src/features/product-views/presentation/product-view-repository-provider';
 import { productViewHttpRepository } from '@/src/features/product-views/infrastructure/product-view-http-repository';
 import { QueryProvider } from '@/src/shared/infrastructure/query/query-provider';
+import { ToastProvider } from '@/src/shared/ui/toast';
 import '@/src/shared/ui/register-icons';
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <QueryProvider>
-      <AuthRepositoryProvider repository={authHttpRepository}>
-        <AccountRepositoryProvider repository={accountHttpRepository}>
-          <FaqRepositoryProvider repository={faqHttpRepository}>
-            <BrandRepositoryProvider repository={brandHttpRepository}>
-              <CommissionRepositoryProvider repository={commissionHttpRepository}>
-                <ImageRepositoryProvider repository={imageHttpRepository}>
-                  <ProductRepositoryProvider repository={productHttpRepository}>
-                    <TermsRepositoryProvider repository={termsHttpRepository}>
-                      <PrivacyRepositoryProvider repository={privacyHttpRepository}>
-                        <ProductViewRepositoryProvider repository={productViewHttpRepository}>
-                          {children}
-                        </ProductViewRepositoryProvider>
-                      </PrivacyRepositoryProvider>
-                    </TermsRepositoryProvider>
-                  </ProductRepositoryProvider>
-                </ImageRepositoryProvider>
-              </CommissionRepositoryProvider>
-            </BrandRepositoryProvider>
-          </FaqRepositoryProvider>
-        </AccountRepositoryProvider>
-      </AuthRepositoryProvider>
-    </QueryProvider>
+    <ToastProvider>
+      <QueryProvider>
+        <AuthRepositoryProvider repository={authHttpRepository}>
+          <AccountRepositoryProvider repository={accountHttpRepository}>
+            <FaqRepositoryProvider repository={faqHttpRepository}>
+              <BrandRepositoryProvider repository={brandHttpRepository}>
+                <CommissionRepositoryProvider repository={commissionHttpRepository}>
+                  <ImageRepositoryProvider repository={imageHttpRepository}>
+                    <ProductRepositoryProvider repository={productHttpRepository}>
+                      <TermsRepositoryProvider repository={termsHttpRepository}>
+                        <PrivacyRepositoryProvider repository={privacyHttpRepository}>
+                          <ProductViewRepositoryProvider repository={productViewHttpRepository}>
+                            {children}
+                          </ProductViewRepositoryProvider>
+                        </PrivacyRepositoryProvider>
+                      </TermsRepositoryProvider>
+                    </ProductRepositoryProvider>
+                  </ImageRepositoryProvider>
+                </CommissionRepositoryProvider>
+              </BrandRepositoryProvider>
+            </FaqRepositoryProvider>
+          </AccountRepositoryProvider>
+        </AuthRepositoryProvider>
+      </QueryProvider>
+    </ToastProvider>
   );
 }

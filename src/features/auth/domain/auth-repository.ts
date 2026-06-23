@@ -33,5 +33,6 @@ export interface AuthRepository {
   register(data: RegistrationData): Promise<RegistrationResult>;
   getToken(): string | null;
   getUser(): AuthUser | null;
+  updateUser(patch: Partial<AuthUser>): AuthUser | null;
   logout(): void;
 }

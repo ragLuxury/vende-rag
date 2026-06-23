@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { Icon } from '@iconify/react';
 
-import { BottomNav } from '@/src/shared/ui/bottom-nav';
 import { useFaqs } from '../hooks/use-faqs';
 import { FaqAccordion } from './faq-accordion';
 
@@ -25,7 +24,7 @@ export function FaqScreen() {
         <h1 className="text-lg font-semibold text-neutral-900">Preguntas Frecuentes</h1>
       </header>
 
-      <div className="flex-1 px-6 pt-8 pb-28">
+      <div className="flex-1 px-6 pt-8 pb-10">
         <p className="font-editors text-4xl text-neutral-900">¿En qué podemos ayudarte?</p>
         <p className="mt-3 text-sm leading-relaxed text-neutral-500">
           Encuentra respuestas a las preguntas más comunes sobre nuestra plataforma de consignación.
@@ -52,8 +51,6 @@ export function FaqScreen() {
           <FaqAccordion items={data} />
         )}
       </div>
-
-      <BottomNav />
     </div>
   );
 }

@@ -52,6 +52,18 @@ export const authHttpRepository = {
     return cachedUser;
   },
 
+  updateUser(patch) {
+    const current = this.getUser();
+    if (!current) return null;
+
+    const next = { ...current, ...patch };
+    const raw = JSON.stringify(next);
+    userStorage.set(raw);
+    cachedRaw = raw;
+    cachedUser = next;
+    return next;
+  },
+
   logout() {
     tokenStorage.clear();
     userStorage.clear();

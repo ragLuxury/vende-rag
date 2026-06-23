@@ -1,21 +1,36 @@
-import Image from 'next/image';
+'use client';
 
-import { BottomNav } from '@/src/shared/ui/bottom-nav';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { Icon } from '@iconify/react';
+
 import { ContactForm } from './contact-form';
 import { SocialLinks } from './social-links';
 
 export function ContactScreen() {
+  const router = useRouter();
+
   return (
     <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col">
-      <div className="flex-1 pb-28">
-        <Image
-          src="/images/header-contacto.jpg"
-          alt="Bolsas y zapatos de lujo en consignación con RAG"
-          width={4176}
-          height={2784}
-          priority
-          className="h-auto w-full"
-        />
+      <div className="flex-1 pb-10">
+        <div className="relative">
+          <Image
+            src="/images/header-contacto.jpg"
+            alt="Bolsas y zapatos de lujo en consignación con RAG"
+            width={4176}
+            height={2784}
+            priority
+            className="h-auto w-full"
+          />
+          <button
+            type="button"
+            onClick={() => router.back()}
+            aria-label="Volver"
+            className="absolute top-4 left-4 flex size-10 items-center justify-center rounded-full bg-white/80 text-neutral-900 backdrop-blur"
+          >
+            <Icon icon="ion:chevron-back-outline" className="size-6" />
+          </button>
+        </div>
 
         <div className="px-6">
           <h1 className="font-editors mt-8 text-center text-5xl text-neutral-900">Contacto</h1>
@@ -51,8 +66,6 @@ export function ContactScreen() {
           </div>
         </div>
       </div>
-
-      <BottomNav />
     </div>
   );
 }
