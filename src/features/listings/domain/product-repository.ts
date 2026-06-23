@@ -8,6 +8,7 @@ export interface NewProduct {
   model: string;
   price: number;
   detail: string;
+  linkProducto: string;
   clientId: number;
   gallery: readonly NewProductImage[];
 }

@@ -11,6 +11,7 @@ export const productHttpRepository = {
         model: product.model,
         price: product.price,
         detail: product.detail,
+        link_producto: product.linkProducto,
         id_cliente: product.clientId,
         others: { galeria: product.gallery.map((image) => ({ img: image.img })) },
       })),

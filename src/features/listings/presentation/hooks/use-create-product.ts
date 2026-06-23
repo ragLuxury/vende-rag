@@ -13,6 +13,7 @@ export interface CreateProductInput {
   model: string;
   price: number;
   detail: string;
+  linkProducto: string;
   clientId: number;
   photos: readonly File[];
 }
@@ -31,6 +32,7 @@ export function useCreateProduct() {
         model: input.model,
         price: input.price,
         detail: input.detail,
+        linkProducto: input.linkProducto,
         clientId: input.clientId,
         gallery: urls.map((url) => ({ img: url })),
       };

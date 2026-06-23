@@ -14,6 +14,8 @@ import { MIN_PHOTOS, PhotoUploader } from './photo-uploader';
 
 const PRICE_DEBOUNCE_MS = 400;
 
+const PRELOVED_ORIGIN = '2';
+
 const FIELD_CLASS =
   'w-full rounded-2xl border border-neutral-300 bg-transparent px-4 py-3.5 text-base text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
 
@@ -35,7 +37,10 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
   const [price, setPrice] = useState('');
   const [debouncedPrice, setDebouncedPrice] = useState('');
   const [origin, setOrigin] = useState('');
+  const [pageName, setPageName] = useState('');
   const [details, setDetails] = useState('');
+
+  const isPreloved = origin === PRELOVED_ORIGIN;
 
   useEffect(() => {
     const timeout = setTimeout(() => setDebouncedPrice(price), PRICE_DEBOUNCE_MS);
@@ -50,7 +55,11 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
   const createProduct = useCreateProduct();
 
   const isValid =
-    photos.length >= MIN_PHOTOS && brandId !== null && origin !== '' && Number(price) > 0;
+    photos.length >= MIN_PHOTOS &&
+    brandId !== null &&
+    origin !== '' &&
+    Number(price) > 0 &&
+    (!isPreloved || pageName.trim() !== '');
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -63,6 +72,7 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
         model: description,
         price: Number(price),
         detail: details,
+        linkProducto: isPreloved ? pageName.trim() : '',
         clientId: userId,
         photos,
       },
@@ -74,6 +84,7 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
           setPrice('');
           setDebouncedPrice('');
           setOrigin('');
+          setPageName('');
           setDetails('');
         },
       },
@@ -147,8 +158,29 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
           </div>
 
           <div className="mt-6">
-            <OriginSelectField value={origin} onSelect={setOrigin} />
+            <OriginSelectField
+              value={origin}
+              onSelect={(value) => {
+                setOrigin(value);
+                if (value !== PRELOVED_ORIGIN) setPageName('');
+              }}
+            />
           </div>
+
+          {isPreloved ? (
+            <div className="mt-6">
+              <label htmlFor="page-name" className="text-base text-neutral-800">
+                Nombre de la página.
+              </label>
+              <input
+                id="page-name"
+                value={pageName}
+                onChange={(event) => setPageName(event.target.value)}
+                placeholder="Ej: Vestiaire Collective, Poshmark..."
+                className={`${FIELD_CLASS} mt-3`}
+              />
+            </div>
+          ) : null}
         </section>
 
         <section className="mt-8">
