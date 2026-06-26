@@ -7,11 +7,13 @@ const serverSchema = z.object({
 const clientSchema = z.object({
   NEXT_PUBLIC_BACKEND_URL: z.string().url(),
   NEXT_PUBLIC_PRODUCT_IMAGE_BASE_URL: z.string().url(),
+  NEXT_PUBLIC_CONTRACT_BASE_URL: z.string().url(),
 });
 
 const clientEnv = clientSchema.parse({
   NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
   NEXT_PUBLIC_PRODUCT_IMAGE_BASE_URL: process.env.NEXT_PUBLIC_PRODUCT_IMAGE_BASE_URL,
+  NEXT_PUBLIC_CONTRACT_BASE_URL: process.env.NEXT_PUBLIC_CONTRACT_BASE_URL,
 });
 
 export const env = {

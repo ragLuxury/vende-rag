@@ -8,7 +8,10 @@ import { BottomNav } from '@/src/shared/ui/bottom-nav';
 import { ConfirmDialog } from '@/src/shared/ui/confirm-dialog';
 import { consumeQueuedToast, useToast } from '@/src/shared/ui/toast';
 import { useProfile } from '../hooks/use-profile';
+import { AddressSection } from './address-section';
+import { ContractSection } from './contract-section';
 import { DeleteAccountDialog } from './delete-account-dialog';
+import { PaymentMethodSection } from './payment-method-section';
 import { PersonalInfoSection } from './personal-info-section';
 import { ProfileRow } from './profile-row';
 
@@ -46,32 +49,20 @@ export function ProfileScreen({ name, clientId, onLogout, onDeleted }: ProfileSc
 
         <div className="mt-10 flex flex-col gap-4">
           <PersonalInfoSection clientId={clientId} />
-          <ProfileRow
-            icon={<Icon icon="ion:location-outline" className="size-6" />}
-            label="Mi Dirección"
-            expandable
-          />
-          <ProfileRow
-            icon={<Icon icon="ion:card-outline" className="size-6" />}
-            label="Métodos De Pago"
-            expandable
-          />
-          <ProfileRow
-            icon={<Icon icon="ion:document-text-outline" className="size-6" />}
-            label="Contrato"
-            expandable
-          />
+          <AddressSection clientId={clientId} />
+          <PaymentMethodSection clientId={clientId} />
+          <ContractSection clientId={clientId} />
           <ProfileRow
             icon={<Icon icon="ion:grid-outline" className="size-6" />}
             label="Dashboard"
           />
         </div>
 
-        <div className="mt-12 flex flex-col items-center gap-8">
+        <div className="mt-14 flex flex-col items-center gap-6">
           <button
             type="button"
             onClick={() => setLogoutOpen(true)}
-            className="flex items-center gap-3 text-neutral-500"
+            className="flex items-center gap-3 text-neutral-600 transition-colors hover:text-neutral-900"
           >
             <Icon icon="ion:log-out-outline" className="size-6" />
             <span className="text-lg font-medium">Cerrar Sesión</span>
@@ -79,10 +70,10 @@ export function ProfileScreen({ name, clientId, onLogout, onDeleted }: ProfileSc
           <button
             type="button"
             onClick={() => setDeleteOpen(true)}
-            className="flex items-center gap-3 text-red-600"
+            className="flex items-center gap-2 text-neutral-400 transition-colors hover:text-red-600"
           >
-            <Icon icon="ion:trash-outline" className="size-6" />
-            <span className="text-lg font-medium">Eliminar Cuenta</span>
+            <Icon icon="ion:trash-outline" className="size-5" />
+            <span className="text-base">Eliminar Cuenta</span>
           </button>
         </div>
 
