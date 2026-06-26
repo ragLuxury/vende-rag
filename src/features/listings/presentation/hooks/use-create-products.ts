@@ -18,26 +18,30 @@ export interface CreateProductInput {
   photos: readonly File[];
 }
 
-export function useCreateProduct() {
+export function useCreateProducts() {
   const imageRepository = useImageRepository();
   const productRepository = useProductRepository();
 
   return useMutation({
-    mutationFn: async (input: CreateProductInput) => {
-      const urls = await uploadImagesUseCase(imageRepository, input.photos);
+    mutationFn: async (inputs: readonly CreateProductInput[]) => {
+      const products: NewProduct[] = await Promise.all(
+        inputs.map(async (input) => {
+          const urls = await uploadImagesUseCase(imageRepository, input.photos);
 
-      const product: NewProduct = {
-        brandId: input.brandId,
-        origen: input.origen,
-        model: input.model,
-        price: input.price,
-        detail: input.detail,
-        linkProducto: input.linkProducto,
-        clientId: input.clientId,
-        gallery: urls.map((url) => ({ img: url })),
-      };
+          return {
+            brandId: input.brandId,
+            origen: input.origen,
+            model: input.model,
+            price: input.price,
+            detail: input.detail,
+            linkProducto: input.linkProducto,
+            clientId: input.clientId,
+            gallery: urls.map((url) => ({ img: url })),
+          };
+        }),
+      );
 
-      return createProductsUseCase(productRepository, [product]);
+      return createProductsUseCase(productRepository, products);
     },
   });
 }

@@ -2,93 +2,76 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Icon } from '@iconify/react';
 
 import { BottomNav } from '@/src/shared/ui/bottom-nav';
-import { BrandSelectField } from './brand-select-field';
-import { OriginSelectField } from './origin-select-field';
-import { useCommission } from '../hooks/use-commission';
-import { useCreateProduct } from '../hooks/use-create-product';
-import { MIN_PHOTOS, PhotoUploader } from './photo-uploader';
-
-const PRICE_DEBOUNCE_MS = 400;
-
-const PRELOVED_ORIGIN = '2';
-
-const FIELD_CLASS =
-  'w-full rounded-2xl border border-neutral-300 bg-transparent px-4 py-3.5 text-base text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
-
-const currencyFormatter = new Intl.NumberFormat('es-MX', {
-  style: 'currency',
-  currency: 'MXN',
-  maximumFractionDigits: 0,
-});
+import { useCreateProducts, type CreateProductInput } from '../hooks/use-create-products';
+import {
+  createEmptyDraft,
+  isDraftValid,
+  PRELOVED_ORIGIN,
+  ProductDraftCard,
+  type ProductDraft,
+} from './product-draft-card';
 
 interface NewListingScreenProps {
   userId: number | null;
 }
 
+function toCreateInput(draft: ProductDraft, userId: number): CreateProductInput {
+  return {
+    brandId: draft.brandId as number,
+    origen: Number(draft.origin),
+    model: draft.description,
+    price: Number(draft.price),
+    detail: draft.details,
+    linkProducto: draft.origin === PRELOVED_ORIGIN ? draft.pageName.trim() : '',
+    clientId: userId,
+    photos: draft.photos,
+  };
+}
+
 export function NewListingScreen({ userId }: NewListingScreenProps) {
   const router = useRouter();
-  const [photos, setPhotos] = useState<readonly File[]>([]);
-  const [brandId, setBrandId] = useState<number | null>(null);
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [debouncedPrice, setDebouncedPrice] = useState('');
-  const [origin, setOrigin] = useState('');
-  const [pageName, setPageName] = useState('');
-  const [details, setDetails] = useState('');
+  const createProducts = useCreateProducts();
 
-  const isPreloved = origin === PRELOVED_ORIGIN;
+  const [drafts, setDrafts] = useState<readonly ProductDraft[]>(() => [createEmptyDraft()]);
+  const [openId, setOpenId] = useState(() => drafts[0]?.id ?? '');
 
-  useEffect(() => {
-    const timeout = setTimeout(() => setDebouncedPrice(price), PRICE_DEBOUNCE_MS);
-    return () => clearTimeout(timeout);
-  }, [price]);
+  const isValid = userId !== null && drafts.length > 0 && drafts.every(isDraftValid);
 
-  const { data: commission, isFetching: isCommissionLoading } = useCommission(
-    Number(debouncedPrice),
-    userId,
-  );
+  function handleChange(updated: ProductDraft) {
+    setDrafts((current) => current.map((draft) => (draft.id === updated.id ? updated : draft)));
+  }
 
-  const createProduct = useCreateProduct();
+  function handleAddProduct() {
+    const draft = createEmptyDraft();
+    setDrafts((current) => [...current, draft]);
+    setOpenId(draft.id);
+  }
 
-  const isValid =
-    photos.length >= MIN_PHOTOS &&
-    brandId !== null &&
-    origin !== '' &&
-    Number(price) > 0 &&
-    (!isPreloved || pageName.trim() !== '');
+  function handleRemove(id: string) {
+    setDrafts((current) => {
+      const next = current.filter((draft) => draft.id !== id);
+      if (id === openId) setOpenId(next[next.length - 1]?.id ?? '');
+      return next;
+    });
+  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!isValid || brandId === null || userId === null) return;
+    if (!isValid || userId === null) return;
 
-    createProduct.mutate(
-      {
-        brandId,
-        origen: Number(origin),
-        model: description,
-        price: Number(price),
-        detail: details,
-        linkProducto: isPreloved ? pageName.trim() : '',
-        clientId: userId,
-        photos,
+    const inputs = drafts.map((draft) => toCreateInput(draft, userId));
+
+    createProducts.mutate(inputs, {
+      onSuccess: () => {
+        const draft = createEmptyDraft();
+        setDrafts([draft]);
+        setOpenId(draft.id);
       },
-      {
-        onSuccess: () => {
-          setPhotos([]);
-          setBrandId(null);
-          setDescription('');
-          setPrice('');
-          setDebouncedPrice('');
-          setOrigin('');
-          setPageName('');
-          setDetails('');
-        },
-      },
-    );
+    });
   }
 
   return (
@@ -106,94 +89,30 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
       </header>
 
       <form onSubmit={handleSubmit} className="flex-1 px-6 pt-6 pb-28">
-        <PhotoUploader photos={photos} onChange={setPhotos} />
-
-        <section className="mt-8">
-          <h2 className="text-lg font-semibold text-neutral-900">Información del Producto</h2>
-          <div className="mt-4 flex flex-col gap-4">
-            <BrandSelectField value={brandId} onSelect={(brand) => setBrandId(brand.id)} />
-            <input
-              value={description}
-              onChange={(event) => setDescription(event.target.value)}
-              aria-label="Descripción"
-              placeholder="Descripción"
-              className={FIELD_CLASS}
+        <div className="flex flex-col gap-4">
+          {drafts.map((draft, index) => (
+            <ProductDraftCard
+              key={draft.id}
+              index={index}
+              draft={draft}
+              userId={userId}
+              open={draft.id === openId}
+              canRemove={drafts.length > 1}
+              onToggle={() => setOpenId(draft.id === openId ? '' : draft.id)}
+              onChange={handleChange}
+              onRemove={() => handleRemove(draft.id)}
             />
-          </div>
-        </section>
+          ))}
+        </div>
 
-        <section className="mt-8">
-          <h2 className="text-lg font-semibold text-neutral-900">Información de Venta</h2>
-
-          <div className="mt-4">
-            <label htmlFor="price" className="flex items-center gap-2 text-base text-neutral-800">
-              ¿En cuanto te gustaría venderlo?
-              <Icon icon="ion:information-circle-outline" className="size-5 text-neutral-400" />
-            </label>
-            <input
-              id="price"
-              value={price}
-              onChange={(event) => setPrice(event.target.value.replace(/[^\d]/g, ''))}
-              inputMode="numeric"
-              placeholder="$0"
-              className={`${FIELD_CLASS} mt-3`}
-            />
-          </div>
-
-          <div className="mt-6">
-            <p className="text-base text-neutral-800">Esta sería tu ganancia</p>
-            <input
-              disabled
-              aria-label="Ganancia estimada"
-              value={
-                isCommissionLoading
-                  ? 'Calculando...'
-                  : commission
-                    ? currencyFormatter.format(commission.sellerNet)
-                    : ''
-              }
-              placeholder="Cálculo automático"
-              className="mt-3 w-full rounded-2xl border border-neutral-200 bg-neutral-100 px-4 py-3.5 text-base text-neutral-500 placeholder:text-neutral-400"
-            />
-          </div>
-
-          <div className="mt-6">
-            <OriginSelectField
-              value={origin}
-              onSelect={(value) => {
-                setOrigin(value);
-                if (value !== PRELOVED_ORIGIN) setPageName('');
-              }}
-            />
-          </div>
-
-          {isPreloved ? (
-            <div className="mt-6">
-              <label htmlFor="page-name" className="text-base text-neutral-800">
-                Nombre de la página.
-              </label>
-              <input
-                id="page-name"
-                value={pageName}
-                onChange={(event) => setPageName(event.target.value)}
-                placeholder="Ej: Vestiaire Collective, Poshmark..."
-                className={`${FIELD_CLASS} mt-3`}
-              />
-            </div>
-          ) : null}
-        </section>
-
-        <section className="mt-8">
-          <h2 className="text-lg font-semibold text-neutral-900">Describe los Detalles</h2>
-          <textarea
-            value={details}
-            onChange={(event) => setDetails(event.target.value)}
-            aria-label="Detalles"
-            placeholder="Desgastes, Retoques de color, Cierre roto, etc..."
-            rows={4}
-            className={`${FIELD_CLASS} mt-4 resize-none`}
-          />
-        </section>
+        <button
+          type="button"
+          onClick={handleAddProduct}
+          className="border-brand text-brand mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-dashed text-base font-medium"
+        >
+          <Icon icon="ion:add-outline" className="size-5" />
+          Agregar otro producto
+        </button>
 
         <p className="mt-8 text-center text-sm leading-relaxed text-neutral-700">
           Al dar clic en el botón de &quot;ENVIAR&quot; Acepto los{' '}
@@ -206,12 +125,12 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
           </Link>
         </p>
 
-        {createProduct.isSuccess ? (
+        {createProducts.isSuccess ? (
           <p className="mt-6 rounded-2xl bg-green-50 px-4 py-3 text-center text-sm text-green-700">
-            {createProduct.data.message}
+            {createProducts.data.message}
           </p>
         ) : null}
-        {createProduct.isError ? (
+        {createProducts.isError ? (
           <p className="mt-6 rounded-2xl bg-red-50 px-4 py-3 text-center text-sm text-red-700">
             No pudimos enviar tu solicitud. Inténtalo de nuevo.
           </p>
@@ -219,14 +138,16 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
 
         <button
           type="submit"
-          disabled={!isValid || createProduct.isPending}
+          disabled={!isValid || createProducts.isPending}
           className={`mt-6 flex h-14 w-full items-center justify-center rounded-2xl text-base font-medium transition-colors ${
-            isValid && !createProduct.isPending
+            isValid && !createProducts.isPending
               ? 'bg-brand hover:bg-brand/90 text-white'
               : 'cursor-not-allowed bg-neutral-200 text-neutral-400'
           }`}
         >
-          {createProduct.isPending ? 'Enviando...' : 'Enviar solicitud'}
+          {createProducts.isPending
+            ? 'Enviando...'
+            : `Enviar solicitud${drafts.length > 1 ? ` (${drafts.length})` : ''}`}
         </button>
       </form>
 
