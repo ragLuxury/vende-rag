@@ -9,7 +9,7 @@ import type { AddressInput } from '@/src/features/account/domain/account-reposit
 
 interface SaveAddressInput {
   clientId: number;
-  addressId: number | null;
+  hasExistingAddress: boolean;
   data: AddressInput;
 }
 
@@ -18,10 +18,10 @@ export function useSaveAddress() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ clientId, addressId, data }: SaveAddressInput) =>
-      addressId === null
-        ? createAddressUseCase(repository, clientId, data)
-        : updateAddressUseCase(repository, addressId, data),
+    mutationFn: ({ clientId, hasExistingAddress, data }: SaveAddressInput) =>
+      hasExistingAddress
+        ? updateAddressUseCase(repository, clientId, data)
+        : createAddressUseCase(repository, clientId, data),
     onSuccess: (_result, { clientId }) =>
       queryClient.invalidateQueries({ queryKey: profileQueryKeys.detail(clientId) }),
   });

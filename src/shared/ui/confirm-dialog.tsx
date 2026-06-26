@@ -13,6 +13,7 @@ interface ConfirmDialogProps {
   onCancel: () => void;
   onConfirm: () => void;
   icon?: ReactNode;
+  destructive?: boolean;
 }
 
 export function ConfirmDialog({
@@ -24,6 +25,7 @@ export function ConfirmDialog({
   onCancel,
   onConfirm,
   icon,
+  destructive = false,
 }: ConfirmDialogProps) {
   return (
     <Modal open={open} label={title} onClose={onCancel}>
@@ -33,23 +35,23 @@ export function ConfirmDialog({
         </span>
       ) : null}
 
-      <h2 className="text-2xl font-semibold text-neutral-900">{title}</h2>
+      <h2 className="font-editors text-2xl text-neutral-900">{title}</h2>
       <p className="mt-2 text-neutral-500">{description}</p>
 
-      <hr className="my-5 border-neutral-200" />
-
-      <div className="flex gap-4">
+      <div className="mt-6 flex items-center justify-end gap-6">
         <button
           type="button"
           onClick={onCancel}
-          className="h-12 flex-1 rounded-xl bg-neutral-100 font-medium text-neutral-900 transition-colors hover:bg-neutral-200"
+          className="font-medium text-neutral-500 transition-colors hover:text-neutral-700"
         >
           {cancelLabel}
         </button>
         <button
           type="button"
           onClick={onConfirm}
-          className="bg-brand hover:bg-brand/90 h-12 flex-1 rounded-xl font-semibold text-white transition-colors"
+          className={`font-semibold transition-colors ${
+            destructive ? 'text-red-600 hover:text-red-700' : 'text-brand hover:text-brand/80'
+          }`}
         >
           {confirmLabel}
         </button>

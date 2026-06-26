@@ -1,9 +1,13 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Icon } from '@iconify/react';
 
+import { ConfirmDialog } from '@/src/shared/ui/confirm-dialog';
+import { useToast } from '@/src/shared/ui/toast';
 import type { ClientAddress } from '@/src/features/account/domain/account-repository';
+import { useDeleteAddress } from '../hooks/use-delete-address';
 import { useProfile } from '../hooks/use-profile';
 import { ProfileAccordion } from './profile-accordion';
 import { ProfileActions } from './profile-actions';
@@ -14,7 +18,25 @@ interface AddressSectionProps {
 
 export function AddressSection({ clientId }: AddressSectionProps) {
   const router = useRouter();
+  const { showToast } = useToast();
   const { data: profile, isLoading, isError } = useProfile(clientId);
+  const deleteAddress = useDeleteAddress();
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+  const address = profile?.address;
+
+  function handleDelete() {
+    if (!address) return;
+    deleteAddress.mutate(
+      { clientId },
+      {
+        onSuccess: () => {
+          setConfirmOpen(false);
+          showToast('Dirección eliminada correctamente');
+        },
+      },
+    );
+  }
 
   return (
     <ProfileAccordion
@@ -50,7 +72,21 @@ export function AddressSection({ clientId }: AddressSectionProps) {
             </address>
           </div>
 
-          <ProfileActions onEdit={() => router.push('/perfil/direccion')} />
+          <ProfileActions
+            onEdit={() => router.push('/perfil/direccion')}
+            onDelete={() => setConfirmOpen(true)}
+          />
+
+          <ConfirmDialog
+            open={confirmOpen}
+            destructive
+            title="Eliminar dirección"
+            description="¿Estás seguro de que deseas eliminar tu dirección? No podrás recuperarla."
+            cancelLabel="Cancelar"
+            confirmLabel={deleteAddress.isPending ? 'Eliminando...' : 'Eliminar'}
+            onCancel={() => setConfirmOpen(false)}
+            onConfirm={handleDelete}
+          />
         </>
       )}
     </ProfileAccordion>

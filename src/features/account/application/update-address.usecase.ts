@@ -5,9 +5,9 @@ import type {
 
 export async function updateAddressUseCase(
   repository: AccountRepository,
-  addressId: number,
+  clientId: number,
   data: AddressInput,
   signal?: AbortSignal,
 ): Promise<void> {
-  await repository.updateAddress(addressId, data, signal);
+  await repository.updateAddress(clientId, data, signal);
 }

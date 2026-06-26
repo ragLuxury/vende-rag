@@ -95,7 +95,7 @@ export const accountHttpRepository = {
   },
 
   async createAddress(clientId, data, signal) {
-    await httpRequest(`/mobile/client/address/${clientId}`, {
+    await httpRequest(`/web/client/address/${clientId}`, {
       method: 'POST',
       body: toAddressBody(data),
       schema: addressMutationResponseSchema,
@@ -103,10 +103,18 @@ export const accountHttpRepository = {
     });
   },
 
-  async updateAddress(addressId, data, signal) {
-    await httpRequest(`/mobile/client/address/${addressId}`, {
+  async updateAddress(clientId, data, signal) {
+    await httpRequest(`/web/client/address/${clientId}`, {
       method: 'PATCH',
       body: toAddressBody(data),
+      schema: addressMutationResponseSchema,
+      ...(signal ? { signal } : {}),
+    });
+  },
+
+  async deleteAddress(clientId, signal) {
+    await httpRequest(`/web/client/address/${clientId}`, {
+      method: 'DELETE',
       schema: addressMutationResponseSchema,
       ...(signal ? { signal } : {}),
     });

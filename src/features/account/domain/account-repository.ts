@@ -56,5 +56,6 @@ export interface AccountRepository {
   updateProfile(clientId: number, data: ProfileUpdate, signal?: AbortSignal): Promise<void>;
   deleteAccount(clientId: number): Promise<void>;
   createAddress(clientId: number, data: AddressInput, signal?: AbortSignal): Promise<void>;
-  updateAddress(addressId: number, data: AddressInput, signal?: AbortSignal): Promise<void>;
+  updateAddress(clientId: number, data: AddressInput, signal?: AbortSignal): Promise<void>;
+  deleteAddress(clientId: number, signal?: AbortSignal): Promise<void>;
 }

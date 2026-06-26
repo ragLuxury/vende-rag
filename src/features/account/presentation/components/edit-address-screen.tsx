@@ -96,9 +96,7 @@ function EditAddressForm({ clientId, profile }: EditAddressFormProps) {
   const [interiorNumber, setInteriorNumber] = useState(existing?.interiorNumber ?? '');
   const [reference, setReference] = useState(existing?.reference ?? '');
 
-  const isCleared = existing !== null && fields === null;
-  const hasValidSelection = fields !== null && fields.street !== '' && exteriorNumber.trim() !== '';
-  const isValid = hasValidSelection || isCleared;
+  const isValid = fields !== null && fields.street !== '' && exteriorNumber.trim() !== '';
 
   function handlePlaceSelect(place: SelectedPlace) {
     setFields({
@@ -121,22 +119,22 @@ function EditAddressForm({ clientId, profile }: EditAddressFormProps) {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!isValid) return;
+    if (!isValid || !fields) return;
 
     saveAddress.mutate(
       {
         clientId,
-        addressId: existing?.id ?? null,
+        hasExistingAddress: existing !== null,
         data: {
-          street: fields?.street ?? '',
-          neighborhood: fields?.neighborhood ?? '',
-          exteriorNumber: fields ? exteriorNumber.trim() : '',
-          interiorNumber: fields ? interiorNumber.trim() : '',
-          city: fields?.city ?? '',
-          state: fields?.state ?? '',
-          country: fields?.country ?? '',
-          postalCode: fields?.postalCode ?? '',
-          reference: fields ? reference.trim() : '',
+          street: fields.street,
+          neighborhood: fields.neighborhood,
+          exteriorNumber: exteriorNumber.trim(),
+          interiorNumber: interiorNumber.trim(),
+          city: fields.city,
+          state: fields.state,
+          country: fields.country,
+          postalCode: fields.postalCode,
+          reference: reference.trim(),
         },
       },
       {
