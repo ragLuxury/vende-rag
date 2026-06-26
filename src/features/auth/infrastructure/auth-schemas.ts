@@ -20,3 +20,11 @@ export const registerResponseSchema = z.object({
     profileId: z.number(),
   }),
 });
+
+export const forgotPasswordResponseSchema = z.unknown();
+
+export const validateResetTokenResponseSchema = z.object({
+  token: z.string(),
+});
+
+export const resetPasswordResponseSchema = z.unknown();

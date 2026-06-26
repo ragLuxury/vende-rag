@@ -7,7 +7,14 @@ import type {
 import { httpRequest } from '@/src/shared/infrastructure/http/http-client';
 import { tokenStorage } from '@/src/shared/infrastructure/http/token-storage';
 import { userStorage } from '@/src/shared/infrastructure/http/user-storage';
-import { authUserSchema, loginResponseSchema, registerResponseSchema } from './auth-schemas';
+import {
+  authUserSchema,
+  forgotPasswordResponseSchema,
+  loginResponseSchema,
+  registerResponseSchema,
+  resetPasswordResponseSchema,
+  validateResetTokenResponseSchema,
+} from './auth-schemas';
 
 export const authHttpRepository = {
   async login(credentials: LoginCredentials) {
@@ -37,6 +44,32 @@ export const authHttpRepository = {
     });
 
     return { clientId: response.data.clientId, profileId: response.data.profileId };
+  },
+
+  async forgotPassword(email: string) {
+    await httpRequest('/web/forgot-password', {
+      method: 'POST',
+      body: { email },
+      schema: forgotPasswordResponseSchema,
+    });
+  },
+
+  async validateResetToken(token: string) {
+    const response = await httpRequest('/web/validate-reset-token', {
+      method: 'POST',
+      body: { token },
+      schema: validateResetTokenResponseSchema,
+    });
+
+    return response.token;
+  },
+
+  async resetPassword(token: string, newPassword: string) {
+    await httpRequest('/web/reset-password', {
+      method: 'POST',
+      body: { token, newPassword },
+      schema: resetPasswordResponseSchema,
+    });
   },
 
   getToken() {

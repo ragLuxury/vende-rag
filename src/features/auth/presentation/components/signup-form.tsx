@@ -44,7 +44,11 @@ export function SignupForm() {
 
   return (
     <main className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col px-6 py-12">
-      <header className="mb-8 text-center">
+      <Link href="/welcome" aria-label="Regresar" className="text-neutral-900">
+        <Icon icon="ion:chevron-back-outline" className="size-7" />
+      </Link>
+
+      <header className="mt-8 mb-8 text-center">
         <h1 className="font-editors text-4xl text-neutral-900">Crear cuenta</h1>
         <p className="mt-3 text-neutral-500">Regístrate para poder empezar a vender en RAG</p>
       </header>
@@ -135,6 +139,10 @@ export function SignupForm() {
       <div className="mt-8">
         <SocialAuthButtons />
       </div>
+
+      <Link href="/login" className={`${buttonStyles('secondary')} mt-6`}>
+        Iniciar Sesión
+      </Link>
     </main>
   );
 }
