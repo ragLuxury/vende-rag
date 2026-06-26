@@ -1,22 +1,22 @@
 'use client';
 
-import { useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { Icon } from '@iconify/react';
 
 interface ProfileAccordionProps {
   icon: ReactNode;
   label: string;
+  open: boolean;
+  onToggle: () => void;
   children: ReactNode;
 }
 
-export function ProfileAccordion({ icon, label, children }: ProfileAccordionProps) {
-  const [open, setOpen] = useState(false);
-
+export function ProfileAccordion({ icon, label, open, onToggle, children }: ProfileAccordionProps) {
   return (
     <div className="w-full rounded-2xl border border-neutral-200 px-5 py-5">
       <button
         type="button"
-        onClick={() => setOpen((value) => !value)}
+        onClick={onToggle}
         aria-expanded={open}
         className="flex w-full items-center gap-4"
       >

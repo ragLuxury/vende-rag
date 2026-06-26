@@ -27,6 +27,10 @@ export function ProfileScreen({ name, clientId, onLogout, onDeleted }: ProfileSc
   const { data: profile } = useProfile(clientId);
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [openSection, setOpenSection] = useState<string | null>(null);
+
+  const toggleSection = (section: string) =>
+    setOpenSection((current) => (current === section ? null : section));
 
   useEffect(() => {
     const message = consumeQueuedToast();
@@ -48,10 +52,26 @@ export function ProfileScreen({ name, clientId, onLogout, onDeleted }: ProfileSc
         </div>
 
         <div className="mt-10 flex flex-col gap-4">
-          <PersonalInfoSection clientId={clientId} />
-          <AddressSection clientId={clientId} />
-          <PaymentMethodSection clientId={clientId} />
-          <ContractSection clientId={clientId} />
+          <PersonalInfoSection
+            clientId={clientId}
+            open={openSection === 'personal'}
+            onToggle={() => toggleSection('personal')}
+          />
+          <AddressSection
+            clientId={clientId}
+            open={openSection === 'address'}
+            onToggle={() => toggleSection('address')}
+          />
+          <PaymentMethodSection
+            clientId={clientId}
+            open={openSection === 'payment'}
+            onToggle={() => toggleSection('payment')}
+          />
+          <ContractSection
+            clientId={clientId}
+            open={openSection === 'contract'}
+            onToggle={() => toggleSection('contract')}
+          />
           <ProfileRow
             icon={<Icon icon="ion:grid-outline" className="size-6" />}
             label="Dashboard"

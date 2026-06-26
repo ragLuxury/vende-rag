@@ -13,9 +13,11 @@ import { ProfileActions } from './profile-actions';
 
 interface PaymentMethodSectionProps {
   clientId: number;
+  open: boolean;
+  onToggle: () => void;
 }
 
-export function PaymentMethodSection({ clientId }: PaymentMethodSectionProps) {
+export function PaymentMethodSection({ clientId, open, onToggle }: PaymentMethodSectionProps) {
   const router = useRouter();
   const { showToast } = useToast();
   const { data: profile, isLoading, isError } = useProfile(clientId);
@@ -41,6 +43,8 @@ export function PaymentMethodSection({ clientId }: PaymentMethodSectionProps) {
     <ProfileAccordion
       icon={<Icon icon="ion:card-outline" className="size-6" />}
       label="Métodos De Pago"
+      open={open}
+      onToggle={onToggle}
     >
       {isLoading ? (
         <p className="text-base text-neutral-400">Cargando...</p>

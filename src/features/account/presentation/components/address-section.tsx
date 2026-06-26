@@ -14,9 +14,11 @@ import { ProfileActions } from './profile-actions';
 
 interface AddressSectionProps {
   clientId: number;
+  open: boolean;
+  onToggle: () => void;
 }
 
-export function AddressSection({ clientId }: AddressSectionProps) {
+export function AddressSection({ clientId, open, onToggle }: AddressSectionProps) {
   const router = useRouter();
   const { showToast } = useToast();
   const { data: profile, isLoading, isError } = useProfile(clientId);
@@ -42,6 +44,8 @@ export function AddressSection({ clientId }: AddressSectionProps) {
     <ProfileAccordion
       icon={<Icon icon="ion:navigate-outline" className="size-6" />}
       label="Mi Dirección"
+      open={open}
+      onToggle={onToggle}
     >
       {isLoading ? (
         <p className="text-base text-neutral-400">Cargando...</p>

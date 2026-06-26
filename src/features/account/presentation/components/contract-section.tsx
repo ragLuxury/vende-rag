@@ -7,15 +7,19 @@ import { ProfileAccordion } from './profile-accordion';
 
 interface ContractSectionProps {
   clientId: number;
+  open: boolean;
+  onToggle: () => void;
 }
 
-export function ContractSection({ clientId }: ContractSectionProps) {
+export function ContractSection({ clientId, open, onToggle }: ContractSectionProps) {
   const { data: profile, isLoading, isError } = useProfile(clientId);
 
   return (
     <ProfileAccordion
       icon={<Icon icon="ion:document-text-outline" className="size-6" />}
       label="Contrato"
+      open={open}
+      onToggle={onToggle}
     >
       <p className="text-base text-neutral-500">
         Consulta los términos y condiciones firmados para la venta de tus productos.

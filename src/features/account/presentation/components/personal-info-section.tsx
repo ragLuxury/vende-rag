@@ -8,15 +8,19 @@ import { ProfileAccordion } from './profile-accordion';
 
 interface PersonalInfoSectionProps {
   clientId: number;
+  open: boolean;
+  onToggle: () => void;
 }
 
-export function PersonalInfoSection({ clientId }: PersonalInfoSectionProps) {
+export function PersonalInfoSection({ clientId, open, onToggle }: PersonalInfoSectionProps) {
   const { data: profile, isLoading, isError } = useProfile(clientId);
 
   return (
     <ProfileAccordion
       icon={<Icon icon="ion:person-outline" className="size-6" />}
       label="Información Personal"
+      open={open}
+      onToggle={onToggle}
     >
       {isLoading ? (
         <p className="text-base text-neutral-400">Cargando...</p>
