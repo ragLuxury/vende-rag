@@ -25,6 +25,18 @@ export interface AddressInput {
   reference: string;
 }
 
+export interface PaymentMethodInput {
+  bank: string;
+  holder: string;
+  accountNumber: string;
+  clabe: string;
+}
+
+export interface Bank {
+  id: number;
+  name: string;
+}
+
 export interface ClientPaymentMethod {
   id: number;
   bank: string;
@@ -58,4 +70,16 @@ export interface AccountRepository {
   createAddress(clientId: number, data: AddressInput, signal?: AbortSignal): Promise<void>;
   updateAddress(clientId: number, data: AddressInput, signal?: AbortSignal): Promise<void>;
   deleteAddress(clientId: number, signal?: AbortSignal): Promise<void>;
+  createPaymentMethod(
+    clientId: number,
+    data: PaymentMethodInput,
+    signal?: AbortSignal,
+  ): Promise<void>;
+  updatePaymentMethod(
+    clientId: number,
+    data: PaymentMethodInput,
+    signal?: AbortSignal,
+  ): Promise<void>;
+  deletePaymentMethod(clientId: number, signal?: AbortSignal): Promise<void>;
+  getBanks(signal?: AbortSignal): Promise<readonly Bank[]>;
 }

@@ -1,11 +1,13 @@
 import type {
   AccountRepository,
   AddressInput,
+  PaymentMethodInput,
 } from '@/src/features/account/domain/account-repository';
 import { httpRequest } from '@/src/shared/infrastructure/http/http-client';
 import { getContractUrl } from '@/src/shared/infrastructure/images/contract-document';
 import {
-  addressMutationResponseSchema,
+  accountMutationResponseSchema,
+  banksResponseSchema,
   clientProfileResponseSchema,
   deleteAccountResponseSchema,
   updateProfileResponseSchema,
@@ -22,6 +24,15 @@ function toAddressBody(data: AddressInput) {
     pais: data.country,
     cp: data.postalCode,
     referencia: data.reference,
+  };
+}
+
+function toPaymentMethodBody(data: PaymentMethodInput) {
+  return {
+    banco: data.bank,
+    nombre: data.holder,
+    cuenta: data.accountNumber,
+    clabe: data.clabe,
   };
 }
 
@@ -98,7 +109,7 @@ export const accountHttpRepository = {
     await httpRequest(`/web/client/address/${clientId}`, {
       method: 'POST',
       body: toAddressBody(data),
-      schema: addressMutationResponseSchema,
+      schema: accountMutationResponseSchema,
       ...(signal ? { signal } : {}),
     });
   },
@@ -107,7 +118,7 @@ export const accountHttpRepository = {
     await httpRequest(`/web/client/address/${clientId}`, {
       method: 'PATCH',
       body: toAddressBody(data),
-      schema: addressMutationResponseSchema,
+      schema: accountMutationResponseSchema,
       ...(signal ? { signal } : {}),
     });
   },
@@ -115,8 +126,43 @@ export const accountHttpRepository = {
   async deleteAddress(clientId, signal) {
     await httpRequest(`/web/client/address/${clientId}`, {
       method: 'DELETE',
-      schema: addressMutationResponseSchema,
+      schema: accountMutationResponseSchema,
       ...(signal ? { signal } : {}),
     });
+  },
+
+  async createPaymentMethod(clientId, data, signal) {
+    await httpRequest(`/web/client/payment-method/${clientId}`, {
+      method: 'POST',
+      body: toPaymentMethodBody(data),
+      schema: accountMutationResponseSchema,
+      ...(signal ? { signal } : {}),
+    });
+  },
+
+  async updatePaymentMethod(clientId, data, signal) {
+    await httpRequest(`/web/client/payment-method/${clientId}`, {
+      method: 'PATCH',
+      body: toPaymentMethodBody(data),
+      schema: accountMutationResponseSchema,
+      ...(signal ? { signal } : {}),
+    });
+  },
+
+  async deletePaymentMethod(clientId, signal) {
+    await httpRequest(`/web/client/payment-method/${clientId}`, {
+      method: 'DELETE',
+      schema: accountMutationResponseSchema,
+      ...(signal ? { signal } : {}),
+    });
+  },
+
+  async getBanks(signal) {
+    const response = await httpRequest('/banks?page=1&limit=50', {
+      schema: banksResponseSchema,
+      ...(signal ? { signal } : {}),
+    });
+
+    return response.data;
   },
 } satisfies AccountRepository;

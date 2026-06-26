@@ -46,4 +46,13 @@ export const updateProfileResponseSchema = z.unknown();
 
 export const deleteAccountResponseSchema = z.unknown();
 
-export const addressMutationResponseSchema = z.unknown();
+export const accountMutationResponseSchema = z.unknown();
+
+export const banksResponseSchema = z.object({
+  data: z.array(
+    z.object({
+      id: z.number(),
+      name: z.string(),
+    }),
+  ),
+});
