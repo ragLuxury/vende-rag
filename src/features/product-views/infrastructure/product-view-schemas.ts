@@ -34,11 +34,17 @@ export const productDetailResponseSchema = z.object({
     detalle: z.string().nullish(),
     estatus: z.string().nullish(),
     Estado: z.string().nullish(),
+    state: z.coerce.number().nullish(),
     Fecha: z.string().nullish(),
     original_price: z.number(),
     precio: z.number(),
+    rag: z.coerce.number().nullish(),
     galeria: z.array(z.string()).nullish(),
   }),
+});
+
+export const negotiationResponseSchema = z.object({
+  success: z.boolean(),
 });
 
 export const commissionResponseSchema = z.object({
@@ -59,9 +65,10 @@ export const sellerPaymentsResponseSchema = z.object({
   data: z.array(
     z.object({
       id: z.number(),
-      monto: z.number(),
-      fecha: z.string(),
-      metodo: z.string(),
+      amount: z.coerce.number(),
+      payment_date: z.string(),
+      payment_method: z.string(),
+      receipt_path: z.string().nullish(),
     }),
   ),
 });

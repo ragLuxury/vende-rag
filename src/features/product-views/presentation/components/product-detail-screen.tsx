@@ -7,9 +7,12 @@ import { Icon } from '@iconify/react';
 import type { SellerPayment } from '@/src/features/product-views/domain/product-view-repository';
 import { useCommission } from '../hooks/use-commission';
 import { useProductDetail } from '../hooks/use-product-detail';
+import { useRespondNegotiation } from '../hooks/use-respond-negotiation';
 import { useSellerPayments } from '../hooks/use-seller-payments';
 import { ProductGallery } from './product-gallery';
 import { getStatusStyle } from './product-status';
+
+const NEGOTIATION_STATE = 2;
 
 const currencyFormatter = new Intl.NumberFormat('es-MX', {
   style: 'currency',
@@ -28,18 +31,44 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
   const [infoOpen, setInfoOpen] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
   const { data: product, isLoading, isError } = useProductDetail(productId);
+  const isNegotiation = product?.state === NEGOTIATION_STATE;
+  const respondNegotiation = useRespondNegotiation();
+  const priceForCommission = (isNegotiation ? product?.negotiationPrice : product?.salePrice) ?? 0;
   const { data: commission } = useCommission(
-    product?.salePrice ?? 0,
+    priceForCommission,
     product?.clientId ?? 0,
-    product !== undefined,
+    product !== undefined && priceForCommission > 0,
   );
   const { data: payments } = useSellerPayments(productId, isSale);
 
-  const earning = commission?.sellerNet ?? product?.earning ?? 0;
+  const earning =
+    commission?.sellerNet ?? (isNegotiation ? product?.negotiationPrice : product?.earning) ?? 0;
   const paid = (payments ?? []).reduce((total, payment) => total + payment.amount, 0);
   const pending = Math.max(earning - paid, 0);
   const saleStatus = pending > 0 ? 'Por Pagar' : 'Pagado';
   const pillStatus = isSale ? saleStatus : (product?.status ?? '');
+
+  function handleApprove() {
+    if (!product) return;
+    respondNegotiation.mutate(
+      {
+        productId,
+        decision: {
+          action: 'aprobar',
+          approvePrice: product.negotiationPrice,
+          comment: 'De acuerdo',
+        },
+      },
+      { onSuccess: () => router.back() },
+    );
+  }
+
+  function handleReject() {
+    respondNegotiation.mutate(
+      { productId, decision: { action: 'rechazar', comment: 'El precio es muy bajo' } },
+      { onSuccess: () => router.back() },
+    );
+  }
 
   return (
     <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col">
@@ -139,11 +168,21 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
             ) : null}
 
             <section className="border-t border-neutral-200 px-6 py-5">
-              <h3 className="text-base font-semibold text-neutral-900">Desglose de Precio</h3>
+              <h3 className="text-base font-semibold text-neutral-900">
+                {isNegotiation ? 'Negociación' : 'Desglose de Precio'}
+              </h3>
               <dl className="mt-4 space-y-3">
                 <PriceRow
-                  label={isSale ? 'Precio de venta' : 'Precio de producto'}
-                  value={currencyFormatter.format(product.salePrice)}
+                  label={
+                    isNegotiation
+                      ? 'Precio de Negociación'
+                      : isSale
+                        ? 'Precio de venta'
+                        : 'Precio de producto'
+                  }
+                  value={currencyFormatter.format(
+                    isNegotiation ? product.negotiationPrice : product.salePrice,
+                  )}
                 />
                 <PriceRow
                   label="Comisión RAG"
@@ -167,6 +206,27 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 ) : null}
               </dl>
             </section>
+
+            {isNegotiation ? (
+              <div className="flex gap-4 px-6 py-5">
+                <button
+                  type="button"
+                  onClick={handleReject}
+                  disabled={respondNegotiation.isPending}
+                  className="flex-1 rounded-full bg-neutral-200 py-4 text-base font-medium text-neutral-900 disabled:opacity-50"
+                >
+                  Rechazar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleApprove}
+                  disabled={respondNegotiation.isPending}
+                  className="bg-brand flex-1 rounded-full py-4 text-base font-medium text-white disabled:opacity-50"
+                >
+                  Aceptar
+                </button>
+              </div>
+            ) : null}
 
             {isSale ? (
               <section className="border-t border-neutral-200 px-6 py-5">

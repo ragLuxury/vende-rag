@@ -35,6 +35,7 @@ export interface ProductDetail {
   uuid: string;
   name: string;
   status: string;
+  state: number;
   brand: string;
   model: string;
   department: string;
@@ -44,10 +45,15 @@ export interface ProductDetail {
   detail: string;
   soldDate: string;
   salePrice: number;
+  negotiationPrice: number;
   earning: number;
   commission: number;
   images: readonly string[];
 }
+
+export type NegotiationDecision =
+  | { action: 'aprobar'; approvePrice: number; comment: string }
+  | { action: 'rechazar'; comment: string };
 
 export interface ProductViewRepository {
   getProducts(
@@ -59,4 +65,9 @@ export interface ProductViewRepository {
   getSellerPayments(productId: number, signal?: AbortSignal): Promise<readonly SellerPayment[]>;
   getProductDetail(productId: number, signal?: AbortSignal): Promise<ProductDetail>;
   getCommission(price: number, clientId: number, signal?: AbortSignal): Promise<ProductCommission>;
+  respondNegotiation(
+    productId: number,
+    decision: NegotiationDecision,
+    signal?: AbortSignal,
+  ): Promise<void>;
 }

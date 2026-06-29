@@ -32,15 +32,16 @@ function amountFor(
   return product.earning;
 }
 
-function ventasSecondary(product: Product, paidById: ReadonlyMap<number, number>) {
-  const paid = paidById.get(product.id) ?? 0;
-  const pending = product.earning - paid;
-  return pending > 0 ? { label: 'Por pagar', value: pending } : { label: 'Pagado', value: paid };
+function isPaidStatus(product: Product): boolean {
+  return product.status.trim().toLowerCase().includes('pagado');
 }
 
-function ventasStatus(product: Product, paidById: ReadonlyMap<number, number>): string {
+function ventasSecondary(product: Product, paidById: ReadonlyMap<number, number>) {
   const paid = paidById.get(product.id) ?? 0;
-  return product.earning - paid > 0 ? 'Por Pagar' : 'Pagado';
+  if (isPaidStatus(product)) {
+    return { label: 'Pagado', value: paid > 0 ? paid : product.earning };
+  }
+  return { label: 'Por pagar', value: Math.max(product.earning - paid, 0) };
 }
 
 interface ProductsScreenProps {
@@ -76,10 +77,12 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
       format: item.format,
       value:
         item.format === 'currency'
-          ? list.reduce(
-              (total, product) => total + amountFor(product, item.amount ?? 'earning', paidById),
-              0,
-            )
+          ? list
+              .filter(item.matches)
+              .reduce(
+                (total, product) => total + amountFor(product, item.amount ?? 'earning', paidById),
+                0,
+              )
           : list.filter(item.matches).length,
     }));
   }, [products, config, paidById]);
@@ -172,9 +175,6 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
                             value: amountFor(product, config.cardSecondary.amount, paidById),
                           }
                     }
-                    {...(view === 'ventas'
-                      ? { statusOverride: ventasStatus(product, paidById) }
-                      : {})}
                   />
                 </Link>
               ))}

@@ -3,6 +3,7 @@ import { httpRequest } from '@/src/shared/infrastructure/http/http-client';
 import { getProductImageUrl } from '@/src/shared/infrastructure/images/product-image';
 import {
   commissionResponseSchema,
+  negotiationResponseSchema,
   productDetailResponseSchema,
   productsResponseSchema,
   sellerPaymentsResponseSchema,
@@ -48,9 +49,9 @@ export const productViewHttpRepository = {
 
     return response.data.map((payment) => ({
       id: payment.id,
-      amount: payment.monto,
-      date: payment.fecha,
-      method: payment.metodo,
+      amount: payment.amount,
+      date: payment.payment_date,
+      method: payment.payment_method,
     }));
   },
 
@@ -61,12 +62,14 @@ export const productViewHttpRepository = {
     });
 
     const data = response.data;
+    const salePrice = data.original_price || (data.rag ?? 0);
     return {
       id: data.id,
       clientId: data.client_id,
       uuid: data.uuid,
       name: data.name_product ?? data.modelo ?? '',
       status: data.estatus || data.Estado || '',
+      state: data.state ?? 0,
       brand: data.marca ?? '',
       model: data.modelo ?? '',
       department: data.departamento ?? '',
@@ -75,9 +78,10 @@ export const productViewHttpRepository = {
       color: data.color ?? '',
       detail: data.detalle ?? '',
       soldDate: data.Fecha ?? '',
-      salePrice: data.original_price,
+      salePrice,
+      negotiationPrice: data.rag || data.precio,
       earning: data.precio,
-      commission: data.original_price - data.precio,
+      commission: salePrice - data.precio,
       images: (data.galeria ?? []).map(resolveImageUrl),
     };
   },
@@ -95,5 +99,23 @@ export const productViewHttpRepository = {
       sellerNet: commission.seller_net,
       amount: price - commission.seller_net,
     };
+  },
+
+  async respondNegotiation(productId, decision, signal) {
+    const body =
+      decision.action === 'aprobar'
+        ? {
+            action: decision.action,
+            approve_price: decision.approvePrice,
+            comment_approval: decision.comment,
+          }
+        : { action: decision.action, comment_rejection: decision.comment };
+
+    await httpRequest(`/web/products/${productId}/negociacion`, {
+      method: 'PATCH',
+      body,
+      schema: negotiationResponseSchema,
+      ...(signal ? { signal } : {}),
+    });
   },
 } satisfies ProductViewRepository;

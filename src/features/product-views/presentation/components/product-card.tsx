@@ -20,16 +20,14 @@ interface CardSecondary {
 interface ProductCardProps {
   product: Product;
   secondary: CardSecondary;
-  statusOverride?: string;
 }
 
-export function ProductCard({ product, secondary, statusOverride }: ProductCardProps) {
+export function ProductCard({ product, secondary }: ProductCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
   const showImage = product.image !== '' && !imageFailed;
 
   const isReceived = product.status.trim().toLowerCase() === 'recibido';
-  const pillStatus =
-    statusOverride ?? (isReceived && product.statusIntern ? product.statusIntern : product.status);
+  const pillStatus = isReceived && product.statusIntern ? product.statusIntern : product.status;
 
   return (
     <article className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white">
