@@ -90,10 +90,10 @@ export function ProfileScreen({ name, clientId, onLogout, onDeleted }: ProfileSc
           <button
             type="button"
             onClick={() => setDeleteOpen(true)}
-            className="flex items-center gap-2 text-neutral-400 transition-colors hover:text-red-600"
+            className="flex items-center gap-1.5 text-neutral-400 transition-colors hover:text-red-600"
           >
-            <Icon icon="ion:trash-outline" className="size-5" />
-            <span className="text-base">Eliminar Cuenta</span>
+            <Icon icon="ion:trash-outline" className="size-4" />
+            <span className="text-sm">Eliminar Cuenta</span>
           </button>
         </div>
 

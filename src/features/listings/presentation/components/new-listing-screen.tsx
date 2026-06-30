@@ -120,7 +120,7 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
             &quot;Términos y condiciones&quot;
           </Link>{' '}
           y{' '}
-          <Link href="/aviso-de-privacidad" className="text-brand underline">
+          <Link href="/privacidad" className="text-brand underline">
             &quot;Aviso de privacidad&quot;
           </Link>
         </p>

@@ -21,6 +21,7 @@ export interface SellerPayment {
   amount: number;
   date: string;
   method: string;
+  receiptUrl: string | null;
 }
 
 export interface ProductCommission {
