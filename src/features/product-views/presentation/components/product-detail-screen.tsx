@@ -274,25 +274,31 @@ function PriceRow({ label, value }: RowProps) {
 
 function PaymentRow({ payment }: { payment: SellerPayment }) {
   return (
-    <li className="flex flex-col gap-1">
+    <li className="rounded-2xl border border-neutral-200 px-5 py-4">
       <div className="flex items-center justify-between">
-        <p className="text-base text-neutral-700">{currencyFormatter.format(payment.amount)}</p>
-        <p className="text-base text-neutral-700">{payment.method}</p>
+        <p className="text-2xl font-semibold text-neutral-900">
+          {currencyFormatter.format(payment.amount)}
+        </p>
+        <span className="shrink-0 rounded-full bg-emerald-50 px-4 py-1.5 text-sm font-medium text-emerald-700">
+          {payment.method}
+        </span>
       </div>
-      <div className="flex items-center justify-between">
+      <div className="mt-3 flex items-center justify-between text-sm text-neutral-400">
+        <span className="flex items-center gap-1.5">
+          <Icon icon="ion:calendar-outline" className="size-4" />
+          {payment.date}
+        </span>
         {payment.receiptUrl ? (
           <a
             href={payment.receiptUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-brand text-sm underline"
+            className="hover:text-brand flex items-center gap-1.5 text-neutral-500 transition-colors"
           >
-            Ver recibo
+            <Icon icon="ion:receipt-outline" className="size-4" />
+            Comprobante
           </a>
-        ) : (
-          <span />
-        )}
-        <span className="text-sm text-neutral-400">{payment.date}</span>
+        ) : null}
       </div>
     </li>
   );
