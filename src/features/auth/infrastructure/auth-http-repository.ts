@@ -1,9 +1,11 @@
 import type {
   AuthRepository,
   AuthUser,
+  GoogleLoginData,
   LoginCredentials,
   RegistrationData,
 } from '@/src/features/auth/domain/auth-repository';
+import { UnauthorizedError } from '@/src/shared/domain/errors';
 import { httpRequest } from '@/src/shared/infrastructure/http/http-client';
 import { tokenStorage } from '@/src/shared/infrastructure/http/token-storage';
 import { userStorage } from '@/src/shared/infrastructure/http/user-storage';
@@ -28,6 +30,25 @@ export const authHttpRepository = {
     userStorage.set(JSON.stringify(response.user));
 
     return { user: response.user, token: response.token };
+  },
+
+  async loginWithGoogle(data: GoogleLoginData) {
+    try {
+      return await socialLogin(data);
+    } catch (error) {
+      if (!(error instanceof UnauthorizedError)) throw error;
+      await httpRequest('/web/client/register', {
+        method: 'POST',
+        body: {
+          email: data.email,
+          nombres: data.firstName,
+          apellidos: data.lastName,
+          social_id: data.socialId,
+        },
+        schema: registerResponseSchema,
+      });
+      return await socialLogin(data);
+    }
   },
 
   async register(data: RegistrationData) {
@@ -107,6 +128,17 @@ export const authHttpRepository = {
 
 let cachedRaw: string | null = null;
 let cachedUser: AuthUser | null = null;
+
+async function socialLogin(data: GoogleLoginData) {
+  const response = await httpRequest('/web/login', {
+    method: 'POST',
+    body: { user: data.email, social_id: data.socialId },
+    schema: loginResponseSchema,
+  });
+  tokenStorage.set(response.token);
+  userStorage.set(JSON.stringify(response.user));
+  return { user: response.user, token: response.token };
+}
 
 function safeJsonParse(raw: string): unknown {
   try {

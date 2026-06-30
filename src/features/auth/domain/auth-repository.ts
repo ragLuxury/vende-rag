@@ -28,8 +28,16 @@ export interface RegistrationResult {
   profileId: number;
 }
 
+export interface GoogleLoginData {
+  socialId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+
 export interface AuthRepository {
   login(credentials: LoginCredentials): Promise<AuthSession>;
+  loginWithGoogle(data: GoogleLoginData): Promise<AuthSession>;
   register(data: RegistrationData): Promise<RegistrationResult>;
   forgotPassword(email: string): Promise<void>;
   validateResetToken(token: string): Promise<string>;

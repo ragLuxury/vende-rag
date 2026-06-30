@@ -1,6 +1,8 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { env } from '@/src/shared/infrastructure/env/env';
 import { AccountRepositoryProvider } from '@/src/features/account/presentation/account-repository-provider';
 import { accountHttpRepository } from '@/src/features/account/infrastructure/account-http-repository';
 import { AuthRepositoryProvider } from '@/src/features/auth/presentation/auth-repository-provider';
@@ -29,27 +31,29 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <ToastProvider>
       <QueryProvider>
-        <AuthRepositoryProvider repository={authHttpRepository}>
-          <AccountRepositoryProvider repository={accountHttpRepository}>
-            <FaqRepositoryProvider repository={faqHttpRepository}>
-              <BrandRepositoryProvider repository={brandHttpRepository}>
-                <CommissionRepositoryProvider repository={commissionHttpRepository}>
-                  <ImageRepositoryProvider repository={imageHttpRepository}>
-                    <ProductRepositoryProvider repository={productHttpRepository}>
-                      <TermsRepositoryProvider repository={termsHttpRepository}>
-                        <PrivacyRepositoryProvider repository={privacyHttpRepository}>
-                          <ProductViewRepositoryProvider repository={productViewHttpRepository}>
-                            {children}
-                          </ProductViewRepositoryProvider>
-                        </PrivacyRepositoryProvider>
-                      </TermsRepositoryProvider>
-                    </ProductRepositoryProvider>
-                  </ImageRepositoryProvider>
-                </CommissionRepositoryProvider>
-              </BrandRepositoryProvider>
-            </FaqRepositoryProvider>
-          </AccountRepositoryProvider>
-        </AuthRepositoryProvider>
+        <GoogleOAuthProvider clientId={env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
+          <AuthRepositoryProvider repository={authHttpRepository}>
+            <AccountRepositoryProvider repository={accountHttpRepository}>
+              <FaqRepositoryProvider repository={faqHttpRepository}>
+                <BrandRepositoryProvider repository={brandHttpRepository}>
+                  <CommissionRepositoryProvider repository={commissionHttpRepository}>
+                    <ImageRepositoryProvider repository={imageHttpRepository}>
+                      <ProductRepositoryProvider repository={productHttpRepository}>
+                        <TermsRepositoryProvider repository={termsHttpRepository}>
+                          <PrivacyRepositoryProvider repository={privacyHttpRepository}>
+                            <ProductViewRepositoryProvider repository={productViewHttpRepository}>
+                              {children}
+                            </ProductViewRepositoryProvider>
+                          </PrivacyRepositoryProvider>
+                        </TermsRepositoryProvider>
+                      </ProductRepositoryProvider>
+                    </ImageRepositoryProvider>
+                  </CommissionRepositoryProvider>
+                </BrandRepositoryProvider>
+              </FaqRepositoryProvider>
+            </AccountRepositoryProvider>
+          </AuthRepositoryProvider>
+        </GoogleOAuthProvider>
       </QueryProvider>
     </ToastProvider>
   );
