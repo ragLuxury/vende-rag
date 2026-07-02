@@ -65,6 +65,11 @@ export const productViewHttpRepository = {
 
     const data = response.data;
     const salePrice = data.original_price || (data.rag ?? 0);
+    const discountPercent = data.porcentaje_descuento ?? 0;
+    const discountAmount =
+      discountPercent > 0
+        ? Math.round((salePrice * discountPercent) / 100)
+        : (data.precio_descuento ?? 0);
     return {
       id: data.id,
       clientId: data.client_id,
@@ -81,6 +86,8 @@ export const productViewHttpRepository = {
       detail: data.detalle ?? '',
       soldDate: data.Fecha ?? '',
       salePrice,
+      discountAmount,
+      discountPercent,
       negotiationPrice: data.rag || data.precio,
       earning: data.precio,
       commission: salePrice - data.precio,

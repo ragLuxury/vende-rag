@@ -33,7 +33,9 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
   const { data: product, isLoading, isError } = useProductDetail(productId);
   const isNegotiation = product?.state === NEGOTIATION_STATE;
   const respondNegotiation = useRespondNegotiation();
-  const priceForCommission = (isNegotiation ? product?.negotiationPrice : product?.salePrice) ?? 0;
+  const discountAmount = isNegotiation ? 0 : (product?.discountAmount ?? 0);
+  const discountedPrice = (product?.salePrice ?? 0) - discountAmount;
+  const priceForCommission = (isNegotiation ? product?.negotiationPrice : discountedPrice) ?? 0;
   const { data: commission } = useCommission(
     priceForCommission,
     product?.clientId ?? 0,
@@ -188,6 +190,16 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         isNegotiation ? product.negotiationPrice : product.salePrice,
                       )}
                     />
+                    {discountAmount > 0 ? (
+                      <PriceRow
+                        label={
+                          product.discountPercent > 0
+                            ? `Descuento (${product.discountPercent}%)`
+                            : 'Descuento'
+                        }
+                        value={`- ${currencyFormatter.format(discountAmount)}`}
+                      />
+                    ) : null}
                     <PriceRow
                       label="Comisión RAG"
                       value={`- ${currencyFormatter.format(commission?.amount ?? product.commission)}`}
@@ -313,6 +325,17 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         isNegotiation ? product.negotiationPrice : product.salePrice,
                       )}
                     />
+                    {discountAmount > 0 ? (
+                      <PriceLine
+                        label={
+                          product.discountPercent > 0
+                            ? `Descuento (${product.discountPercent}%)`
+                            : 'Descuento'
+                        }
+                        subtitle="Descuento aplicado por el vendedor"
+                        value={`- ${currencyFormatter.format(discountAmount)}`}
+                      />
+                    ) : null}
                     <PriceLine
                       label="Comisión RAG"
                       subtitle="Aplicada sobre el precio"

@@ -46,6 +46,8 @@ export interface ProductDetail {
   detail: string;
   soldDate: string;
   salePrice: number;
+  discountAmount: number;
+  discountPercent: number;
   negotiationPrice: number;
   earning: number;
   commission: number;

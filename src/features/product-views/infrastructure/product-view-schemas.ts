@@ -38,6 +38,8 @@ export const productDetailResponseSchema = z.object({
     Fecha: z.string().nullish(),
     original_price: z.number(),
     precio: z.number(),
+    porcentaje_descuento: z.coerce.number().nullish(),
+    precio_descuento: z.coerce.number().nullish(),
     rag: z.coerce.number().nullish(),
     galeria: z.array(z.string()).nullish(),
   }),
