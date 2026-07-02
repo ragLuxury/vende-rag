@@ -38,7 +38,7 @@ export function ProfileScreen({ name, clientId, onLogout, onDeleted }: ProfileSc
   }, [showToast]);
 
   return (
-    <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col">
+    <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col md:max-w-3xl">
       <div className="flex-1 px-6 pt-6 pb-28">
         <p className="text-center text-lg text-neutral-400">Perfil</p>
 

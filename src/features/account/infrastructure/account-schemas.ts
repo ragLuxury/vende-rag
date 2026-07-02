@@ -10,7 +10,7 @@ const addressSchema = z.object({
   estado: z.string(),
   pais: z.string(),
   cp: z.string(),
-  referencia: z.string(),
+  referencia: z.string().nullish(),
   lat: z.string().nullish(),
   lng: z.string().nullish(),
 });

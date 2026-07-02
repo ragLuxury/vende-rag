@@ -8,7 +8,7 @@ export interface ClientAddress {
   state: string;
   country: string;
   postalCode: string;
-  reference: string;
+  reference: string | null;
   latitude: number | null;
   longitude: number | null;
 }

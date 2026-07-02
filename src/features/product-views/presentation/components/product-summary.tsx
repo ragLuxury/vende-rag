@@ -17,10 +17,17 @@ interface ProductSummaryProps {
   items: readonly SummaryItem[];
   selectedIndex: number | null;
   onSelect: (index: number) => void;
+  orientation?: 'grid' | 'stack';
 }
 
-export function ProductSummary({ items, selectedIndex, onSelect }: ProductSummaryProps) {
-  const columns = items.length === 3 ? 'grid-cols-3' : 'grid-cols-2';
+export function ProductSummary({
+  items,
+  selectedIndex,
+  onSelect,
+  orientation = 'grid',
+}: ProductSummaryProps) {
+  const columns =
+    orientation === 'stack' ? 'grid-cols-1' : items.length === 3 ? 'grid-cols-3' : 'grid-cols-2';
 
   return (
     <div className={`grid gap-3 ${columns}`}>

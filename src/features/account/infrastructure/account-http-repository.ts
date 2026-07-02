@@ -67,7 +67,7 @@ export const accountHttpRepository = {
             state: address.estado,
             country: address.pais,
             postalCode: address.cp,
-            reference: address.referencia,
+            reference: address.referencia ?? null,
             latitude: address.lat ? Number(address.lat) : null,
             longitude: address.lng ? Number(address.lng) : null,
           }

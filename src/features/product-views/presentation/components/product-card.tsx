@@ -30,7 +30,7 @@ export function ProductCard({ product, secondary }: ProductCardProps) {
   const pillStatus = isReceived && product.statusIntern ? product.statusIntern : product.status;
 
   return (
-    <article className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white">
+    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white">
       <div className="relative aspect-square bg-neutral-100">
         {showImage ? (
           <Image

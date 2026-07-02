@@ -7,14 +7,18 @@ import { Icon } from '@iconify/react';
 interface ProductGalleryProps {
   images: readonly string[];
   alt: string;
+  fill?: boolean;
 }
 
-export function ProductGallery({ images, alt }: ProductGalleryProps) {
+export function ProductGallery({ images, alt, fill = false }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const sizeClass = fill ? 'h-full' : 'aspect-square';
 
   if (images.length === 0) {
     return (
-      <div className="flex aspect-square items-center justify-center bg-neutral-100 text-neutral-300">
+      <div
+        className={`flex ${sizeClass} items-center justify-center bg-neutral-100 text-neutral-300`}
+      >
         <Icon icon="ion:image-outline" className="size-16" />
       </div>
     );
@@ -26,10 +30,10 @@ export function ProductGallery({ images, alt }: ProductGalleryProps) {
   }
 
   return (
-    <div className="relative">
+    <div className={`relative ${fill ? 'h-full' : ''}`}>
       <div
         onScroll={handleScroll}
-        className="flex aspect-square snap-x snap-mandatory overflow-x-auto"
+        className={`flex ${sizeClass} snap-x snap-mandatory overflow-x-auto`}
       >
         {images.map((image, index) => (
           <div key={image} className="relative size-full shrink-0 snap-center">

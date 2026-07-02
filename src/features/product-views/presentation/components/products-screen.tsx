@@ -100,55 +100,112 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
     setSelectedIndex((current) => (current === index ? null : index));
   }
 
+  function renderCard(product: Product) {
+    return (
+      <Link
+        key={product.id}
+        href={`/productos/${product.id}?view=${view}`}
+        className="block h-full"
+      >
+        <ProductCard
+          product={product}
+          secondary={
+            view === 'ventas'
+              ? ventasSecondary(product, paidById)
+              : {
+                  label: config.cardSecondary.label,
+                  value: amountFor(product, config.cardSecondary.amount, paidById),
+                }
+          }
+        />
+      </Link>
+    );
+  }
+
   return (
-    <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col">
-      <header className="relative flex items-center justify-center px-6 pt-6">
-        <button
-          type="button"
-          onClick={() => (config.backHref ? router.push(config.backHref) : router.back())}
-          aria-label="Volver"
-          className="absolute left-6 text-neutral-900"
-        >
-          <Icon icon="ion:chevron-back-outline" className="size-7" />
-        </button>
-        <h1 className="text-lg font-semibold text-neutral-900">{config.title}</h1>
-      </header>
-
-      <div className="flex-1 px-6 pt-6 pb-28">
-        <div className="relative">
-          <Icon
-            icon="ion:search-outline"
-            className="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-neutral-400"
-          />
-          <input
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            aria-label={config.searchPlaceholder}
-            placeholder={config.searchPlaceholder}
-            className="focus:border-brand w-full rounded-full border border-neutral-200 bg-neutral-50 py-3.5 pr-4 pl-11 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
-          />
-        </div>
-
-        <div className="mt-6">
-          <ProductSummary
-            items={summary}
-            selectedIndex={selectedIndex}
-            onSelect={handleSummarySelect}
-          />
-        </div>
-
-        <div className="mt-6 flex justify-end">
+    <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col md:mx-0 md:max-w-none">
+      <div className="flex flex-1 flex-col md:hidden">
+        <header className="relative flex items-center justify-center px-6 pt-6">
           <button
             type="button"
-            onClick={() => setSortOrder((current) => (current === 'desc' ? 'asc' : 'desc'))}
-            className="flex items-center gap-2 text-base text-neutral-700"
+            onClick={() => (config.backHref ? router.push(config.backHref) : router.back())}
+            aria-label="Volver"
+            className="absolute left-6 text-neutral-900"
           >
-            Ordenar por
-            <Icon icon="ion:funnel-outline" className="size-5" />
+            <Icon icon="ion:chevron-back-outline" className="size-7" />
           </button>
-        </div>
+          <h1 className="text-lg font-semibold text-neutral-900">{config.title}</h1>
+        </header>
 
-        <div className="mt-4">
+        <div className="flex-1 px-6 pt-6 pb-28">
+          <div className="relative">
+            <Icon
+              icon="ion:search-outline"
+              className="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-neutral-400"
+            />
+            <input
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              aria-label={config.searchPlaceholder}
+              placeholder={config.searchPlaceholder}
+              className="focus:border-brand w-full rounded-full border border-neutral-200 bg-neutral-50 py-3.5 pr-4 pl-11 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
+            />
+          </div>
+
+          <div className="mt-6">
+            <ProductSummary
+              items={summary}
+              selectedIndex={selectedIndex}
+              onSelect={handleSummarySelect}
+            />
+          </div>
+
+          <div className="mt-6 flex justify-end">
+            <button
+              type="button"
+              onClick={() => setSortOrder((current) => (current === 'desc' ? 'asc' : 'desc'))}
+              className="flex items-center gap-2 text-base text-neutral-700"
+            >
+              Ordenar por
+              <Icon icon="ion:funnel-outline" className="size-5" />
+            </button>
+          </div>
+
+          <div className="mt-4">
+            {isLoading ? (
+              <p className="py-12 text-center text-sm text-neutral-400">Cargando...</p>
+            ) : isError ? (
+              <p className="py-12 text-center text-sm text-red-600">
+                No pudimos cargar la información. Inténtalo de nuevo.
+              </p>
+            ) : visibleProducts.length === 0 ? (
+              <p className="py-12 text-center text-sm text-neutral-400">{config.emptyText}</p>
+            ) : (
+              <div className="grid auto-rows-fr grid-cols-2 gap-4">
+                {visibleProducts.map(renderCard)}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="hidden flex-1 gap-8 px-8 py-8 md:flex">
+        <aside className="w-64 shrink-0">
+          <h1 className="font-editors text-4xl text-neutral-900">
+            Mis <span className="italic">{config.title}</span>
+          </h1>
+
+          <div className="mt-10">
+            <ProductSummary
+              items={summary}
+              selectedIndex={selectedIndex}
+              onSelect={handleSummarySelect}
+              orientation="stack"
+            />
+          </div>
+        </aside>
+
+        <div className="flex-1">
           {isLoading ? (
             <p className="py-12 text-center text-sm text-neutral-400">Cargando...</p>
           ) : isError ? (
@@ -158,26 +215,8 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
           ) : visibleProducts.length === 0 ? (
             <p className="py-12 text-center text-sm text-neutral-400">{config.emptyText}</p>
           ) : (
-            <div className="grid grid-cols-2 gap-4">
-              {visibleProducts.map((product) => (
-                <Link
-                  key={product.id}
-                  href={`/productos/${product.id}?view=${view}`}
-                  className="block"
-                >
-                  <ProductCard
-                    product={product}
-                    secondary={
-                      view === 'ventas'
-                        ? ventasSecondary(product, paidById)
-                        : {
-                            label: config.cardSecondary.label,
-                            value: amountFor(product, config.cardSecondary.amount, paidById),
-                          }
-                    }
-                  />
-                </Link>
-              ))}
+            <div className="grid auto-rows-fr grid-cols-2 gap-6 lg:grid-cols-3 xl:grid-cols-4">
+              {visibleProducts.map(renderCard)}
             </div>
           )}
         </div>

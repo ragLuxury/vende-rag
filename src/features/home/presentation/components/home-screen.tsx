@@ -31,7 +31,7 @@ interface HomeScreenProps {
 
 export function HomeScreen({ name }: HomeScreenProps) {
   return (
-    <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col">
+    <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col md:max-w-4xl">
       <div className="flex-1 px-6 pt-8 pb-28">
         <ProfileHeader name={name} />
 

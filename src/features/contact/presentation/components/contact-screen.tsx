@@ -11,7 +11,7 @@ export function ContactScreen() {
   const router = useRouter();
 
   return (
-    <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col">
+    <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col md:max-w-3xl">
       <div className="flex-1 pb-10">
         <div className="relative">
           <Image

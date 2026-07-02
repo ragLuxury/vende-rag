@@ -10,7 +10,7 @@ export function PrivacyScreen() {
   const { data, isPending, isError, refetch } = usePrivacy();
 
   return (
-    <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col">
+    <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col md:max-w-3xl">
       <header className="relative flex items-center justify-center px-6 pt-6">
         <button
           type="button"
