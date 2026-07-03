@@ -7,6 +7,7 @@ const statusColors: Record<string, string> = {
   'en revisión': '#F2BC59',
   negociación: '#F3A25A',
   rechazada: '#EB6A6A',
+  rechazado: '#EB6A6A',
   aprobada: '#DBE3F3',
   // publicaciones
   activa: '#81BD53',
@@ -14,6 +15,7 @@ const statusColors: Record<string, string> = {
   'bolería p/c': '#966C90',
   bolería: '#B693B1',
   inactiva: '#E6E7E7',
+  inactivar: '#E6E7E7',
   completado: '#E3EFD9',
   ingresado: '#99C9C9',
   autentificado: '#9594B6',

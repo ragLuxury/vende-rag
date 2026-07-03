@@ -86,7 +86,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
         <h1 className="text-lg font-semibold text-neutral-900">Detalles de Producto</h1>
       </header>
 
-      <div className="flex-1 pb-10 md:flex md:min-h-0 md:flex-col md:pb-0">
+      <div className="flex-1 pb-10 md:flex md:min-h-0 md:flex-col md:justify-center md:pb-0">
         {isLoading ? (
           <p className="py-12 text-center text-sm text-neutral-400">Cargando producto...</p>
         ) : isError || !product ? (
@@ -261,23 +261,18 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
               </div>
             </div>
 
-            <div className="hidden gap-8 px-8 pb-8 md:flex md:min-h-0 md:flex-1">
-              <div className="min-h-[32rem] w-2/5 shrink-0 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100">
+            <div className="hidden items-stretch gap-8 px-8 pb-8 md:flex">
+              <div className="w-2/5 shrink-0 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100">
                 <ProductGallery images={product.images} alt={product.name} fill />
               </div>
 
-              <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto rounded-3xl border border-neutral-200 p-10">
+              <div className="flex min-w-0 flex-1 flex-col rounded-3xl border border-neutral-200 p-10 md:min-h-[36rem]">
                 <div className="flex items-start justify-between gap-6">
                   <div className="min-w-0">
-                    {product.brand ? (
-                      <p className="text-sm font-semibold tracking-wide text-neutral-400 uppercase">
-                        {product.brand}
-                      </p>
-                    ) : null}
-                    <h2 className="font-editors mt-2 text-5xl leading-[1.05] text-neutral-900">
-                      {product.name}
-                    </h2>
-                    <p className="mt-3 text-sm text-neutral-400">#{product.id}</p>
+                    <p className="text-sm font-semibold tracking-wide text-neutral-400 uppercase">
+                      #{product.id}
+                    </p>
+                    <h2 className="mt-2 text-2xl font-semibold text-neutral-900">{product.name}</h2>
                     {isSale && product.soldDate ? (
                       <p className="text-xs text-neutral-400">Fecha de venta: {product.soldDate}</p>
                     ) : null}
@@ -292,62 +287,100 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                   ) : null}
                 </div>
 
-                <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-7 border-t border-neutral-200 pt-8">
-                  <DetailField label="Marca" value={product.brand} />
-                  <DetailField label="Modelo" value={product.model} />
-                  <DetailField label="Departamento" value={product.department} />
-                  <DetailField label="Categoría" value={product.category} />
-                  <DetailField label="Subcategoría" value={product.subcategory} />
-                  <DetailField label="Color" value={product.color} />
+                <div className="mt-8 flex flex-1 flex-col justify-center border-t border-neutral-200">
+                  <section>
+                    <button
+                      type="button"
+                      onClick={() => setInfoOpen((open) => !open)}
+                      aria-expanded={infoOpen}
+                      className="flex w-full items-center justify-between py-5"
+                    >
+                      <span className="text-base font-semibold text-neutral-900">
+                        Información del Producto
+                      </span>
+                      <Icon
+                        icon="ion:chevron-down-outline"
+                        className={`size-5 text-neutral-500 transition-transform ${
+                          infoOpen ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
+                    {infoOpen ? (
+                      <div className="grid grid-cols-2 gap-x-8 gap-y-7 pb-6">
+                        <DetailField label="Marca" value={product.brand} />
+                        <DetailField label="Modelo" value={product.model} />
+                        <DetailField label="Departamento" value={product.department} />
+                        <DetailField label="Categoría" value={product.category} />
+                        <DetailField label="Subcategoría" value={product.subcategory} />
+                        <DetailField label="Color" value={product.color} />
+                      </div>
+                    ) : null}
+                  </section>
+
                   {product.detail ? (
-                    <div className="col-span-2">
-                      <DetailField label="Detalles" value={product.detail} />
-                    </div>
+                    <section className="border-t border-neutral-200">
+                      <button
+                        type="button"
+                        onClick={() => setDetailOpen((open) => !open)}
+                        aria-expanded={detailOpen}
+                        className="flex w-full items-center justify-between py-5"
+                      >
+                        <span className="text-base font-semibold text-neutral-900">
+                          Detalles del Producto
+                        </span>
+                        <Icon
+                          icon="ion:chevron-down-outline"
+                          className={`size-5 text-neutral-500 transition-transform ${
+                            detailOpen ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+                      {detailOpen ? (
+                        <p className="pb-6 text-base text-neutral-500">{product.detail}</p>
+                      ) : null}
+                    </section>
                   ) : null}
                 </div>
 
-                <div className="mt-auto pt-10">
-                  <h3 className="font-editors text-3xl text-neutral-900">
+                <div className="border-t border-neutral-200 pt-6">
+                  <h3 className="text-base font-semibold text-neutral-900">
                     {isNegotiation ? 'Negociación' : 'Desglose de Precio'}
                   </h3>
 
-                  <div className="mt-5 divide-y divide-neutral-200 rounded-2xl border border-neutral-200">
-                    <PriceLine
+                  <dl className="mt-4 space-y-3">
+                    <PriceRow
                       label={
                         isNegotiation
                           ? 'Precio de Negociación'
                           : isSale
                             ? 'Precio de venta'
-                            : 'Precio del Producto'
+                            : 'Precio de producto'
                       }
-                      subtitle="Valor total publicado"
                       value={currencyFormatter.format(
                         isNegotiation ? product.negotiationPrice : product.salePrice,
                       )}
                     />
                     {discountAmount > 0 ? (
-                      <PriceLine
+                      <PriceRow
                         label={
                           product.discountPercent > 0
                             ? `Descuento (${product.discountPercent}%)`
                             : 'Descuento'
                         }
-                        subtitle="Descuento aplicado por el vendedor"
                         value={`- ${currencyFormatter.format(discountAmount)}`}
                       />
                     ) : null}
-                    <PriceLine
+                    <PriceRow
                       label="Comisión RAG"
-                      subtitle="Aplicada sobre el precio"
                       value={`- ${currencyFormatter.format(commission?.amount ?? product.commission)}`}
                     />
-                    <PriceLine
-                      label="Tu Ganancia"
-                      subtitle="Monto neto que te corresponde"
-                      value={currencyFormatter.format(earning)}
-                      highlight
-                    />
-                  </div>
+                    <div className="flex items-center justify-between pt-1">
+                      <dt className="text-base font-semibold text-neutral-900">Tu Ganancia</dt>
+                      <dd className="text-base font-semibold text-neutral-900">
+                        {currencyFormatter.format(earning)}
+                      </dd>
+                    </div>
+                  </dl>
 
                   {isSale ? (
                     <div className="mt-4 flex items-center justify-between text-sm">
@@ -435,27 +468,6 @@ function DetailField({ label, value }: RowProps) {
     <div>
       <p className="text-xs font-semibold tracking-wide text-neutral-900 uppercase">{label}</p>
       <p className="mt-1 text-sm text-neutral-500">{value || '—'}</p>
-    </div>
-  );
-}
-
-interface PriceLineProps {
-  label: string;
-  subtitle: string;
-  value: string;
-  highlight?: boolean;
-}
-
-function PriceLine({ label, subtitle, value, highlight = false }: PriceLineProps) {
-  return (
-    <div
-      className={`flex items-start justify-between gap-4 px-5 py-4 ${highlight ? 'bg-neutral-50' : ''}`}
-    >
-      <div>
-        <p className="text-base font-semibold text-neutral-900">{label}</p>
-        <p className="mt-0.5 text-xs text-neutral-400">{subtitle}</p>
-      </div>
-      <span className="shrink-0 text-base font-semibold text-neutral-900">{value}</span>
     </div>
   );
 }

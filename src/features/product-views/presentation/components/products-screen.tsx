@@ -189,36 +189,55 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
         </div>
       </div>
 
-      <div className="hidden flex-1 gap-8 px-8 py-8 md:flex">
-        <aside className="w-64 shrink-0">
-          <h1 className="font-editors text-4xl text-neutral-900">
-            Mis <span className="italic">{config.title}</span>
-          </h1>
-
-          <div className="mt-10">
+      <div className="hidden flex-1 flex-col px-8 py-10 md:flex">
+        <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col">
+          <div className={`mx-auto w-full ${summary.length === 3 ? 'max-w-xl' : 'max-w-md'}`}>
             <ProductSummary
               items={summary}
               selectedIndex={selectedIndex}
               onSelect={handleSummarySelect}
-              orientation="stack"
             />
           </div>
-        </aside>
 
-        <div className="flex-1">
-          {isLoading ? (
-            <p className="py-12 text-center text-sm text-neutral-400">Cargando...</p>
-          ) : isError ? (
-            <p className="py-12 text-center text-sm text-red-600">
-              No pudimos cargar la información. Inténtalo de nuevo.
-            </p>
-          ) : visibleProducts.length === 0 ? (
-            <p className="py-12 text-center text-sm text-neutral-400">{config.emptyText}</p>
-          ) : (
-            <div className="grid auto-rows-fr grid-cols-2 gap-6 lg:grid-cols-3 xl:grid-cols-4">
-              {visibleProducts.map(renderCard)}
+          <div className="mt-8 flex w-full items-center gap-3">
+            <div className="relative flex-1">
+              <Icon
+                icon="ion:search-outline"
+                className="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-neutral-400"
+              />
+              <input
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                aria-label={config.searchPlaceholder}
+                placeholder={config.searchPlaceholder}
+                className="focus:border-brand w-full rounded-full border border-neutral-200 bg-neutral-50 py-3 pr-4 pl-11 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
+              />
             </div>
-          )}
+            <button
+              type="button"
+              onClick={() => setSortOrder((current) => (current === 'desc' ? 'asc' : 'desc'))}
+              className="flex shrink-0 items-center gap-2 rounded-full border border-neutral-200 px-4 py-3 text-base text-neutral-700 transition-colors hover:border-neutral-300 hover:bg-neutral-50"
+            >
+              {sortOrder === 'desc' ? 'Mayor precio' : 'Menor precio'}
+              <Icon icon="ion:funnel-outline" className="size-5" />
+            </button>
+          </div>
+
+          <div className="mt-10 flex-1">
+            {isLoading ? (
+              <p className="py-12 text-center text-sm text-neutral-400">Cargando...</p>
+            ) : isError ? (
+              <p className="py-12 text-center text-sm text-red-600">
+                No pudimos cargar la información. Inténtalo de nuevo.
+              </p>
+            ) : visibleProducts.length === 0 ? (
+              <p className="py-12 text-center text-sm text-neutral-400">{config.emptyText}</p>
+            ) : (
+              <div className="grid auto-rows-fr grid-cols-2 gap-6 lg:grid-cols-3 xl:grid-cols-4">
+                {visibleProducts.map(renderCard)}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

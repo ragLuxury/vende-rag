@@ -15,6 +15,20 @@ function resolveImageUrl(path: string): string {
   return getProductImageUrl(path.replace(/^\/+/, ''));
 }
 
+const statusByState: Record<number, string> = {
+  1: 'En Revisión',
+  2: 'Negociación',
+  3: 'Aprobada',
+  4: 'Rechazado',
+  10: 'Recibido',
+  11: 'Activa',
+  12: 'Inactivar',
+  13: 'Por Devolver',
+  14: 'Devuelto',
+  20: 'Apartado',
+  21: 'Pagado',
+};
+
 export const productViewHttpRepository = {
   async getProducts(view, clientId, query, signal) {
     const params = new URLSearchParams();
@@ -75,7 +89,7 @@ export const productViewHttpRepository = {
       clientId: data.client_id,
       uuid: data.uuid,
       name: data.name_product ?? data.modelo ?? '',
-      status: data.estatus || data.Estado || '',
+      status: data.estatus || data.Estado || statusByState[data.state ?? 0] || '',
       state: data.state ?? 0,
       brand: data.marca ?? '',
       model: data.modelo ?? '',

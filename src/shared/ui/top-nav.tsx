@@ -10,11 +10,11 @@ interface NavItem {
 }
 
 const ITEMS: readonly NavItem[] = [
-  { label: 'Mis solicitudes', href: '/solicitudes' },
-  { label: 'Mis publicaciones', href: '/publicaciones' },
-  { label: 'Mis ventas', href: '/mis-ventas' },
-  { label: 'Mis devoluciones', href: '/devoluciones' },
-  { label: 'Mi perfil', href: '/perfil' },
+  { label: 'Mis Solicitudes', href: '/solicitudes' },
+  { label: 'Mis Publicaciones', href: '/publicaciones' },
+  { label: 'Mis Ventas', href: '/mis-ventas' },
+  { label: 'Mis Devoluciones', href: '/devoluciones' },
+  { label: 'Mi Perfil', href: '/perfil' },
 ];
 
 interface TopNavProps {

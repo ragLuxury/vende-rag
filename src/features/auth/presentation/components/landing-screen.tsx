@@ -86,20 +86,12 @@ export function LandingScreen() {
             priority
             className="h-8 w-auto"
           />
-          <div className="flex items-center gap-6">
-            <Link
-              href="/login"
-              className="text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900"
-            >
-              Iniciar sesión
-            </Link>
-            <Link
-              href="/signup"
-              className="bg-brand rounded-full px-6 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
-            >
-              Quiero vender
-            </Link>
-          </div>
+          <Link
+            href="/login"
+            className="text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900"
+          >
+            Iniciar Sesión
+          </Link>
         </div>
       </header>
 
@@ -117,16 +109,10 @@ export function LandingScreen() {
           </p>
           <div className="mt-10 flex items-center gap-4">
             <Link
-              href="/signup"
+              href="/login"
               className="bg-brand rounded-full px-8 py-4 text-base font-medium text-white transition-opacity hover:opacity-90"
             >
-              Quiero vender
-            </Link>
-            <Link
-              href="/login"
-              className="rounded-full border border-neutral-300 px-8 py-4 text-base font-medium text-neutral-900 transition-colors hover:bg-neutral-50"
-            >
-              Ya tengo cuenta
+              Quiero Vender
             </Link>
           </div>
         </div>
@@ -224,7 +210,7 @@ export function LandingScreen() {
             href="/signup"
             className="text-brand mt-10 rounded-full bg-white px-10 py-4 text-base font-medium transition-opacity hover:opacity-90"
           >
-            Quiero vender
+            Quiero Vender
           </Link>
         </div>
       </section>
