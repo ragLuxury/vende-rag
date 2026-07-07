@@ -11,8 +11,6 @@ const AUTH_PATHS: readonly string[] = [
   '/reset-password',
 ];
 
-const BARE_PREFIXES: readonly string[] = ['/productos/'];
-
 interface AppShellProps {
   children: React.ReactNode;
   topRight?: React.ReactNode;
@@ -21,9 +19,8 @@ interface AppShellProps {
 export function AppShell({ children, topRight }: AppShellProps) {
   const pathname = usePathname();
   const isAuth = AUTH_PATHS.some((path) => pathname === path || pathname.startsWith(`${path}/`));
-  const isBare = BARE_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
-  if (isAuth || isBare) {
+  if (isAuth) {
     return <>{children}</>;
   }
 

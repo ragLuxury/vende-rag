@@ -74,14 +74,14 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 
   return (
     <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col md:max-w-7xl">
-      <header className="relative flex items-center justify-center px-6 py-4">
+      <header className="relative flex items-center justify-center px-6 py-4 md:pt-10">
         <button
           type="button"
           onClick={() => router.back()}
-          aria-label="Volver"
-          className="absolute left-6 text-neutral-900"
+          className="absolute left-6 flex cursor-pointer items-center gap-1.5 text-neutral-900"
         >
           <Icon icon="ion:chevron-back-outline" className="size-7" />
+          <span className="text-base font-medium">Regresar</span>
         </button>
         <h1 className="text-lg font-semibold text-neutral-900">Detalles de Producto</h1>
       </header>

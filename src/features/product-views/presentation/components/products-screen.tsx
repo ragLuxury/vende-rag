@@ -28,7 +28,7 @@ function amountFor(
   const paid = paidById.get(product.id) ?? 0;
   if (amount === 'paid') return paid;
   if (amount === 'pending') return Math.max(product.earning - paid, 0);
-  if (amount === 'salePrice') return product.salePrice;
+  if (amount === 'salePrice') return Math.max(product.salePrice - product.discountAmount, 0);
   return product.earning;
 }
 

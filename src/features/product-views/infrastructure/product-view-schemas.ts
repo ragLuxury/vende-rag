@@ -11,6 +11,8 @@ export const productsResponseSchema = z.object({
       nombre: z.string().nullish(),
       original_price: z.number(),
       precio: z.number(),
+      porcentaje_descuento: z.coerce.number().nullish(),
+      precio_descuento: z.coerce.number().nullish(),
       Estado: z.string(),
       status_intern: z.string().nullish(),
       galeria: z.array(z.string()).nullish(),

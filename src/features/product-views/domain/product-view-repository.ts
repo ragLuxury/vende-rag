@@ -6,6 +6,7 @@ export interface Product {
   name: string;
   brand: string;
   salePrice: number;
+  discountAmount: number;
   earning: number;
   status: string;
   statusIntern: string;

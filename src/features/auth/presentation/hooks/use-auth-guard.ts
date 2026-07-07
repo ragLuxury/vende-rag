@@ -14,23 +14,26 @@ const REDIRECT_BY_MODE: Record<AuthGuardMode, string> = {
 
 const subscribeNoop = () => () => {};
 
+function isAllowed(mode: AuthGuardMode, authenticated: boolean): boolean {
+  return mode === 'require-auth' ? authenticated : !authenticated;
+}
+
 export function useAuthGuard(mode: AuthGuardMode): { checking: boolean } {
   const repository = useAuthRepository();
   const router = useRouter();
 
-  const authenticated = useSyncExternalStore(
+  const authenticated = useSyncExternalStore<boolean | null>(
     subscribeNoop,
     () => isAuthenticatedUseCase(repository),
-    () => false,
+    () => null,
   );
 
-  const allowed = mode === 'require-auth' ? authenticated : !authenticated;
-
   useEffect(() => {
-    if (!allowed) {
+    if (authenticated === null) return;
+    if (!isAllowed(mode, authenticated)) {
       router.replace(REDIRECT_BY_MODE[mode]);
     }
-  }, [allowed, mode, router]);
+  }, [authenticated, mode, router]);
 
-  return { checking: !allowed };
+  return { checking: authenticated === null || !isAllowed(mode, authenticated) };
 }

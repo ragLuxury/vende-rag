@@ -43,17 +43,26 @@ export const productViewHttpRepository = {
       ...(signal ? { signal } : {}),
     });
 
-    return response.data.map((item) => ({
-      id: item.id,
-      uuid: item.uuid,
-      name: item.nombre ?? item.modelo ?? '',
-      brand: item.marca,
-      salePrice: item.original_price,
-      earning: item.precio,
-      status: item.Estado,
-      statusIntern: item.status_intern ?? '',
-      image: item.galeria?.[0] ?? '',
-    }));
+    return response.data.map((item) => {
+      const discountPercent = item.porcentaje_descuento ?? 0;
+      const discountAmount =
+        discountPercent > 0
+          ? Math.round((item.original_price * discountPercent) / 100)
+          : (item.precio_descuento ?? 0);
+
+      return {
+        id: item.id,
+        uuid: item.uuid,
+        name: item.nombre ?? item.modelo ?? '',
+        brand: item.marca,
+        salePrice: item.original_price,
+        discountAmount,
+        earning: item.precio,
+        status: item.Estado,
+        statusIntern: item.status_intern ?? '',
+        image: item.galeria?.[0] ?? '',
+      };
+    });
   },
 
   async getSellerPayments(productId, signal) {
