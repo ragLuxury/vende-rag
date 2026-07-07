@@ -26,7 +26,7 @@ export function TopNav({ trailing }: TopNavProps) {
 
   return (
     <header className="fixed inset-x-0 top-0 z-[110] hidden h-20 items-center gap-8 border-b border-neutral-200 bg-white px-8 md:flex">
-      <Link href="/solicitudes" aria-label="RAG" className="shrink-0">
+      <Link href="/welcome" aria-label="RAG" className="shrink-0">
         <Image
           src="/images/headerv2.png"
           alt="RAG"

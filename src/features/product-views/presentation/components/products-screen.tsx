@@ -191,15 +191,15 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
 
       <div className="hidden flex-1 flex-col px-8 py-10 md:flex">
         <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col">
-          <div className={`mx-auto w-full ${summary.length === 3 ? 'max-w-xl' : 'max-w-md'}`}>
-            <ProductSummary
-              items={summary}
-              selectedIndex={selectedIndex}
-              onSelect={handleSummarySelect}
-            />
-          </div>
+          <div className="flex w-full items-center gap-4">
+            <div className="shrink-0">
+              <ProductSummary
+                items={summary}
+                selectedIndex={selectedIndex}
+                onSelect={handleSummarySelect}
+              />
+            </div>
 
-          <div className="mt-8 flex w-full items-center gap-3">
             <div className="relative flex-1">
               <Icon
                 icon="ion:search-outline"

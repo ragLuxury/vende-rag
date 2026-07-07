@@ -1,5 +1,11 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { TopNav } from '@/src/shared/ui/top-nav';
+import { useCurrentUser } from '../hooks/use-current-user';
+import { TopNavActions } from './top-nav-actions';
 
 interface Valuation {
   icon: string;
@@ -74,26 +80,32 @@ const FOOTER_LINKS: readonly { label: string; href: string }[] = [
 ];
 
 export function LandingScreen() {
+  const user = useCurrentUser();
+
   return (
-    <div className="flex min-h-full flex-col bg-white">
-      <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur">
-        <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-8">
-          <Image
-            src="/images/headerv2.png"
-            alt="RAG"
-            width={160}
-            height={36}
-            priority
-            className="h-8 w-auto"
-          />
-          <Link
-            href="/login"
-            className="text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900"
-          >
-            Iniciar Sesión
-          </Link>
-        </div>
-      </header>
+    <div className={`flex min-h-full flex-col bg-white ${user ? 'md:pt-20' : ''}`}>
+      {user ? (
+        <TopNav trailing={<TopNavActions />} />
+      ) : (
+        <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur">
+          <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-8">
+            <Image
+              src="/images/headerv2.png"
+              alt="RAG"
+              width={160}
+              height={36}
+              priority
+              className="h-8 w-auto"
+            />
+            <Link
+              href="/login"
+              className="text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900"
+            >
+              Iniciar Sesión
+            </Link>
+          </div>
+        </header>
+      )}
 
       <section className="mx-auto grid w-full max-w-6xl grid-cols-2 items-center gap-16 px-8 py-20">
         <div>
@@ -109,7 +121,7 @@ export function LandingScreen() {
           </p>
           <div className="mt-10 flex items-center gap-4">
             <Link
-              href="/login"
+              href={user ? '/vender' : '/login'}
               className="bg-brand rounded-full px-8 py-4 text-base font-medium text-white transition-opacity hover:opacity-90"
             >
               Quiero Vender
@@ -207,7 +219,7 @@ export function LandingScreen() {
             Crea tu cuenta y publica tu primera pieza hoy mismo.
           </p>
           <Link
-            href="/signup"
+            href={user ? '/vender' : '/signup'}
             className="text-brand mt-10 rounded-full bg-white px-10 py-4 text-base font-medium transition-opacity hover:opacity-90"
           >
             Quiero Vender
