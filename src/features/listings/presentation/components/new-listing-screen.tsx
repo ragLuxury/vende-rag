@@ -6,6 +6,7 @@ import { useState, type FormEvent } from 'react';
 import { Icon } from '@iconify/react';
 
 import { BottomNav } from '@/src/shared/ui/bottom-nav';
+import { canListOnBehalf } from '@/src/features/listings/domain/on-behalf';
 import { useCreateProducts, type CreateProductInput } from '../hooks/use-create-products';
 import {
   createEmptyDraft,
@@ -19,7 +20,7 @@ interface NewListingScreenProps {
   userId: number | null;
 }
 
-function toCreateInput(draft: ProductDraft, userId: number): CreateProductInput {
+function toCreateInput(draft: ProductDraft, clientId: number): CreateProductInput {
   return {
     brandId: draft.brandId as number,
     origen: Number(draft.origin),
@@ -27,7 +28,7 @@ function toCreateInput(draft: ProductDraft, userId: number): CreateProductInput 
     price: Number(draft.price),
     detail: draft.details,
     linkProducto: draft.origin === PRELOVED_ORIGIN ? draft.pageName.trim() : '',
-    clientId: userId,
+    clientId,
     photos: draft.photos,
   };
 }
@@ -36,10 +37,15 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
   const router = useRouter();
   const createProducts = useCreateProducts();
 
+  const canDelegate = canListOnBehalf(userId);
+
   const [drafts, setDrafts] = useState<readonly ProductDraft[]>(() => [createEmptyDraft()]);
   const [openId, setOpenId] = useState(() => drafts[0]?.id ?? '');
 
-  const isValid = userId !== null && drafts.length > 0 && drafts.every(isDraftValid);
+  const isValid =
+    (canDelegate || userId !== null) &&
+    drafts.length > 0 &&
+    drafts.every((draft) => isDraftValid(draft, canDelegate));
 
   function handleChange(updated: ProductDraft) {
     setDrafts((current) => current.map((draft) => (draft.id === updated.id ? updated : draft)));
@@ -61,9 +67,14 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!isValid || userId === null) return;
+    if (!isValid) return;
 
-    const inputs = drafts.map((draft) => toCreateInput(draft, userId));
+    const inputs: CreateProductInput[] = [];
+    for (const draft of drafts) {
+      const clientId = canDelegate ? draft.sellerId : userId;
+      if (clientId === null) return;
+      inputs.push(toCreateInput(draft, clientId));
+    }
 
     createProducts.mutate(inputs, {
       onSuccess: () => {
@@ -96,6 +107,7 @@ export function NewListingScreen({ userId }: NewListingScreenProps) {
               index={index}
               draft={draft}
               userId={userId}
+              canDelegate={canDelegate}
               open={draft.id === openId}
               canRemove={drafts.length > 1}
               onToggle={() => setOpenId(draft.id === openId ? '' : draft.id)}

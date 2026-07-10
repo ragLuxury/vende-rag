@@ -6,6 +6,7 @@ import { Icon } from '@iconify/react';
 import { BrandSelectField } from './brand-select-field';
 import { OriginSelectField } from './origin-select-field';
 import { MIN_PHOTOS, PhotoUploader } from './photo-uploader';
+import { SellerSelectField } from './seller-select-field';
 import { useCommission } from '../hooks/use-commission';
 
 const PRICE_DEBOUNCE_MS = 400;
@@ -23,6 +24,7 @@ const currencyFormatter = new Intl.NumberFormat('es-MX', {
 
 export interface ProductDraft {
   id: string;
+  sellerId: number | null;
   photos: readonly File[];
   brandId: number | null;
   brandName: string;
@@ -36,6 +38,7 @@ export interface ProductDraft {
 export function createEmptyDraft(): ProductDraft {
   return {
     id: crypto.randomUUID(),
+    sellerId: null,
     photos: [],
     brandId: null,
     brandName: '',
@@ -47,14 +50,15 @@ export function createEmptyDraft(): ProductDraft {
   };
 }
 
-export function isDraftValid(draft: ProductDraft): boolean {
+export function isDraftValid(draft: ProductDraft, requiresSeller: boolean): boolean {
   const isPreloved = draft.origin === PRELOVED_ORIGIN;
   return (
     draft.photos.length >= MIN_PHOTOS &&
     draft.brandId !== null &&
     draft.origin !== '' &&
     Number(draft.price) > 0 &&
-    (!isPreloved || draft.pageName.trim() !== '')
+    (!isPreloved || draft.pageName.trim() !== '') &&
+    (!requiresSeller || draft.sellerId !== null)
   );
 }
 
@@ -62,6 +66,7 @@ interface ProductDraftCardProps {
   index: number;
   draft: ProductDraft;
   userId: number | null;
+  canDelegate: boolean;
   open: boolean;
   canRemove: boolean;
   onToggle: () => void;
@@ -73,6 +78,7 @@ export function ProductDraftCard({
   index,
   draft,
   userId,
+  canDelegate,
   open,
   canRemove,
   onToggle,
@@ -86,9 +92,11 @@ export function ProductDraftCard({
     return () => clearTimeout(timeout);
   }, [draft.price]);
 
+  const clientId = canDelegate ? draft.sellerId : userId;
+
   const { data: commission, isFetching: isCommissionLoading } = useCommission(
     Number(debouncedPrice),
-    userId,
+    clientId,
   );
 
   const isPreloved = draft.origin === PRELOVED_ORIGIN;
@@ -136,6 +144,16 @@ export function ProductDraftCard({
 
       {open ? (
         <div className="border-t border-neutral-100 px-5 pt-5 pb-6">
+          {canDelegate ? (
+            <div className="mb-6">
+              <label className="mb-3 block text-base text-neutral-800">Cliente</label>
+              <SellerSelectField
+                value={draft.sellerId}
+                onSelect={(seller) => update({ sellerId: seller.id })}
+              />
+            </div>
+          ) : null}
+
           <PhotoUploader photos={draft.photos} onChange={(photos) => update({ photos })} />
 
           <div className="mt-6 flex flex-col gap-4">
