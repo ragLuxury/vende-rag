@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Icon } from '@iconify/react';
 
 interface ProductGalleryProps {
@@ -12,6 +12,7 @@ interface ProductGalleryProps {
 
 export function ProductGallery({ images, alt, fill = false }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const sizeClass = fill ? 'h-full' : 'aspect-square';
 
   if (images.length === 0) {
@@ -29,11 +30,19 @@ export function ProductGallery({ images, alt, fill = false }: ProductGalleryProp
     setActiveIndex(Math.round(scrollLeft / clientWidth));
   }
 
+  function goToIndex(index: number) {
+    const container = scrollRef.current;
+    if (!container) return;
+    const clamped = Math.max(0, Math.min(index, images.length - 1));
+    container.scrollTo({ left: clamped * container.clientWidth, behavior: 'smooth' });
+  }
+
   return (
     <div className={`relative ${fill ? 'h-full' : ''}`}>
       <div
+        ref={scrollRef}
         onScroll={handleScroll}
-        className={`flex ${sizeClass} snap-x snap-mandatory overflow-x-auto`}
+        className={`scrollbar-hide flex ${sizeClass} snap-x snap-mandatory overflow-x-auto`}
       >
         {images.map((image, index) => (
           <div key={image} className="relative size-full shrink-0 snap-center">
@@ -48,6 +57,31 @@ export function ProductGallery({ images, alt, fill = false }: ProductGalleryProp
           </div>
         ))}
       </div>
+
+      {images.length > 1 ? (
+        <>
+          {activeIndex > 0 ? (
+            <button
+              type="button"
+              onClick={() => goToIndex(activeIndex - 1)}
+              aria-label="Imagen anterior"
+              className="absolute top-1/2 left-2 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-neutral-700 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
+            >
+              <Icon icon="ion:chevron-back" className="size-5" />
+            </button>
+          ) : null}
+          {activeIndex < images.length - 1 ? (
+            <button
+              type="button"
+              onClick={() => goToIndex(activeIndex + 1)}
+              aria-label="Imagen siguiente"
+              className="absolute top-1/2 right-2 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-neutral-700 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
+            >
+              <Icon icon="ion:chevron-forward" className="size-5" />
+            </button>
+          ) : null}
+        </>
+      ) : null}
 
       {images.length > 1 ? (
         <div className="absolute inset-x-0 bottom-3 flex justify-center gap-1.5">

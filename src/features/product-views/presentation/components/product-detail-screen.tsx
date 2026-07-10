@@ -28,8 +28,13 @@ interface ProductDetailScreenProps {
 export function ProductDetailScreen({ productId, view }: ProductDetailScreenProps) {
   const router = useRouter();
   const isSale = view === 'ventas';
-  const [infoOpen, setInfoOpen] = useState(false);
-  const [detailOpen, setDetailOpen] = useState(false);
+  const [openSection, setOpenSection] = useState<'info' | 'detail' | null>(null);
+  const infoOpen = openSection === 'info';
+  const detailOpen = openSection === 'detail';
+
+  function toggleSection(section: 'info' | 'detail') {
+    setOpenSection((current) => (current === section ? null : section));
+  }
   const { data: product, isLoading, isError } = useProductDetail(productId);
   const isNegotiation = product?.state === NEGOTIATION_STATE;
   const respondNegotiation = useRespondNegotiation();
@@ -122,7 +127,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 <section className="mt-6 border-t border-neutral-200">
                   <button
                     type="button"
-                    onClick={() => setInfoOpen((open) => !open)}
+                    onClick={() => toggleSection('info')}
                     aria-expanded={infoOpen}
                     className="flex w-full items-center justify-between px-6 py-5"
                   >
@@ -153,7 +158,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                   <section className="border-t border-neutral-200">
                     <button
                       type="button"
-                      onClick={() => setDetailOpen((open) => !open)}
+                      onClick={() => toggleSection('detail')}
                       aria-expanded={detailOpen}
                       className="flex w-full items-center justify-between px-6 py-5"
                     >
@@ -261,12 +266,12 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
               </div>
             </div>
 
-            <div className="hidden items-stretch gap-8 px-8 pb-8 md:flex">
-              <div className="w-2/5 shrink-0 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100">
+            <div className="hidden items-start gap-8 px-8 pb-8 md:flex">
+              <div className="w-2/5 shrink-0 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100 md:h-[40rem]">
                 <ProductGallery images={product.images} alt={product.name} fill />
               </div>
 
-              <div className="flex min-w-0 flex-1 flex-col rounded-3xl border border-neutral-200 p-10 md:min-h-[36rem]">
+              <div className="flex min-w-0 flex-1 flex-col rounded-3xl border border-neutral-200 p-10 md:h-[40rem]">
                 <div className="flex items-start justify-between gap-6">
                   <div className="min-w-0">
                     <p className="text-sm font-semibold tracking-wide text-neutral-400 uppercase">
@@ -287,11 +292,11 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                   ) : null}
                 </div>
 
-                <div className="mt-8 flex flex-1 flex-col justify-center border-t border-neutral-200">
+                <div className="mt-8 flex flex-col border-t border-neutral-200">
                   <section>
                     <button
                       type="button"
-                      onClick={() => setInfoOpen((open) => !open)}
+                      onClick={() => toggleSection('info')}
                       aria-expanded={infoOpen}
                       className="flex w-full items-center justify-between py-5"
                     >
@@ -321,7 +326,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     <section className="border-t border-neutral-200">
                       <button
                         type="button"
-                        onClick={() => setDetailOpen((open) => !open)}
+                        onClick={() => toggleSection('detail')}
                         aria-expanded={detailOpen}
                         className="flex w-full items-center justify-between py-5"
                       >
