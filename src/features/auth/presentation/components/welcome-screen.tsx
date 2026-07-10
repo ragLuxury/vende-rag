@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { buttonStyles } from '@/src/shared/ui/button';
 import { Divider } from '@/src/shared/ui/divider';
 import { LandingScreen } from './landing-screen';
-import { AppleIcon, GoogleIcon } from './social-icons';
+import { GoogleIcon } from './social-icons';
 
 export function WelcomeScreen() {
   return (
@@ -40,10 +40,6 @@ export function WelcomeScreen() {
           <button type="button" className={buttonStyles('secondary')}>
             <GoogleIcon />
             Continuar con Google
-          </button>
-          <button type="button" className={buttonStyles('secondary')}>
-            <AppleIcon />
-            Continuar con Apple
           </button>
         </div>
       </main>

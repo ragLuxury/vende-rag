@@ -2,7 +2,7 @@
 
 import { useGoogleLogin as useGoogleOAuthLogin } from '@react-oauth/google';
 import { useGoogleLogin } from '@/src/features/auth/presentation/hooks/use-google-login';
-import { AppleIcon, GoogleIcon } from './social-icons';
+import { GoogleIcon } from './social-icons';
 
 const CIRCLE =
   'flex size-14 items-center justify-center rounded-full bg-neutral-100 transition-colors hover:bg-neutral-200 disabled:opacity-50';
@@ -45,9 +45,6 @@ export function SocialAuthButtons() {
         onClick={() => triggerGoogle()}
       >
         <GoogleIcon />
-      </button>
-      <button type="button" aria-label="Continuar con Apple" className={CIRCLE}>
-        <AppleIcon />
       </button>
     </div>
   );
