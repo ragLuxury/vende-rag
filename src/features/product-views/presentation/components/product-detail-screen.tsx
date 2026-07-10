@@ -13,6 +13,7 @@ import { ProductGallery } from './product-gallery';
 import { getStatusStyle } from './product-status';
 
 const NEGOTIATION_STATE = 2;
+const PAID_STATE = 21;
 
 const currencyFormatter = new Intl.NumberFormat('es-MX', {
   style: 'currency',
@@ -52,7 +53,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
     commission?.sellerNet ?? (isNegotiation ? product?.negotiationPrice : product?.earning) ?? 0;
   const paid = (payments ?? []).reduce((total, payment) => total + payment.amount, 0);
   const pending = Math.max(earning - paid, 0);
-  const saleStatus = pending > 0 ? 'Por Pagar' : 'Pagado';
+  const isPaid = product?.state === PAID_STATE;
+  const saleStatus = isPaid ? 'Pagado' : 'Por Pagar';
   const pillStatus = isSale ? saleStatus : (product?.status ?? '');
 
   function handleApprove() {
@@ -86,7 +88,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
           className="absolute left-6 flex cursor-pointer items-center gap-1.5 text-neutral-900"
         >
           <Icon icon="ion:chevron-back-outline" className="size-7" />
-          <span className="text-base font-medium">Regresar</span>
+          <span className="hidden text-base font-medium md:inline">Regresar</span>
         </button>
         <h1 className="text-lg font-semibold text-neutral-900">Detalles de Producto</h1>
       </header>
@@ -218,10 +220,10 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     {isSale ? (
                       <div className="flex items-center justify-between">
                         <dt className="text-sm text-neutral-500">
-                          {pending > 0 ? 'Por pagar' : 'Pagado'}
+                          {isPaid ? 'Pagado' : 'Por pagar'}
                         </dt>
                         <dd className="text-sm text-neutral-400">
-                          {currencyFormatter.format(pending > 0 ? pending : paid)}
+                          {currencyFormatter.format(isPaid ? paid : pending)}
                         </dd>
                       </div>
                     ) : null}
@@ -271,7 +273,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 <ProductGallery images={product.images} alt={product.name} fill />
               </div>
 
-              <div className="flex min-w-0 flex-1 flex-col rounded-3xl border border-neutral-200 p-10 md:h-[40rem]">
+              <div className="scrollbar-hide flex min-w-0 flex-1 flex-col rounded-3xl border border-neutral-200 p-10 md:h-[40rem] md:overflow-y-auto">
                 <div className="flex items-start justify-between gap-6">
                   <div className="min-w-0">
                     <p className="text-sm font-semibold tracking-wide text-neutral-400 uppercase">
@@ -389,11 +391,9 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 
                   {isSale ? (
                     <div className="mt-4 flex items-center justify-between text-sm">
-                      <span className="text-neutral-500">
-                        {pending > 0 ? 'Por pagar' : 'Pagado'}
-                      </span>
+                      <span className="text-neutral-500">{isPaid ? 'Pagado' : 'Por pagar'}</span>
                       <span className="text-neutral-400">
-                        {currencyFormatter.format(pending > 0 ? pending : paid)}
+                        {currencyFormatter.format(isPaid ? paid : pending)}
                       </span>
                     </div>
                   ) : null}
