@@ -18,6 +18,7 @@ import {
 
 interface NewListingScreenProps {
   userId: number | null;
+  userEmail: string | null;
 }
 
 function toCreateInput(draft: ProductDraft, clientId: number): CreateProductInput {
@@ -33,11 +34,11 @@ function toCreateInput(draft: ProductDraft, clientId: number): CreateProductInpu
   };
 }
 
-export function NewListingScreen({ userId }: NewListingScreenProps) {
+export function NewListingScreen({ userId, userEmail }: NewListingScreenProps) {
   const router = useRouter();
   const createProducts = useCreateProducts();
 
-  const canDelegate = canListOnBehalf(userId);
+  const canDelegate = canListOnBehalf(userEmail);
 
   const [drafts, setDrafts] = useState<readonly ProductDraft[]>(() => [createEmptyDraft()]);
   const [openId, setOpenId] = useState(() => drafts[0]?.id ?? '');

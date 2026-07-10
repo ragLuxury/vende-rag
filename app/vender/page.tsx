@@ -9,7 +9,7 @@ export default function VenderPage() {
 
   return (
     <AuthGuard mode="require-auth">
-      <NewListingScreen userId={user?.id ?? null} />
+      <NewListingScreen userId={user?.id ?? null} userEmail={user?.email ?? null} />
     </AuthGuard>
   );
 }

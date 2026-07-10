@@ -1,5 +1,5 @@
-export const ON_BEHALF_USER_IDS: readonly number[] = [0, 25000, 29819];
+export const ON_BEHALF_EMAILS: readonly string[] = ['sellgdl@rag.mx', 'sell@rag.mx', 'info@rag.mx'];
 
-export function canListOnBehalf(userId: number | null): boolean {
-  return userId !== null && ON_BEHALF_USER_IDS.includes(userId);
+export function canListOnBehalf(email: string | null): boolean {
+  return email !== null && ON_BEHALF_EMAILS.includes(email.toLowerCase());
 }
