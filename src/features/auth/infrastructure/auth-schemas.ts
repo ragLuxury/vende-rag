@@ -24,7 +24,11 @@ export const registerResponseSchema = z.object({
 export const forgotPasswordResponseSchema = z.unknown();
 
 export const validateResetTokenResponseSchema = z.object({
-  token: z.string(),
+  message: z.string(),
+  client: z.object({
+    id: z.number(),
+    email: z.string(),
+  }),
 });
 
 export const resetPasswordResponseSchema = z.unknown();

@@ -76,13 +76,13 @@ export const authHttpRepository = {
   },
 
   async validateResetToken(token: string) {
-    const response = await httpRequest('/web/validate-reset-token', {
+    await httpRequest('/web/validate-reset-token', {
       method: 'POST',
       body: { token },
       schema: validateResetTokenResponseSchema,
     });
 
-    return response.token;
+    return token;
   },
 
   async resetPassword(token: string, newPassword: string) {
