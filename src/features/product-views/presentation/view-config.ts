@@ -44,10 +44,10 @@ export const VIEW_CONFIG: Record<ProductView, ViewConfig> = {
     cardSecondary: SALE_PRICE_SECONDARY,
     summary: [
       {
-        label: 'Aprobada',
+        label: 'Preaprobada',
         icon: 'ion:checkmark-circle-outline',
         format: 'count',
-        matches: statusIncludes('aprobada'),
+        matches: statusIncludes('preaprobada'),
       },
       {
         label: 'Negociación',

@@ -18,7 +18,7 @@ function resolveImageUrl(path: string): string {
 const statusByState: Record<number, string> = {
   1: 'En Revisión',
   2: 'Negociación',
-  3: 'Aprobada',
+  3: 'Preaprobada',
   4: 'Rechazado',
   10: 'Recibido',
   11: 'Activa',

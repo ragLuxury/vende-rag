@@ -8,7 +8,7 @@ const statusColors: Record<string, string> = {
   negociación: '#F3A25A',
   rechazada: '#EB6A6A',
   rechazado: '#EB6A6A',
-  aprobada: '#DBE3F3',
+  preaprobada: '#DBE3F3',
   // publicaciones
   activa: '#81BD53',
   recibido: '#B5C7E7',
