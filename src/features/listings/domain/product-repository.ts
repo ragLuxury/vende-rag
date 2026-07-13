@@ -6,7 +6,7 @@ export interface NewProduct {
   brandId: number;
   origen: number;
   model: string;
-  price: number;
+  price: number | null;
   detail: string;
   linkProducto: string;
   clientId: number;
