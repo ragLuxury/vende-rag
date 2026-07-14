@@ -73,6 +73,7 @@ const BENEFITS: readonly string[] = [
 ];
 
 const FOOTER_LINKS: readonly { label: string; href: string }[] = [
+  { label: 'Diseñadores', href: '/disenadores' },
   { label: 'Preguntas frecuentes', href: '/preguntas-frecuentes' },
   { label: 'Contacto', href: '/contacto' },
   { label: 'Términos', href: '/terminos' },

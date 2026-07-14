@@ -9,6 +9,8 @@ import { AuthRepositoryProvider } from '@/src/features/auth/presentation/auth-re
 import { authHttpRepository } from '@/src/features/auth/infrastructure/auth-http-repository';
 import { FaqRepositoryProvider } from '@/src/features/faq/presentation/faq-repository-provider';
 import { faqHttpRepository } from '@/src/features/faq/infrastructure/faq-http-repository';
+import { DesignerRepositoryProvider } from '@/src/features/designers/presentation/designer-repository-provider';
+import { designerHttpRepository } from '@/src/features/designers/infrastructure/designer-http-repository';
 import { BrandRepositoryProvider } from '@/src/features/listings/presentation/brand-repository-provider';
 import { brandHttpRepository } from '@/src/features/listings/infrastructure/brand-http-repository';
 import { SellerRepositoryProvider } from '@/src/features/listings/presentation/seller-repository-provider';
@@ -37,23 +39,27 @@ export function Providers({ children }: { children: ReactNode }) {
           <AuthRepositoryProvider repository={authHttpRepository}>
             <AccountRepositoryProvider repository={accountHttpRepository}>
               <FaqRepositoryProvider repository={faqHttpRepository}>
-                <BrandRepositoryProvider repository={brandHttpRepository}>
-                  <SellerRepositoryProvider repository={sellerHttpRepository}>
-                    <CommissionRepositoryProvider repository={commissionHttpRepository}>
-                      <ImageRepositoryProvider repository={imageHttpRepository}>
-                        <ProductRepositoryProvider repository={productHttpRepository}>
-                          <TermsRepositoryProvider repository={termsHttpRepository}>
-                            <PrivacyRepositoryProvider repository={privacyHttpRepository}>
-                              <ProductViewRepositoryProvider repository={productViewHttpRepository}>
-                                {children}
-                              </ProductViewRepositoryProvider>
-                            </PrivacyRepositoryProvider>
-                          </TermsRepositoryProvider>
-                        </ProductRepositoryProvider>
-                      </ImageRepositoryProvider>
-                    </CommissionRepositoryProvider>
-                  </SellerRepositoryProvider>
-                </BrandRepositoryProvider>
+                <DesignerRepositoryProvider repository={designerHttpRepository}>
+                  <BrandRepositoryProvider repository={brandHttpRepository}>
+                    <SellerRepositoryProvider repository={sellerHttpRepository}>
+                      <CommissionRepositoryProvider repository={commissionHttpRepository}>
+                        <ImageRepositoryProvider repository={imageHttpRepository}>
+                          <ProductRepositoryProvider repository={productHttpRepository}>
+                            <TermsRepositoryProvider repository={termsHttpRepository}>
+                              <PrivacyRepositoryProvider repository={privacyHttpRepository}>
+                                <ProductViewRepositoryProvider
+                                  repository={productViewHttpRepository}
+                                >
+                                  {children}
+                                </ProductViewRepositoryProvider>
+                              </PrivacyRepositoryProvider>
+                            </TermsRepositoryProvider>
+                          </ProductRepositoryProvider>
+                        </ImageRepositoryProvider>
+                      </CommissionRepositoryProvider>
+                    </SellerRepositoryProvider>
+                  </BrandRepositoryProvider>
+                </DesignerRepositoryProvider>
               </FaqRepositoryProvider>
             </AccountRepositoryProvider>
           </AuthRepositoryProvider>

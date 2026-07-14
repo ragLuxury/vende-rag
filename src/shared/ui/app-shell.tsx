@@ -3,12 +3,13 @@
 import { usePathname } from 'next/navigation';
 import { TopNav } from './top-nav';
 
-const AUTH_PATHS: readonly string[] = [
+const STANDALONE_PATHS: readonly string[] = [
   '/welcome',
   '/login',
   '/signup',
   '/forgot-password',
   '/reset-password',
+  '/disenadores',
 ];
 
 interface AppShellProps {
@@ -18,9 +19,11 @@ interface AppShellProps {
 
 export function AppShell({ children, topRight }: AppShellProps) {
   const pathname = usePathname();
-  const isAuth = AUTH_PATHS.some((path) => pathname === path || pathname.startsWith(`${path}/`));
+  const isStandalone = STANDALONE_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`),
+  );
 
-  if (isAuth) {
+  if (isStandalone) {
     return <>{children}</>;
   }
 
