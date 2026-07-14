@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { FAQ_PREVIEW } from './landing-content';
 
@@ -46,15 +45,6 @@ export function LandingFaq() {
             );
           })}
         </ul>
-
-        <div className="mt-8 text-center">
-          <Link
-            href="/preguntas-frecuentes"
-            className="rounded-[10px] bg-neutral-900 px-8 py-3 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
-          >
-            Ver más
-          </Link>
-        </div>
       </div>
     </section>
   );

@@ -1,15 +1,20 @@
 'use client';
 
 import type { FormEvent } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { FOOTER_COLUMNS, SOCIAL_LINKS } from './landing-content';
+import { getFooterColumns, SOCIAL_LINKS } from './landing-content';
 
-export function LandingFooter() {
+interface LandingFooterProps {
+  isAuthenticated: boolean;
+}
+
+export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
   function handleNewsletterSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
   }
+
+  const footerColumns = getFooterColumns(isAuthenticated);
 
   return (
     <footer className="border-t border-neutral-200 bg-neutral-50">
@@ -55,18 +60,11 @@ export function LandingFooter() {
         </div>
       </div>
 
-      <div className="border-t border-neutral-200 bg-white py-12">
-        <div className="mx-auto grid w-full max-w-6xl grid-cols-4 gap-8 px-8">
-          <Image
-            src="/images/headerv2.png"
-            alt="RAG"
-            width={140}
-            height={32}
-            className="h-7 w-auto"
-          />
-          {FOOTER_COLUMNS.map((column) => (
+      <div className="border-t border-neutral-200 bg-white py-16">
+        <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-8 px-8 md:grid-cols-3">
+          {footerColumns.map((column) => (
             <nav key={column.title}>
-              <p className="text-xs font-semibold tracking-wide text-neutral-900 uppercase">
+              <p className="text-sm font-semibold tracking-[0.2em] text-neutral-900 uppercase">
                 {column.title}
               </p>
               <ul className="mt-4 flex flex-col gap-3">
@@ -84,9 +82,10 @@ export function LandingFooter() {
             </nav>
           ))}
         </div>
-        <p className="mt-10 text-center text-sm text-neutral-400">
-          © {new Date().getFullYear()} RAG
-        </p>
+
+        <div className="mx-auto mt-10 w-full max-w-6xl border-t border-neutral-200 px-8 pt-6">
+          <p className="text-xs text-neutral-400">© {new Date().getFullYear()} RAG</p>
+        </div>
       </div>
     </footer>
   );

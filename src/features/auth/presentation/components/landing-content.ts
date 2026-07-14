@@ -260,7 +260,32 @@ export interface FooterLinkColumn {
   links: readonly { label: string; href: string }[];
 }
 
-export const FOOTER_COLUMNS: readonly FooterLinkColumn[] = [
+export const FOOTER_COLUMNS_GUEST: readonly FooterLinkColumn[] = [
+  {
+    title: 'Vender',
+    links: [
+      { label: '¿Cómo Vender?', href: '/vender' },
+      { label: 'Términos de Consignación', href: '/terminos' },
+    ],
+  },
+  {
+    title: 'Atención al seller',
+    links: [
+      { label: 'Contacto', href: '/contacto' },
+      { label: 'Preguntas Frecuentes', href: '/preguntas-frecuentes' },
+      { label: 'Términos y Condiciones', href: '/terminos' },
+    ],
+  },
+  {
+    title: 'Mi cuenta',
+    links: [
+      { label: 'Iniciar sesión', href: '/login' },
+      { label: 'Crear cuenta', href: '/signup' },
+    ],
+  },
+];
+
+export const FOOTER_COLUMNS_AUTH: readonly FooterLinkColumn[] = [
   {
     title: 'Vender',
     links: [
@@ -285,6 +310,10 @@ export const FOOTER_COLUMNS: readonly FooterLinkColumn[] = [
     ],
   },
 ];
+
+export function getFooterColumns(isAuthenticated: boolean): readonly FooterLinkColumn[] {
+  return isAuthenticated ? FOOTER_COLUMNS_AUTH : FOOTER_COLUMNS_GUEST;
+}
 
 export const SOCIAL_LINKS: readonly { icon: string; label: string; href: string }[] = [
   { icon: 'ion:logo-instagram', label: 'Instagram', href: 'https://instagram.com' },

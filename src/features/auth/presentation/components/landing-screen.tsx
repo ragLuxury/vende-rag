@@ -2,6 +2,7 @@
 
 import { TopNav } from '@/src/shared/ui/top-nav';
 import { useCurrentUser } from '../hooks/use-current-user';
+import { LoginModalProvider } from '../login-modal-context';
 import { TopNavActions } from './top-nav-actions';
 import { LandingHeader } from './landing-header';
 import { LandingHero } from './landing-hero';
@@ -19,19 +20,21 @@ export function LandingScreen() {
   const user = useCurrentUser();
 
   return (
-    <div className={`flex min-h-full flex-col bg-white ${user ? 'md:pt-20' : ''}`}>
-      {user ? <TopNav trailing={<TopNavActions />} /> : <LandingHeader />}
+    <LoginModalProvider>
+      <div className={`flex min-h-full flex-col bg-white ${user ? 'md:pt-20' : ''}`}>
+        {user ? <TopNav trailing={<TopNavActions />} /> : <LandingHeader />}
 
-      <LandingHero />
-      <LandingValuation />
-      <LandingProcessTabs />
-      <LandingPaymentTimeline />
-      <LandingWhyConsign />
-      <LandingShipping />
-      <LandingFaq />
-      <LandingFirstTime />
-      <LandingNewProducts />
-      <LandingFooter />
-    </div>
+        <LandingHero />
+        <LandingValuation />
+        <LandingProcessTabs />
+        <LandingPaymentTimeline />
+        <LandingWhyConsign />
+        <LandingShipping />
+        <LandingFaq />
+        <LandingFirstTime />
+        <LandingNewProducts />
+        <LandingFooter isAuthenticated={Boolean(user)} />
+      </div>
+    </LoginModalProvider>
   );
 }

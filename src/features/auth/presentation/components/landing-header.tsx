@@ -1,9 +1,13 @@
+'use client';
+
 import Image from 'next/image';
-import Link from 'next/link';
 import { Icon } from '@iconify/react';
+import { useLoginModal } from '@/src/features/auth/presentation/login-modal-context';
 import { NAV_LINKS } from './landing-content';
 
 export function LandingHeader() {
+  const { open } = useLoginModal();
+
   return (
     <header className="top-0 z-50 bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-16 w-full items-center justify-between px-4">
@@ -17,15 +21,16 @@ export function LandingHeader() {
           className="h-15 w-auto"
         />
         <div className="flex items-center gap-5">
-          <Link
-            href="/login"
+          <button
+            type="button"
+            onClick={open}
             className="bg-brand rounded-[8px] px-5 py-2 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
           >
             Vender
-          </Link>
-          <Link href="/login" aria-label="Iniciar sesión">
+          </button>
+          <button type="button" onClick={open} aria-label="Iniciar sesión">
             <Icon icon="ion:person-circle-outline" className="size-7 text-neutral-700" />
-          </Link>
+          </button>
         </div>
       </div>
 

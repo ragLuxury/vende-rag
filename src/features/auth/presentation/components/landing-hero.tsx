@@ -1,7 +1,11 @@
+'use client';
+
 import Image from 'next/image';
-import Link from 'next/link';
+import { useLoginModal } from '@/src/features/auth/presentation/login-modal-context';
 
 export function LandingHero() {
+  const { open } = useLoginModal();
+
   return (
     <section className="grid min-h-[530px] w-full grid-cols-[calc(50%+50px)_calc(50%-50px)] border-t border-gray-100 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
       <div className="relative min-h-[530px] overflow-hidden">
@@ -32,12 +36,13 @@ export function LandingHero() {
           post-venta.
         </p>
 
-        <Link
-          href="/login"
+        <button
+          type="button"
+          onClick={open}
           className="bg-brand mt-10 inline-block rounded-[14px] px-8 py-4 text-base font-medium text-white transition-opacity hover:opacity-90"
         >
           Quiero vender
-        </Link>
+        </button>
       </div>
     </section>
   );
