@@ -17,7 +17,7 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
   const footerColumns = getFooterColumns(isAuthenticated);
 
   return (
-    <footer className="border-t border-neutral-200 bg-neutral-50">
+    <footer className="bg-neutral-50">
       <div className="mx-auto w-full max-w-6xl px-8 py-16 text-center">
         <h2 className="font-editors text-3xl text-neutral-900">
           Síguenos <span className="italic">y Suscríbete</span>
@@ -44,7 +44,7 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
           </button>
         </form>
 
-        <div className="mt-8 flex justify-center gap-5">
+        <div className="mt-8 flex justify-around gap-5">
           {SOCIAL_LINKS.map((social) => (
             <a
               key={social.label}
@@ -60,8 +60,8 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
         </div>
       </div>
 
-      <div className="border-t border-neutral-200 bg-white py-16">
-        <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-8 px-8 md:grid-cols-3">
+      <div className="bg-white py-8">
+        <div className="mx-auto flex w-full max-w-6xl flex-col justify-around gap-8 px-8 md:flex-row">
           {footerColumns.map((column) => (
             <nav key={column.title}>
               <p className="text-sm font-semibold tracking-[0.2em] text-neutral-900 uppercase">
@@ -83,7 +83,7 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
           ))}
         </div>
 
-        <div className="mx-auto mt-10 w-full max-w-6xl border-t border-neutral-200 px-8 pt-6">
+        <div className="mx-auto mt-10 w-full max-w-6xl px-8">
           <p className="text-xs text-neutral-400">© {new Date().getFullYear()} RAG</p>
         </div>
       </div>

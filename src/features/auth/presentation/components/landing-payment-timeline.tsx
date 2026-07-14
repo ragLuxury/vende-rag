@@ -86,7 +86,7 @@ function TimelineLabel({ edge, week, text }: TimelineLabelProps) {
         edge === 'top' ? 'bottom-full flex-col-reverse' : 'top-full'
       }`}
     >
-      <span className="h-6 w-px bg-neutral-200" />
+      <span className="h-9 w-px bg-neutral-200" />
       <span className="w-28 text-center text-[11px] text-neutral-500">
         <span className="block font-medium text-neutral-900">Semana {week}:</span>
         {text}
@@ -139,7 +139,7 @@ function TimelineTrack({ weeks }: TimelineTrackProps) {
   const maxWeek = weeks[weeks.length - 1]?.week ?? 1;
 
   return (
-    <div className="relative ml-28 h-10">
+    <div className="relative mr-[30px] ml-[142px] h-10">
       <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-neutral-200" />
       {weeks.map((week) => (
         <TimelineMarker
@@ -163,8 +163,8 @@ export function LandingPaymentTimeline() {
         </h2>
       </div>
 
-      <div className="mx-[15px] mt-5 mb-[15px] overflow-x-auto rounded-2xl border border-neutral-200 bg-white px-8">
-        <div className="relative w-full min-w-[880px] px-16 py-20">
+      <div className="mx-[15px] mt-5 mb-[15px] rounded-2xl border border-neutral-200 bg-white px-8">
+        <div className="relative w-full px-16 py-28">
           <TimelineRowLabel edge="top">Venta</TimelineRowLabel>
           <TimelineRowLabel edge="bottom">Apartado</TimelineRowLabel>
           <TimelineTrack weeks={weeks} />

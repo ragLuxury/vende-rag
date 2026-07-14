@@ -67,16 +67,16 @@ export function LoginFormBody() {
 
       <Link
         href="/forgot-password"
-        className="text-brand mt-6 block text-center text-sm font-medium"
+        className="text-brand mt-4 block text-center text-sm font-medium"
       >
         Olvidé mi contraseña
       </Link>
 
-      <div className="mt-8">
+      <div className="mt-4">
         <SocialAuthButtons />
       </div>
 
-      <div className="mt-8">
+      <div className="mt-4">
         <Divider label="O también" />
       </div>
 
