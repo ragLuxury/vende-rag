@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { useCurrentUser } from '@/src/features/auth/presentation/hooks/use-current-user';
 import { TopNav } from './top-nav';
 
 const STANDALONE_PATHS: readonly string[] = [
@@ -19,11 +20,12 @@ interface AppShellProps {
 
 export function AppShell({ children, topRight }: AppShellProps) {
   const pathname = usePathname();
+  const user = useCurrentUser();
   const isStandalone = STANDALONE_PATHS.some(
     (path) => pathname === path || pathname.startsWith(`${path}/`),
   );
 
-  if (isStandalone) {
+  if (isStandalone || !user) {
     return <>{children}</>;
   }
 
