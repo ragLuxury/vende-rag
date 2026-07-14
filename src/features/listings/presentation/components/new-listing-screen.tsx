@@ -22,11 +22,13 @@ interface NewListingScreenProps {
 }
 
 function toCreateInput(draft: ProductDraft, clientId: number): CreateProductInput {
+  const normalizedPrice = draft.price === '' ? null : Number(draft.price);
+
   return {
     brandId: draft.brandId as number,
     origen: Number(draft.origin),
     model: draft.description,
-    price: Number(draft.price),
+    price: normalizedPrice,
     detail: draft.details,
     linkProducto: draft.origin === PRELOVED_ORIGIN ? draft.pageName.trim() : '',
     clientId,
