@@ -184,6 +184,13 @@ export const FIRST_TIME_CARDS: readonly FirstTimeCard[] = [
     href: '/vender',
   },
   {
+    title: 'Compra en RAG',
+    description:
+      'Busca entre los más de 1,500 productos que tenemos para ti, con precios inigualables.',
+    ctaLabel: 'Comprar',
+    href: '/disenadores',
+  },
+  {
     title: '¿Tienes preguntas?',
     description: 'Estamos para ayudarte, escríbenos para resolver cualquier duda que tengas.',
     ctaLabel: 'Contactar',

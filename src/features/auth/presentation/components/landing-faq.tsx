@@ -9,7 +9,7 @@ export function LandingFaq() {
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
-    <section id="preguntas-frecuentes" className="border-t border-neutral-200 py-20">
+    <section id="preguntas-frecuentes" className="pt-1 pb-10">
       <div className="mx-auto w-full max-w-3xl px-8">
         <h2 className="font-editors text-center text-4xl text-neutral-900">
           Preguntas <span className="italic">frecuentes</span>
@@ -50,7 +50,7 @@ export function LandingFaq() {
         <div className="mt-8 text-center">
           <Link
             href="/preguntas-frecuentes"
-            className="rounded-full bg-neutral-900 px-8 py-3 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
+            className="rounded-[10px] bg-neutral-900 px-8 py-3 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
           >
             Ver más
           </Link>

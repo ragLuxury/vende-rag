@@ -3,7 +3,7 @@ import { VALUATION_CARDS, VALUATION_INTRO } from './landing-content';
 
 export function LandingValuation() {
   return (
-    <section id="como-valuamos" className="border-t border-neutral-100 bg-neutral-50 py-20">
+    <section id="como-valuamos" className="border-t border-neutral-100 bg-neutral-50 py-10">
       <div className="mx-auto w-full max-w-6xl px-8">
         <h2 className="font-editors text-center text-4xl text-neutral-900">
           Cómo <span className="italic">valuamos</span>
@@ -14,20 +14,17 @@ export function LandingValuation() {
           {VALUATION_CARDS.map((item) => (
             <div
               key={item.title}
-              className="flex flex-col items-center rounded-3xl border border-neutral-200 bg-white p-8 text-center"
+              className="flex aspect-square flex-col items-center justify-center rounded-xl border border-neutral-200 bg-white px-3 py-8 text-center"
             >
               <Image
                 src={item.icon}
                 alt=""
-                width={72}
-                height={72}
-                className="h-18 w-18 object-contain"
+                width={144}
+                height={144}
+                className="size-36 max-w-none object-contain"
               />
               <h3 className="mt-6 text-lg font-semibold text-neutral-900">{item.title}</h3>
-              <a
-                href="#nuestro-proceso"
-                className="text-brand mt-4 text-sm font-medium underline underline-offset-4"
-              >
+              <a href="#nuestro-proceso" className="text-brand mt-4 text-sm font-medium">
                 Saber más...
               </a>
               <p className="sr-only">{item.description}</p>

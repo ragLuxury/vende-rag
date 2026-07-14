@@ -3,19 +3,19 @@ import Link from 'next/link';
 
 export function LandingHero() {
   return (
-    <section className="grid min-h-[660px] w-full grid-cols-2">
-      <div className="relative min-h-[660px] overflow-hidden">
+    <section className="grid min-h-[530px] w-full grid-cols-[calc(50%+50px)_calc(50%-50px)] border-t border-gray-100 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
+      <div className="relative min-h-[530px] overflow-hidden">
         <Image
           src="/images/header-bolsas.jpg"
           alt="Piezas de lujo en consignación con RAG"
           fill
           priority
           sizes="50vw"
-          className="object-contain"
+          className="object-cover"
         />
       </div>
 
-      <div className="flex min-h-[660px] flex-col items-center justify-center px-12 text-center">
+      <div className="flex min-h-[530px] flex-col items-center justify-center px-12 text-center">
         <p className="text-brand text-sm font-semibold tracking-[0.2em] uppercase">
           Vender con nosotros
         </p>
@@ -34,7 +34,7 @@ export function LandingHero() {
 
         <Link
           href="/login"
-          className="bg-brand mt-10 inline-block rounded-full px-8 py-4 text-base font-medium text-white transition-opacity hover:opacity-90"
+          className="bg-brand mt-10 inline-block rounded-[14px] px-8 py-4 text-base font-medium text-white transition-opacity hover:opacity-90"
         >
           Quiero vender
         </Link>

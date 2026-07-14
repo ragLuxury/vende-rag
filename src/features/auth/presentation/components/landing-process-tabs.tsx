@@ -9,7 +9,7 @@ export function LandingProcessTabs() {
   const activeTab = PROCESS_TABS.find((tab) => tab.id === activeId) ?? PROCESS_TABS[0];
 
   return (
-    <section id="nuestro-proceso" className="py-20">
+    <section id="nuestro-proceso" className="py-10">
       <div className="mx-auto w-full max-w-6xl px-8">
         <h2 className="font-editors text-center text-4xl text-neutral-900">
           Lo que necesitas saber sobre nuestro <span className="italic">proceso</span>
@@ -21,7 +21,7 @@ export function LandingProcessTabs() {
               key={tab.id}
               type="button"
               onClick={() => setActiveId(tab.id)}
-              className={`border-b-2 pb-4 text-xs font-semibold tracking-wide uppercase transition-colors ${
+              className={`cursor-pointer border-b-2 pb-4 text-xs font-semibold tracking-wide uppercase transition-colors ${
                 tab.id === activeId
                   ? 'border-brand text-brand'
                   : 'border-transparent text-neutral-400 hover:text-neutral-600'
@@ -33,7 +33,7 @@ export function LandingProcessTabs() {
         </div>
 
         {activeTab ? (
-          <div className="mt-12 grid grid-cols-2 items-center gap-16">
+          <div className="mt-12 grid grid-cols-2 gap-16">
             <div>
               <p className="text-brand text-xs font-semibold tracking-[0.2em] uppercase">
                 {activeTab.title}

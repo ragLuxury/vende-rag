@@ -23,17 +23,17 @@ export function LandingFooter() {
 
         <form
           onSubmit={handleNewsletterSubmit}
-          className="mx-auto mt-6 flex max-w-md items-center gap-3"
+          className="mx-auto mt-6 flex max-w-md items-stretch overflow-hidden rounded-full border border-neutral-300 bg-white focus-within:border-neutral-500"
         >
           <input
             type="email"
             required
             placeholder="Ingresa tu correo electrónico"
-            className="flex-1 rounded-full border border-neutral-300 bg-white px-5 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none"
+            className="flex-1 bg-transparent px-5 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
           />
           <button
             type="submit"
-            className="bg-brand rounded-full px-6 py-3 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
+            className="bg-brand px-6 py-3 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
           >
             Confirmar
           </button>

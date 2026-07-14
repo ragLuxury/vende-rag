@@ -5,7 +5,7 @@ import { NAV_LINKS } from './landing-content';
 
 export function LandingHeader() {
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur">
+    <header className="top-0 z-50 bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-16 w-full items-center justify-between px-4">
         <Icon icon="ion:diamond-outline" className="text-brand size-7" />
         <Image
@@ -14,12 +14,12 @@ export function LandingHeader() {
           width={140}
           height={32}
           priority
-          className="h-7 w-auto"
+          className="h-15 w-auto"
         />
         <div className="flex items-center gap-5">
           <Link
             href="/login"
-            className="bg-brand rounded-full px-5 py-2 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
+            className="bg-brand rounded-[8px] px-5 py-2 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
           >
             Vender
           </Link>
