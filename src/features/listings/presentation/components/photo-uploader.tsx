@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from '@iconify/react';
 
 import { BottomSheet } from '@/src/shared/ui/bottom-sheet';
@@ -18,6 +18,7 @@ export function PhotoUploader({ photos, onChange }: PhotoUploaderProps) {
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
   const previews = useMemo(() => photos.map((file) => URL.createObjectURL(file)), [photos]);
 
   useEffect(() => {
@@ -27,10 +28,54 @@ export function PhotoUploader({ photos, onChange }: PhotoUploaderProps) {
   const canAddMore = photos.length < MAX_PHOTOS;
   const isValid = photos.length >= MIN_PHOTOS;
 
+  const addFiles = useCallback(
+    (files: readonly File[]) => {
+      if (files.length === 0) return;
+      onChange([...photos, ...files].slice(0, MAX_PHOTOS));
+    },
+    [photos, onChange],
+  );
+
   function handleFiles(fileList: FileList | null) {
     if (!fileList) return;
-    const next = [...photos, ...Array.from(fileList)].slice(0, MAX_PHOTOS);
-    onChange(next);
+    addFiles(Array.from(fileList));
+  }
+
+  useEffect(() => {
+    function handlePaste(event: ClipboardEvent) {
+      const items = event.clipboardData?.items;
+      if (!items) return;
+
+      const imageFiles = Array.from(items)
+        .filter((item) => item.kind === 'file' && item.type.startsWith('image/'))
+        .map((item) => item.getAsFile())
+        .filter((file): file is File => file !== null);
+
+      if (imageFiles.length === 0) return;
+      event.preventDefault();
+      addFiles(imageFiles);
+    }
+
+    window.addEventListener('paste', handlePaste);
+    return () => window.removeEventListener('paste', handlePaste);
+  }, [addFiles]);
+
+  function handleDragOver(event: React.DragEvent<HTMLElement>) {
+    event.preventDefault();
+    setIsDragOver(true);
+  }
+
+  function handleDragLeave() {
+    setIsDragOver(false);
+  }
+
+  function handleDrop(event: React.DragEvent<HTMLElement>) {
+    event.preventDefault();
+    setIsDragOver(false);
+    const imageFiles = Array.from(event.dataTransfer.files).filter((file) =>
+      file.type.startsWith('image/'),
+    );
+    addFiles(imageFiles);
   }
 
   function removeAt(index: number) {
@@ -71,12 +116,20 @@ export function PhotoUploader({ photos, onChange }: PhotoUploaderProps) {
         <button
           type="button"
           onClick={() => setSheetOpen(true)}
-          className="flex h-64 w-full flex-col items-center justify-center gap-3 rounded-3xl bg-neutral-100 text-neutral-500"
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          className={`flex h-64 w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed text-neutral-500 transition-colors ${
+            isDragOver ? 'border-brand bg-brand/5' : 'border-transparent bg-neutral-100'
+          }`}
         >
           <Icon icon="ion:images-outline" className="size-9" />
           <span className="text-base text-neutral-700">Añadir foto</span>
           <span className="text-sm text-neutral-400">
             Sube entre {MIN_PHOTOS} y {MAX_PHOTOS} imágenes
+          </span>
+          <span className="hidden text-xs text-neutral-400 md:block">
+            Arrastra tus imágenes aquí o pégalas con Ctrl+V
           </span>
         </button>
       ) : (
@@ -104,7 +157,12 @@ export function PhotoUploader({ photos, onChange }: PhotoUploaderProps) {
             <button
               type="button"
               onClick={() => setSheetOpen(true)}
-              className="flex aspect-square flex-col items-center justify-center gap-2 rounded-2xl bg-neutral-200/60 px-3 text-center text-neutral-500"
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              className={`flex aspect-square flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-3 text-center text-neutral-500 transition-colors ${
+                isDragOver ? 'border-brand bg-brand/5' : 'border-transparent bg-neutral-200/60'
+              }`}
             >
               <Icon icon="ion:images-outline" className="size-8" />
               <span className="text-sm text-neutral-700">Añadir foto</span>
