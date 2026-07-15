@@ -316,7 +316,14 @@ export function getFooterColumns(isAuthenticated: boolean): readonly FooterLinkC
 }
 
 export const SOCIAL_LINKS: readonly { icon: string; label: string; href: string }[] = [
-  { icon: 'ion:logo-instagram', label: 'Instagram', href: 'https://instagram.com' },
-  { icon: 'ion:logo-facebook', label: 'Facebook', href: 'https://facebook.com' },
-  { icon: 'ion:logo-pinterest', label: 'Pinterest', href: 'https://pinterest.com' },
+  {
+    icon: 'ion:logo-instagram',
+    label: 'Instagram Mujer',
+    href: 'https://www.instagram.com/rag.mx/',
+  },
+  {
+    icon: 'ion:logo-instagram',
+    label: 'Instagram Hombre',
+    href: 'https://www.instagram.com/menbyrag_/',
+  },
 ];

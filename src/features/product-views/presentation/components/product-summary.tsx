@@ -20,7 +20,12 @@ interface ProductSummaryProps {
 }
 
 export function ProductSummary({ items, selectedIndex, onSelect }: ProductSummaryProps) {
-  const columns = items.length === 3 ? 'grid-cols-3' : 'grid-cols-2';
+  const columns =
+    items.length === 4
+      ? 'grid-cols-2 md:grid-cols-4'
+      : items.length === 3
+        ? 'grid-cols-3'
+        : 'grid-cols-2';
 
   return (
     <div className={`grid gap-3 ${columns}`}>

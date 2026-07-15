@@ -44,7 +44,7 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
           </button>
         </form>
 
-        <div className="mt-8 flex justify-around gap-5">
+        <div className="mt-8 flex justify-center gap-3">
           {SOCIAL_LINKS.map((social) => (
             <a
               key={social.label}

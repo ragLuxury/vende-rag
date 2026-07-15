@@ -31,7 +31,7 @@ export function ProductCard({ product, secondary }: ProductCardProps) {
 
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white">
-      <div className="relative aspect-square bg-neutral-100">
+      <div className="relative aspect-[1.3] bg-neutral-100">
         {showImage ? (
           <Image
             src={product.image}
@@ -57,10 +57,10 @@ export function ProductCard({ product, secondary }: ProductCardProps) {
         <p className="text-sm text-neutral-500">
           {secondary.label}: {currencyFormatter.format(secondary.value)}
         </p>
-        <p className="text-xs text-neutral-400">ID: {product.id}</p>
+        <p className="mb-2 text-xs text-neutral-400">ID: {product.id}</p>
 
         <span
-          className="mt-auto self-stretch rounded-full py-1.5 text-center text-sm font-medium"
+          className="mt-auto w-40 self-center rounded-full py-1.5 text-center text-sm font-medium"
           style={getStatusStyle(pillStatus)}
         >
           {pillStatus}
