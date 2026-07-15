@@ -9,7 +9,7 @@ export function LandingNewProducts() {
           Nuevos <span className="italic">Productos</span>
         </h2>
 
-        <div className="mt-12 flex snap-x gap-6 overflow-x-auto pb-2">
+        <div className="mt-12 flex justify-center snap-x gap-6 overflow-x-auto pb-2">
           {NEW_PRODUCTS.map((product) => (
             <div key={product.id} className="w-56 shrink-0 snap-start">
               <div className="flex aspect-square items-center justify-center rounded-2xl bg-neutral-100">

@@ -1,4 +1,4 @@
-import { Icon } from '@iconify/react';
+import Image from 'next/image';
 import { WHY_CONSIGN } from './landing-content';
 
 export function LandingWhyConsign() {
@@ -12,9 +12,13 @@ export function LandingWhyConsign() {
         <div className="mt-12 grid grid-cols-5 gap-6">
           {WHY_CONSIGN.map((item) => (
             <div key={item.title} className="flex flex-col items-center text-center">
-              <span className="bg-brand/10 flex size-16 items-center justify-center rounded-full">
-                <Icon icon={item.icon} className="text-brand size-7" />
-              </span>
+              <Image
+                src={item.image}
+                alt={item.title}
+                width={96}
+                height={96}
+                className="size-24 max-w-none object-contain"
+              />
               <h3 className="mt-5 text-sm font-semibold text-neutral-900">{item.title}</h3>
               <p className="mt-2 text-xs leading-relaxed text-neutral-500">{item.description}</p>
             </div>

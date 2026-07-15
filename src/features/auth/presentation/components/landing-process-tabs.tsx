@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Icon } from '@iconify/react';
+import Image from 'next/image';
 import { PROCESS_TABS } from './landing-content';
 
 export function LandingProcessTabs() {
@@ -41,8 +41,13 @@ export function LandingProcessTabs() {
               <h3 className="font-editors mt-4 text-3xl text-neutral-900">{activeTab.heading}</h3>
               <p className="mt-6 leading-relaxed text-neutral-500">{activeTab.body}</p>
             </div>
-            <div className="flex aspect-square items-center justify-center rounded-3xl bg-neutral-50">
-              <Icon icon="ion:phone-portrait-outline" className="size-24 text-neutral-300" />
+            <div className="relative aspect-square overflow-hidden rounded-3xl bg-neutral-50">
+              <Image
+                src="/images/process-rag/precio-4.png"
+                alt="Proceso de venta RAG"
+                fill
+                className="object-cover"
+              />
             </div>
           </div>
         ) : null}

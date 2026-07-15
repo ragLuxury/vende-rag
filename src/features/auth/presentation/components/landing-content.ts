@@ -101,34 +101,34 @@ export const LAYAWAY_TIMELINE: readonly TimelineMilestone[] = [
 ];
 
 export interface WhyConsignItem {
-  icon: string;
+  image: string;
   title: string;
   description: string;
 }
 
 export const WHY_CONSIGN: readonly WhyConsignItem[] = [
   {
-    icon: 'ion:calculator-outline',
+    image: '/images/consignar/concigna-1.png',
     title: 'Valuaciones precisas',
     description: 'Nuestro equipo te sugiere el mejor precio posible para vender tus piezas.',
   },
   {
-    icon: 'ion:cash-outline',
+    image: '/images/consignar/concigna-2.png',
     title: 'Pagos rápidos',
     description: 'Recibe tu pago desde 2 días después de la venta.',
   },
   {
-    icon: 'ion:pricetags-outline',
+    image: '/images/consignar/concigna-3.png',
     title: 'Comisiones justas',
     description: 'Comisiones justas y escalonadas para no castigar tu ganancia.',
   },
   {
-    icon: 'ion:repeat-outline',
+    image: '/images/consignar/concigna-4.png',
     title: 'Venta continua',
     description: 'Envío de paquetes todos los días del año, a todos los estados de México.',
   },
   {
-    icon: 'ion:headset-outline',
+    image: '/images/consignar/concigna-5.png',
     title: 'Servicio al seller',
     description: 'Equipo de atención a sellers para cualquier duda o comentario.',
   },

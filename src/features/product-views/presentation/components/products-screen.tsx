@@ -249,7 +249,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
                 onClick={() => setDesktopSortMenuOpen((open) => !open)}
                 aria-label="Ordenar por"
                 aria-expanded={desktopSortMenuOpen}
-                className="flex size-12 items-center justify-center rounded-full bg-neutral-900 text-white transition-opacity hover:opacity-90"
+                className="flex size-12 cursor-pointer items-center justify-center rounded-full border border-neutral-400 bg-white text-neutral-500 transition-all duration-300 ease-out hover:border-neutral-900 hover:bg-neutral-900 hover:text-white"
               >
                 <Icon icon="ion:funnel-outline" className="size-5" />
               </button>

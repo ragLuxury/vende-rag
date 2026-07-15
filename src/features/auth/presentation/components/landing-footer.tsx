@@ -52,6 +52,7 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
               target="_blank"
               rel="noreferrer"
               aria-label={social.label}
+              title={social.label}
               className="text-neutral-500 transition-colors hover:text-neutral-900"
             >
               <Icon icon={social.icon} className="size-5" />
