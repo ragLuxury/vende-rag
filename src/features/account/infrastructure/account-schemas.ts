@@ -42,6 +42,13 @@ export const clientProfileResponseSchema = z.object({
   }),
 });
 
+export const clientProfileSummaryResponseSchema = z.object({
+  data: z.object({
+    name: z.string(),
+    lastname: z.string(),
+  }),
+});
+
 export const updateProfileResponseSchema = z.unknown();
 
 export const deleteAccountResponseSchema = z.unknown();

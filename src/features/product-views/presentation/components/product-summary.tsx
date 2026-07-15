@@ -11,6 +11,7 @@ export interface SummaryItem {
   icon: string;
   format: 'count' | 'currency';
   value: number;
+  count?: number;
 }
 
 interface ProductSummaryProps {
@@ -49,6 +50,11 @@ export function ProductSummary({ items, selectedIndex, onSelect }: ProductSummar
               <Icon icon={item.icon} className="size-6 text-neutral-400" />
             </div>
             <span className="text-sm text-neutral-600">{item.label}</span>
+            {item.count !== undefined ? (
+              <span className="text-xs text-neutral-400">
+                {item.count} {item.count === 1 ? 'solicitud' : 'solicitudes'}
+              </span>
+            ) : null}
           </button>
         );
       })}

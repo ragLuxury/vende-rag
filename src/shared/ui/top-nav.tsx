@@ -14,7 +14,6 @@ const ITEMS: readonly NavItem[] = [
   { label: 'Mis Publicaciones', href: '/publicaciones' },
   { label: 'Mis Ventas', href: '/mis-ventas' },
   { label: 'Mis Devoluciones', href: '/devoluciones' },
-  { label: 'Mi Perfil', href: '/perfil' },
 ];
 
 interface TopNavProps {
@@ -25,7 +24,7 @@ export function TopNav({ trailing }: TopNavProps) {
   const pathname = usePathname();
 
   return (
-    <header className="fixed inset-x-0 top-0 z-[110] hidden h-20 items-center gap-8 border-b border-neutral-200 bg-white px-8 md:flex">
+    <header className="fixed inset-x-0 top-0 z-[110] hidden h-20 items-center justify-between border-b border-neutral-200 bg-white px-8 md:flex">
       <Link href="/welcome" aria-label="RAG" className="shrink-0">
         <Image
           src="/images/headerv2.png"
@@ -37,7 +36,7 @@ export function TopNav({ trailing }: TopNavProps) {
         />
       </Link>
 
-      <nav className="flex-1 overflow-x-auto">
+      <nav className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <ul className="flex items-center gap-1">
           {ITEMS.map((item) => {
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);

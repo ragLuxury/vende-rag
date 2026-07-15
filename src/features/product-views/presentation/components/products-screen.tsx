@@ -101,20 +101,22 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
 
   const summary = useMemo<readonly SummaryItem[]>(() => {
     const list = products ?? [];
-    return config.summary.map((item) => ({
-      label: item.label,
-      icon: item.icon,
-      format: item.format,
-      value:
-        item.format === 'currency'
-          ? list
-              .filter(item.matches)
-              .reduce(
+    return config.summary.map((item) => {
+      const matches = list.filter(item.matches);
+      return {
+        label: item.label,
+        icon: item.icon,
+        format: item.format,
+        value:
+          item.format === 'currency'
+            ? matches.reduce(
                 (total, product) => total + amountFor(product, item.amount ?? 'earning', paidById),
                 0,
               )
-          : list.filter(item.matches).length,
-    }));
+            : matches.length,
+        ...(item.format === 'currency' ? { count: matches.length } : {}),
+      };
+    });
   }, [products, config, paidById]);
 
   const visibleProducts = useMemo(() => {

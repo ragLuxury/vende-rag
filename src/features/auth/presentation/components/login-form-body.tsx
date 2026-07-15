@@ -44,12 +44,14 @@ export function LoginFormBody() {
           autoComplete="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
+          compact
         />
         <PasswordField
           label="Contraseña"
           autoComplete="current-password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
+          compact
         />
         {errorMessage && (
           <p role="alert" className="text-sm text-red-600">

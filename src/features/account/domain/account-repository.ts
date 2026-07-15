@@ -56,6 +56,16 @@ export interface ClientProfile {
   paymentMethod: ClientPaymentMethod | null;
 }
 
+/**
+ * Short, display-only name pair (first word of each of the DB's name/lastname
+ * columns). Distinct from {@link ClientProfile}, which carries the full
+ * multi-word name used by profile-edit flows.
+ */
+export interface ClientProfileSummary {
+  firstName: string;
+  lastName: string;
+}
+
 export interface ProfileUpdate {
   firstName: string;
   lastName: string;
@@ -65,6 +75,7 @@ export interface ProfileUpdate {
 
 export interface AccountRepository {
   getProfile(clientId: number, signal?: AbortSignal): Promise<ClientProfile>;
+  getProfileSummary(clientId: number, signal?: AbortSignal): Promise<ClientProfileSummary>;
   updateProfile(clientId: number, data: ProfileUpdate, signal?: AbortSignal): Promise<void>;
   deleteAccount(clientId: number): Promise<void>;
   createAddress(clientId: number, data: AddressInput, signal?: AbortSignal): Promise<void>;
