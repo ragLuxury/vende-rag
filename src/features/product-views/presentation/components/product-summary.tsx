@@ -41,13 +41,18 @@ export function ProductSummary({ items, selectedIndex, onSelect }: ProductSummar
             type="button"
             onClick={() => onSelect(index)}
             aria-pressed={active}
-            className={`flex flex-col gap-1.5 rounded-2xl border px-8 py-5 text-center transition-colors ${
-              active ? 'border-neutral-900 bg-neutral-50' : 'border-neutral-200'
+            className={`group flex flex-col cursor-pointer gap-1.5 rounded-2xl border px-8 py-5 text-center transition-colors ${
+              active
+                ? 'border-neutral-900 bg-neutral-50 hover:border-neutral-900'
+                : 'border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50'
             }`}
           >
             <div className="flex items-center justify-between gap-2">
               <span className="text-2xl font-semibold text-neutral-900">{display}</span>
-              <Icon icon={item.icon} className="size-6 text-neutral-400" />
+              <Icon
+                icon={item.icon}
+                className={`size-6 ${active ? 'text-neutral-400' : 'text-neutral-400 group-hover:text-neutral-600'}`}
+              />
             </div>
             <span className="text-sm text-neutral-600">{item.label}</span>
             {item.count !== undefined ? (
