@@ -18,8 +18,6 @@ import { ProductSummary, type SummaryItem } from './product-summary';
 
 type SortOrder = 'price-desc' | 'price-asc' | 'oldest' | 'newest';
 
-const SEARCH_DEBOUNCE_MS = 400;
-
 function amountFor(
   product: Product,
   amount: CurrencyAmount,
@@ -53,19 +51,12 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
   const router = useRouter();
   const config = VIEW_CONFIG[view];
 
-  const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [sortOrder, setSortOrder] = useState<SortOrder>('price-desc');
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [mobileSortMenuOpen, setMobileSortMenuOpen] = useState(false);
   const [desktopSortMenuOpen, setDesktopSortMenuOpen] = useState(false);
   const mobileSortMenuRef = useRef<HTMLDivElement>(null);
   const desktopSortMenuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => setDebouncedSearch(search), SEARCH_DEBOUNCE_MS);
-    return () => clearTimeout(timeout);
-  }, [search]);
 
   useEffect(() => {
     if (!mobileSortMenuOpen && !desktopSortMenuOpen) return;
@@ -94,9 +85,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
     setDesktopSortMenuOpen(false);
   }
 
-  const isSolicitudesView = view === 'solicitudes';
-  const activeSearch = isSolicitudesView ? '' : debouncedSearch;
-  const { data: products, isLoading, isError } = useProducts(view, clientId, activeSearch);
+  const { data: products, isLoading, isError } = useProducts(view, clientId, '');
 
   const productIds = useMemo(() => (products ?? []).map((product) => product.id), [products]);
   const needsPayments = view === 'ventas';
@@ -182,39 +171,23 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
         </header>
 
         <div className="flex-1 px-6 pt-6 pb-28">
-          {!isSolicitudesView ? (
-            <div className="relative">
-              <Icon
-                icon="ion:search-outline"
-                className="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-neutral-400"
-              />
-              <input
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                aria-label={config.searchPlaceholder}
-                placeholder={config.searchPlaceholder}
-                className="focus:border-brand w-full rounded-full border border-neutral-200 bg-neutral-50 py-3.5 pr-4 pl-11 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
+          <div className="flex flex-wrap items-center justify-center gap-3 py-2">
+            <div className="w-fit">
+              <ProductSummary
+                items={summary}
+                selectedIndex={selectedIndex}
+                onSelect={handleSummarySelect}
               />
             </div>
-          ) : null}
 
-          <div className="mt-6">
-            <ProductSummary
-              items={summary}
-              selectedIndex={selectedIndex}
-              onSelect={handleSummarySelect}
-            />
-          </div>
-
-          <div className="mt-6 flex justify-end">
-            <div ref={mobileSortMenuRef} className="relative">
+            <div ref={mobileSortMenuRef} className="relative shrink-0">
               <button
                 type="button"
                 onClick={() => setMobileSortMenuOpen((open) => !open)}
-                className="mt-2.5 flex items-center gap-2 text-base text-neutral-700"
+                className="flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-3 py-2 text-sm font-medium text-neutral-700 shadow-sm"
               >
                 {sortLabel}
-                <Icon icon="ion:funnel-outline" className="size-5" />
+                <Icon icon="ion:funnel-outline" className="size-4" />
               </button>
 
               {mobileSortMenuOpen ? (
@@ -259,8 +232,8 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
 
       <div className="hidden flex-1 flex-col px-8 py-10 md:flex">
         <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col">
-          <div className="flex w-full items-center justify-center gap-4">
-            <div className="shrink-0">
+          <div className="flex flex-wrap items-center justify-center gap-4 py-2">
+            <div className="w-fit">
               <ProductSummary
                 items={summary}
                 selectedIndex={selectedIndex}
@@ -268,28 +241,13 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
               />
             </div>
 
-            {!isSolicitudesView ? (
-              <div className="relative flex-1">
-                <Icon
-                  icon="ion:search-outline"
-                  className="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-neutral-400"
-                />
-                <input
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  aria-label={config.searchPlaceholder}
-                  placeholder={config.searchPlaceholder}
-                  className="focus:border-brand w-full rounded-full border border-neutral-200 bg-neutral-50 py-3 pr-4 pl-11 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
-                />
-              </div>
-            ) : null}
             <div ref={desktopSortMenuRef} className="relative shrink-0">
               <button
                 type="button"
                 onClick={() => setDesktopSortMenuOpen((open) => !open)}
                 aria-label="Ordenar por"
                 aria-expanded={desktopSortMenuOpen}
-                className="mt-2.5 flex size-12 items-center justify-center rounded-full bg-neutral-900 text-white transition-opacity hover:opacity-90"
+                className="flex size-12 items-center justify-center rounded-full bg-neutral-900 text-white transition-opacity hover:opacity-90"
               >
                 <Icon icon="ion:funnel-outline" className="size-5" />
               </button>
