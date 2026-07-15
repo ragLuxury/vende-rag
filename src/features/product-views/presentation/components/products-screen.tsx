@@ -234,7 +234,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
 
       <div className="hidden flex-1 flex-col px-8 py-10 md:flex">
         <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col">
-          <div className="flex flex-wrap items-center justify-center gap-4 py-2">
+          <div className="flex justify-center py-2">
             <div className="w-fit">
               <ProductSummary
                 items={summary}
@@ -242,41 +242,43 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
                 onSelect={handleSummarySelect}
               />
             </div>
-
-            <div ref={desktopSortMenuRef} className="relative shrink-0">
-              <button
-                type="button"
-                onClick={() => setDesktopSortMenuOpen((open) => !open)}
-                aria-label="Ordenar por"
-                aria-expanded={desktopSortMenuOpen}
-                className="flex size-12 cursor-pointer items-center justify-center rounded-full border border-neutral-400 bg-white text-neutral-500 transition-all duration-300 ease-out hover:border-neutral-900 hover:bg-neutral-900 hover:text-white"
-              >
-                <Icon icon="ion:funnel-outline" className="size-5" />
-              </button>
-
-              {desktopSortMenuOpen ? (
-                <div className="absolute top-full right-0 z-10 mt-2 w-40 rounded-2xl border border-neutral-200 bg-white py-2 shadow-lg">
-                  {[
-                    { value: 'price-desc', label: 'Precio: mayor a menor' },
-                    { value: 'price-asc', label: 'Precio: menor a mayor' },
-                    { value: 'oldest', label: 'Más antigua' },
-                    { value: 'newest', label: 'Más reciente' },
-                  ].map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => handleSortSelect(option.value as SortOrder)}
-                      className={`block w-full px-4 py-2.5 text-left text-sm transition-colors hover:bg-neutral-50 ${sortOrder === option.value ? 'font-semibold text-neutral-900' : 'text-neutral-600'}`}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              ) : null}
-            </div>
           </div>
 
-          <div className="mt-10 flex-1">
+          <div className="mt-1 flex-1">
+            <div className="mb-2 flex justify-end">
+              <div ref={desktopSortMenuRef} className="relative shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setDesktopSortMenuOpen((open) => !open)}
+                  aria-label="Ordenar por"
+                  aria-expanded={desktopSortMenuOpen}
+                  className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-neutral-400 bg-white text-neutral-500 transition-all duration-300 ease-out hover:border-neutral-900 hover:bg-neutral-900 hover:text-white"
+                >
+                  <Icon icon="ion:funnel-outline" className="size-4" />
+                </button>
+
+                {desktopSortMenuOpen ? (
+                  <div className="absolute top-full right-0 z-10 mt-2 w-40 rounded-2xl border border-neutral-200 bg-white py-2 shadow-lg">
+                    {[
+                      { value: 'price-desc', label: 'Precio: mayor a menor' },
+                      { value: 'price-asc', label: 'Precio: menor a mayor' },
+                      { value: 'oldest', label: 'Más antigua' },
+                      { value: 'newest', label: 'Más reciente' },
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => handleSortSelect(option.value as SortOrder)}
+                        className={`block w-full px-4 py-2.5 text-left text-sm transition-colors hover:bg-neutral-50 ${sortOrder === option.value ? 'font-semibold text-neutral-900' : 'text-neutral-600'}`}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            </div>
+
             {isLoading ? (
               <p className="py-12 text-center text-sm text-neutral-400">Cargando...</p>
             ) : isError ? (
