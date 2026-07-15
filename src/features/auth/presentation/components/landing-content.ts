@@ -201,13 +201,42 @@ export const FIRST_TIME_CARDS: readonly FirstTimeCard[] = [
 export interface NewProduct {
   id: string;
   name: string;
+  image: string;
 }
 
+// Only 4 distinct product names are available for 6 image slots; the last
+// two entries reuse the first two names until real product names are provided.
 export const NEW_PRODUCTS: readonly NewProduct[] = [
-  { id: 'fendi-baguette-tiffany', name: 'RAG - Fendi Baguette x Tiffany' },
-  { id: 'gucci-crystal-gg', name: 'RAG - Gucci Crystal GG' },
-  { id: 'hermes-birkin-25-swift', name: 'RAG - Hermès Birkin 25 Swift' },
-  { id: 'saint-laurent-loulou-small', name: 'RAG - Saint Laurent LouLou Small' },
+  {
+    id: 'fendi-baguette-tiffany',
+    name: 'RAG - Fendi Baguette x Tiffany',
+    image: '/images/new-products/new-product-1.jpeg',
+  },
+  {
+    id: 'gucci-crystal-gg',
+    name: 'RAG - Gucci Crystal GG',
+    image: '/images/new-products/new-product-2.jpeg',
+  },
+  {
+    id: 'hermes-birkin-25-swift',
+    name: 'RAG - Hermès Birkin 25 Swift',
+    image: '/images/new-products/new-product-3.jpeg',
+  },
+  {
+    id: 'saint-laurent-loulou-small',
+    name: 'RAG - Saint Laurent LouLou Small',
+    image: '/images/new-products/new-product-4.jpeg',
+  },
+  {
+    id: 'fendi-baguette-tiffany-2',
+    name: 'RAG - Fendi Baguette x Tiffany',
+    image: '/images/new-products/new-product-5.jpeg',
+  },
+  {
+    id: 'gucci-crystal-gg-2',
+    name: 'RAG - Gucci Crystal GG',
+    image: '/images/new-products/new-product-6.jpeg',
+  },
 ];
 
 export interface FaqPreviewItem {

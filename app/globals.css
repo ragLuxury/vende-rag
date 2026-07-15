@@ -32,6 +32,19 @@ body {
   }
 }
 
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-marquee {
+  animation: marquee-scroll 30s linear infinite;
+}
+
 .legal-content {
   font-size: 0.9375rem;
   line-height: 1.7;

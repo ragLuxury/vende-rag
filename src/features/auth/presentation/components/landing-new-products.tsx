@@ -1,5 +1,9 @@
-import { Icon } from '@iconify/react';
+import Image from 'next/image';
 import { NEW_PRODUCTS } from './landing-content';
+
+// Rendered twice back-to-back so the track is exactly double-width; animating
+// from translateX(0) to translateX(-50%) loops seamlessly at the halfway point.
+const MARQUEE_ITEMS = [...NEW_PRODUCTS, ...NEW_PRODUCTS];
 
 export function LandingNewProducts() {
   return (
@@ -9,15 +13,20 @@ export function LandingNewProducts() {
           Nuevos <span className="italic">Productos</span>
         </h2>
 
-        <div className="mt-12 flex justify-center snap-x gap-6 overflow-x-auto pb-2">
-          {NEW_PRODUCTS.map((product) => (
-            <div key={product.id} className="w-56 shrink-0 snap-start">
-              <div className="flex aspect-square items-center justify-center rounded-2xl bg-neutral-100">
-                <Icon icon="ion:image-outline" className="size-10 text-neutral-300" />
+        <div className="mt-12 overflow-hidden">
+          <div className="animate-marquee flex w-max gap-6 hover:[animation-play-state:paused]">
+            {MARQUEE_ITEMS.map((product, index) => (
+              <div
+                key={`${product.id}-${index}`}
+                className="w-56 shrink-0"
+                aria-hidden={index >= NEW_PRODUCTS.length}
+              >
+                <div className="relative aspect-square overflow-hidden rounded-2xl bg-neutral-100">
+                  <Image src={product.image} alt={product.name} fill className="object-cover" />
+                </div>
               </div>
-              <p className="mt-3 text-sm text-neutral-700">{product.name}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
