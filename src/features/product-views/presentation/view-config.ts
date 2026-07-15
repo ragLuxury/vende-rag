@@ -61,6 +61,12 @@ export const VIEW_CONFIG: Record<ProductView, ViewConfig> = {
         format: 'count',
         matches: statusIncludes('revisión'),
       },
+      {
+        label: 'Rechazada',
+        icon: 'ion:close-circle-outline',
+        format: 'count',
+        matches: statusIncludes('rechazad'),
+      },
     ],
   },
   publicaciones: {
