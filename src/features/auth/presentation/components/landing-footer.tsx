@@ -52,9 +52,14 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
               target="_blank"
               rel="noreferrer"
               aria-label={social.label}
-              title={social.label}
-              className="text-neutral-500 transition-colors hover:text-neutral-900"
+              className="group relative text-neutral-500 transition-colors hover:text-neutral-900"
             >
+              <span
+                role="tooltip"
+                className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 rounded-md bg-neutral-900 px-2 py-1 text-xs whitespace-nowrap text-white opacity-0 invisible transition-opacity group-hover:opacity-100 group-hover:visible"
+              >
+                {social.label}
+              </span>
               <Icon icon={social.icon} className="size-5" />
             </a>
           ))}

@@ -51,6 +51,13 @@ export const negotiationResponseSchema = z.object({
   success: z.boolean(),
 });
 
+export const productIdByUuidResponseSchema = z.object({
+  success: z.boolean(),
+  data: z.object({
+    id: z.number(),
+  }),
+});
+
 export const commissionResponseSchema = z.object({
   success: z.boolean(),
   data: z.object({

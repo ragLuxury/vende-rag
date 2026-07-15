@@ -6,6 +6,7 @@ import {
   commissionResponseSchema,
   negotiationResponseSchema,
   productDetailResponseSchema,
+  productIdByUuidResponseSchema,
   productsResponseSchema,
   sellerPaymentsResponseSchema,
 } from './product-view-schemas';
@@ -116,6 +117,15 @@ export const productViewHttpRepository = {
       commission: salePrice - data.precio,
       images: (data.galeria ?? []).map(resolveImageUrl),
     };
+  },
+
+  async getProductIdByUuid(uuid, signal) {
+    const response = await httpRequest(`/web/products/by-uuid/${uuid}`, {
+      schema: productIdByUuidResponseSchema,
+      ...(signal ? { signal } : {}),
+    });
+
+    return response.data.id;
   },
 
   async getCommission(price, clientId, signal) {
