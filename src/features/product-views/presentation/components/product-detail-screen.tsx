@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 
+import { resolvePayment } from '@/src/features/product-views/domain/payment-status';
 import type { SellerPayment } from '@/src/features/product-views/domain/product-view-repository';
 import { useCommission } from '../hooks/use-commission';
 import { useProductDetail } from '../hooks/use-product-detail';
@@ -45,10 +46,9 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 
   const earning =
     commission?.sellerNet ?? (isNegotiation ? product?.negotiationPrice : product?.earning) ?? 0;
-  const paid = (payments ?? []).reduce((total, payment) => total + payment.amount, 0);
-  const pending = Math.max(earning - paid, 0);
-  const saleStatus = pending > 0 ? 'Por Pagar' : 'Pagado';
-  const pillStatus = isSale ? saleStatus : (product?.status ?? '');
+  const itemizedPaid = (payments ?? []).reduce((total, payment) => total + payment.amount, 0);
+  const { isPaid, paid, pending } = resolvePayment(product?.status ?? '', earning, itemizedPaid);
+  const pillStatus = product?.status ?? '';
 
   function handleApprove() {
     if (!product) return;
@@ -213,10 +213,10 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     {isSale ? (
                       <div className="flex items-center justify-between">
                         <dt className="text-sm text-neutral-500">
-                          {pending > 0 ? 'Por pagar' : 'Pagado'}
+                          {isPaid ? 'Pagado' : 'Por pagar'}
                         </dt>
                         <dd className="text-sm text-neutral-400">
-                          {currencyFormatter.format(pending > 0 ? pending : paid)}
+                          {currencyFormatter.format(isPaid ? paid : pending)}
                         </dd>
                       </div>
                     ) : null}
@@ -384,11 +384,9 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 
                   {isSale ? (
                     <div className="mt-4 flex items-center justify-between text-sm">
-                      <span className="text-neutral-500">
-                        {pending > 0 ? 'Por pagar' : 'Pagado'}
-                      </span>
+                      <span className="text-neutral-500">{isPaid ? 'Pagado' : 'Por pagar'}</span>
                       <span className="text-neutral-400">
-                        {currencyFormatter.format(pending > 0 ? pending : paid)}
+                        {currencyFormatter.format(isPaid ? paid : pending)}
                       </span>
                     </div>
                   ) : null}
