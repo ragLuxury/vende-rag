@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 
+import { resolvePayment } from '@/src/features/product-views/domain/payment-status';
 import type { SellerPayment } from '@/src/features/product-views/domain/product-view-repository';
 import { useCommission } from '../hooks/use-commission';
 import { useProductDetail } from '../hooks/use-product-detail';
@@ -51,11 +52,9 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 
   const earning =
     commission?.sellerNet ?? (isNegotiation ? product?.negotiationPrice : product?.earning) ?? 0;
-  const paid = (payments ?? []).reduce((total, payment) => total + payment.amount, 0);
-  const pending = Math.max(earning - paid, 0);
-  const isPaid = product?.state === PAID_STATE;
-  const saleStatus = isPaid ? 'Pagado' : 'Por Pagar';
-  const pillStatus = isSale ? saleStatus : (product?.status ?? '');
+  const itemizedPaid = (payments ?? []).reduce((total, payment) => total + payment.amount, 0);
+  const { isPaid, paid, pending } = resolvePayment(product?.status ?? '', earning, itemizedPaid);
+  const pillStatus = product?.status ?? '';
 
   function handleApprove() {
     if (!product) return;

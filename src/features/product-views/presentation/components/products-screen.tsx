@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from '@iconify/react';
 
+import { resolvePayment } from '@/src/features/product-views/domain/payment-status';
 import type {
   Product,
   ProductView,
@@ -30,16 +31,12 @@ function amountFor(
   return product.earning;
 }
 
-function isPaidStatus(product: Product): boolean {
-  return product.status.trim().toLowerCase().includes('pagado');
-}
-
 function ventasSecondary(product: Product, paidById: ReadonlyMap<number, number>) {
-  const paid = paidById.get(product.id) ?? 0;
-  if (isPaidStatus(product)) {
-    return { label: 'Pagado', value: paid > 0 ? paid : product.earning };
-  }
-  return { label: 'Por pagar', value: Math.max(product.earning - paid, 0) };
+  const itemizedPaid = paidById.get(product.id) ?? 0;
+  const resolved = resolvePayment(product.status, product.earning, itemizedPaid);
+  return resolved.isPaid
+    ? { label: 'Pagado', value: resolved.paid }
+    : { label: 'Por pagar', value: resolved.pending };
 }
 
 interface ProductsScreenProps {
