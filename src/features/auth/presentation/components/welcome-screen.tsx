@@ -42,6 +42,15 @@ export function WelcomeScreen() {
             Continuar con Google
           </button>
         </div>
+
+        <div className="mt-8 text-center">
+          <Link
+            href="/disenadores"
+            className="text-sm font-medium text-neutral-600 underline transition-colors hover:text-neutral-900"
+          >
+            Ver catálogo de diseñadores
+          </Link>
+        </div>
       </main>
     </>
   );

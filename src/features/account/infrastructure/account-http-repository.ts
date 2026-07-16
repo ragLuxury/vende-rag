@@ -9,6 +9,7 @@ import {
   accountMutationResponseSchema,
   banksResponseSchema,
   clientProfileResponseSchema,
+  clientProfileSummaryResponseSchema,
   deleteAccountResponseSchema,
   updateProfileResponseSchema,
 } from './account-schemas';
@@ -81,6 +82,18 @@ export const accountHttpRepository = {
             clabe: paymentMethod.CLABE,
           }
         : null,
+    };
+  },
+
+  async getProfileSummary(clientId, signal) {
+    const response = await httpRequest(`/web/client/profile/${clientId}`, {
+      schema: clientProfileSummaryResponseSchema,
+      ...(signal ? { signal } : {}),
+    });
+
+    return {
+      firstName: response.data.name,
+      lastName: response.data.lastname,
     };
   },
 

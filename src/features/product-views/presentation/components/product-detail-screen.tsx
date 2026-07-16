@@ -13,6 +13,7 @@ import { ProductGallery } from './product-gallery';
 import { getStatusStyle } from './product-status';
 
 const NEGOTIATION_STATE = 2;
+const PAID_STATE = 21;
 
 const currencyFormatter = new Intl.NumberFormat('es-MX', {
   style: 'currency',
@@ -28,8 +29,13 @@ interface ProductDetailScreenProps {
 export function ProductDetailScreen({ productId, view }: ProductDetailScreenProps) {
   const router = useRouter();
   const isSale = view === 'ventas';
-  const [infoOpen, setInfoOpen] = useState(false);
-  const [detailOpen, setDetailOpen] = useState(false);
+  const [openSection, setOpenSection] = useState<'info' | 'detail' | null>(null);
+  const infoOpen = openSection === 'info';
+  const detailOpen = openSection === 'detail';
+
+  function toggleSection(section: 'info' | 'detail') {
+    setOpenSection((current) => (current === section ? null : section));
+  }
   const { data: product, isLoading, isError } = useProductDetail(productId);
   const isNegotiation = product?.state === NEGOTIATION_STATE;
   const respondNegotiation = useRespondNegotiation();
@@ -47,7 +53,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
     commission?.sellerNet ?? (isNegotiation ? product?.negotiationPrice : product?.earning) ?? 0;
   const paid = (payments ?? []).reduce((total, payment) => total + payment.amount, 0);
   const pending = Math.max(earning - paid, 0);
-  const saleStatus = pending > 0 ? 'Por Pagar' : 'Pagado';
+  const isPaid = product?.state === PAID_STATE;
+  const saleStatus = isPaid ? 'Pagado' : 'Por Pagar';
   const pillStatus = isSale ? saleStatus : (product?.status ?? '');
 
   function handleApprove() {
@@ -81,7 +88,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
           className="absolute left-6 flex cursor-pointer items-center gap-1.5 text-neutral-900"
         >
           <Icon icon="ion:chevron-back-outline" className="size-7" />
-          <span className="text-base font-medium">Regresar</span>
+          <span className="hidden text-base font-medium md:inline">Regresar</span>
         </button>
         <h1 className="text-lg font-semibold text-neutral-900">Detalles de Producto</h1>
       </header>
@@ -122,7 +129,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 <section className="mt-6 border-t border-neutral-200">
                   <button
                     type="button"
-                    onClick={() => setInfoOpen((open) => !open)}
+                    onClick={() => toggleSection('info')}
                     aria-expanded={infoOpen}
                     className="flex w-full items-center justify-between px-6 py-5"
                   >
@@ -153,7 +160,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                   <section className="border-t border-neutral-200">
                     <button
                       type="button"
-                      onClick={() => setDetailOpen((open) => !open)}
+                      onClick={() => toggleSection('detail')}
                       aria-expanded={detailOpen}
                       className="flex w-full items-center justify-between px-6 py-5"
                     >
@@ -213,10 +220,10 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     {isSale ? (
                       <div className="flex items-center justify-between">
                         <dt className="text-sm text-neutral-500">
-                          {pending > 0 ? 'Por pagar' : 'Pagado'}
+                          {isPaid ? 'Pagado' : 'Por pagar'}
                         </dt>
                         <dd className="text-sm text-neutral-400">
-                          {currencyFormatter.format(pending > 0 ? pending : paid)}
+                          {currencyFormatter.format(isPaid ? paid : pending)}
                         </dd>
                       </div>
                     ) : null}
@@ -261,12 +268,12 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
               </div>
             </div>
 
-            <div className="hidden items-stretch gap-8 px-8 pb-8 md:flex">
-              <div className="w-2/5 shrink-0 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100">
+            <div className="hidden items-start gap-8 px-8 pb-8 md:flex">
+              <div className="w-2/5 shrink-0 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100 md:h-[40rem]">
                 <ProductGallery images={product.images} alt={product.name} fill />
               </div>
 
-              <div className="flex min-w-0 flex-1 flex-col rounded-3xl border border-neutral-200 p-10 md:min-h-[36rem]">
+              <div className="scrollbar-hide flex min-w-0 flex-1 flex-col rounded-3xl border border-neutral-200 p-10 md:h-[40rem] md:overflow-y-auto">
                 <div className="flex items-start justify-between gap-6">
                   <div className="min-w-0">
                     <p className="text-sm font-semibold tracking-wide text-neutral-400 uppercase">
@@ -287,11 +294,11 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                   ) : null}
                 </div>
 
-                <div className="mt-8 flex flex-1 flex-col justify-center border-t border-neutral-200">
+                <div className="mt-8 flex flex-col border-t border-neutral-200">
                   <section>
                     <button
                       type="button"
-                      onClick={() => setInfoOpen((open) => !open)}
+                      onClick={() => toggleSection('info')}
                       aria-expanded={infoOpen}
                       className="flex w-full items-center justify-between py-5"
                     >
@@ -321,7 +328,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     <section className="border-t border-neutral-200">
                       <button
                         type="button"
-                        onClick={() => setDetailOpen((open) => !open)}
+                        onClick={() => toggleSection('detail')}
                         aria-expanded={detailOpen}
                         className="flex w-full items-center justify-between py-5"
                       >
@@ -384,11 +391,9 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 
                   {isSale ? (
                     <div className="mt-4 flex items-center justify-between text-sm">
-                      <span className="text-neutral-500">
-                        {pending > 0 ? 'Por pagar' : 'Pagado'}
-                      </span>
+                      <span className="text-neutral-500">{isPaid ? 'Pagado' : 'Por pagar'}</span>
                       <span className="text-neutral-400">
-                        {currencyFormatter.format(pending > 0 ? pending : paid)}
+                        {currencyFormatter.format(isPaid ? paid : pending)}
                       </span>
                     </div>
                   ) : null}

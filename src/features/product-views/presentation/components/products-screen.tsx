@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from '@iconify/react';
 
 import type {
@@ -16,9 +16,7 @@ import { VIEW_CONFIG, type CurrencyAmount } from '../view-config';
 import { ProductCard } from './product-card';
 import { ProductSummary, type SummaryItem } from './product-summary';
 
-type SortOrder = 'desc' | 'asc';
-
-const SEARCH_DEBOUNCE_MS = 400;
+type SortOrder = 'price-desc' | 'price-asc' | 'oldest' | 'newest';
 
 function amountFor(
   product: Product,
@@ -53,47 +51,84 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
   const router = useRouter();
   const config = VIEW_CONFIG[view];
 
-  const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('price-desc');
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [mobileSortMenuOpen, setMobileSortMenuOpen] = useState(false);
+  const [desktopSortMenuOpen, setDesktopSortMenuOpen] = useState(false);
+  const mobileSortMenuRef = useRef<HTMLDivElement>(null);
+  const desktopSortMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setDebouncedSearch(search), SEARCH_DEBOUNCE_MS);
-    return () => clearTimeout(timeout);
-  }, [search]);
+    if (!mobileSortMenuOpen && !desktopSortMenuOpen) return;
 
-  const { data: products, isLoading, isError } = useProducts(view, clientId, debouncedSearch);
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node;
+      const isOutsideMobile = !mobileSortMenuRef.current?.contains(target);
+      const isOutsideDesktop = !desktopSortMenuRef.current?.contains(target);
+
+      if (mobileSortMenuOpen && isOutsideMobile) {
+        setMobileSortMenuOpen(false);
+      }
+
+      if (desktopSortMenuOpen && isOutsideDesktop) {
+        setDesktopSortMenuOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [mobileSortMenuOpen, desktopSortMenuOpen]);
+
+  function handleSortSelect(order: SortOrder) {
+    setSortOrder(order);
+    setMobileSortMenuOpen(false);
+    setDesktopSortMenuOpen(false);
+  }
+
+  const { data: products, isLoading, isError } = useProducts(view, clientId, '');
 
   const productIds = useMemo(() => (products ?? []).map((product) => product.id), [products]);
   const needsPayments = view === 'ventas';
   const paidById = usePaidByProduct(productIds, needsPayments);
+  const sortLabel =
+    sortOrder === 'price-desc'
+      ? 'Precio: mayor a menor'
+      : sortOrder === 'price-asc'
+        ? 'Precio: menor a mayor'
+        : sortOrder === 'oldest'
+          ? 'Más antigua'
+          : 'Más reciente';
 
   const summary = useMemo<readonly SummaryItem[]>(() => {
     const list = products ?? [];
-    return config.summary.map((item) => ({
-      label: item.label,
-      icon: item.icon,
-      format: item.format,
-      value:
-        item.format === 'currency'
-          ? list
-              .filter(item.matches)
-              .reduce(
+    return config.summary.map((item) => {
+      const matches = list.filter(item.matches);
+      return {
+        label: item.label,
+        icon: item.icon,
+        format: item.format,
+        value:
+          item.format === 'currency'
+            ? matches.reduce(
                 (total, product) => total + amountFor(product, item.amount ?? 'earning', paidById),
                 0,
               )
-          : list.filter(item.matches).length,
-    }));
+            : matches.length,
+        ...(item.format === 'currency' ? { count: matches.length } : {}),
+      };
+    });
   }, [products, config, paidById]);
 
   const visibleProducts = useMemo(() => {
     const predicate = selectedIndex === null ? null : config.summary[selectedIndex]?.matches;
     const filtered = (products ?? []).filter((product) => !predicate || predicate(product));
 
-    return [...filtered].sort((a, b) =>
-      sortOrder === 'desc' ? b.salePrice - a.salePrice : a.salePrice - b.salePrice,
-    );
+    return [...filtered].sort((a, b) => {
+      if (sortOrder === 'price-desc') return b.salePrice - a.salePrice;
+      if (sortOrder === 'price-asc') return a.salePrice - b.salePrice;
+      if (sortOrder === 'oldest') return a.id - b.id;
+      return b.id - a.id;
+    });
   }, [products, sortOrder, selectedIndex, config]);
 
   function handleSummarySelect(index: number) {
@@ -138,37 +173,45 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
         </header>
 
         <div className="flex-1 px-6 pt-6 pb-28">
-          <div className="relative">
-            <Icon
-              icon="ion:search-outline"
-              className="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-neutral-400"
-            />
-            <input
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              aria-label={config.searchPlaceholder}
-              placeholder={config.searchPlaceholder}
-              className="focus:border-brand w-full rounded-full border border-neutral-200 bg-neutral-50 py-3.5 pr-4 pl-11 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
-            />
-          </div>
+          <div className="flex flex-wrap items-center justify-center gap-3 py-2">
+            <div className="w-fit">
+              <ProductSummary
+                items={summary}
+                selectedIndex={selectedIndex}
+                onSelect={handleSummarySelect}
+              />
+            </div>
 
-          <div className="mt-6">
-            <ProductSummary
-              items={summary}
-              selectedIndex={selectedIndex}
-              onSelect={handleSummarySelect}
-            />
-          </div>
+            <div ref={mobileSortMenuRef} className="relative shrink-0">
+              <button
+                type="button"
+                onClick={() => setMobileSortMenuOpen((open) => !open)}
+                className="flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-3 py-2 text-sm font-medium text-neutral-700 shadow-sm"
+              >
+                {sortLabel}
+                <Icon icon="ion:funnel-outline" className="size-4" />
+              </button>
 
-          <div className="mt-6 flex justify-end">
-            <button
-              type="button"
-              onClick={() => setSortOrder((current) => (current === 'desc' ? 'asc' : 'desc'))}
-              className="flex items-center gap-2 text-base text-neutral-700"
-            >
-              Ordenar por
-              <Icon icon="ion:funnel-outline" className="size-5" />
-            </button>
+              {mobileSortMenuOpen ? (
+                <div className="absolute right-0 z-10 mt-2 w-40 rounded-2xl border border-neutral-200 bg-white py-2 shadow-lg">
+                  {[
+                    { value: 'price-desc', label: 'Precio: mayor a menor' },
+                    { value: 'price-asc', label: 'Precio: menor a mayor' },
+                    { value: 'oldest', label: 'Más antigua' },
+                    { value: 'newest', label: 'Más reciente' },
+                  ].map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => handleSortSelect(option.value as SortOrder)}
+                      className={`block w-full px-4 py-2.5 text-left text-sm transition-colors hover:bg-neutral-50 ${sortOrder === option.value ? 'font-semibold text-neutral-900' : 'text-neutral-600'}`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+            </div>
           </div>
 
           <div className="mt-4">
@@ -191,39 +234,51 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
 
       <div className="hidden flex-1 flex-col px-8 py-10 md:flex">
         <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col">
-          <div className="flex w-full items-center gap-4">
-            <div className="shrink-0">
+          <div className="flex justify-center py-2">
+            <div className="w-fit">
               <ProductSummary
                 items={summary}
                 selectedIndex={selectedIndex}
                 onSelect={handleSummarySelect}
               />
             </div>
-
-            <div className="relative flex-1">
-              <Icon
-                icon="ion:search-outline"
-                className="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-neutral-400"
-              />
-              <input
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                aria-label={config.searchPlaceholder}
-                placeholder={config.searchPlaceholder}
-                className="focus:border-brand w-full rounded-full border border-neutral-200 bg-neutral-50 py-3 pr-4 pl-11 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
-              />
-            </div>
-            <button
-              type="button"
-              onClick={() => setSortOrder((current) => (current === 'desc' ? 'asc' : 'desc'))}
-              className="flex shrink-0 items-center gap-2 rounded-full border border-neutral-200 px-4 py-3 text-base text-neutral-700 transition-colors hover:border-neutral-300 hover:bg-neutral-50"
-            >
-              {sortOrder === 'desc' ? 'Mayor precio' : 'Menor precio'}
-              <Icon icon="ion:funnel-outline" className="size-5" />
-            </button>
           </div>
 
-          <div className="mt-10 flex-1">
+          <div className="mt-1 flex-1">
+            <div className="mb-2 flex justify-end">
+              <div ref={desktopSortMenuRef} className="relative shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setDesktopSortMenuOpen((open) => !open)}
+                  aria-label="Ordenar por"
+                  aria-expanded={desktopSortMenuOpen}
+                  className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-neutral-400 bg-white text-neutral-500 transition-all duration-300 ease-out hover:border-neutral-900 hover:bg-neutral-900 hover:text-white"
+                >
+                  <Icon icon="ion:funnel-outline" className="size-4" />
+                </button>
+
+                {desktopSortMenuOpen ? (
+                  <div className="absolute top-full right-0 z-10 mt-2 w-40 rounded-2xl border border-neutral-200 bg-white py-2 shadow-lg">
+                    {[
+                      { value: 'price-desc', label: 'Precio: mayor a menor' },
+                      { value: 'price-asc', label: 'Precio: menor a mayor' },
+                      { value: 'oldest', label: 'Más antigua' },
+                      { value: 'newest', label: 'Más reciente' },
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => handleSortSelect(option.value as SortOrder)}
+                        className={`block w-full px-4 py-2.5 text-left text-sm transition-colors hover:bg-neutral-50 ${sortOrder === option.value ? 'font-semibold text-neutral-900' : 'text-neutral-600'}`}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            </div>
+
             {isLoading ? (
               <p className="py-12 text-center text-sm text-neutral-400">Cargando...</p>
             ) : isError ? (

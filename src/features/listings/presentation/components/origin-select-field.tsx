@@ -1,8 +1,7 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { Icon } from '@iconify/react';
-
-import { SheetSelectField } from '@/src/shared/ui/sheet-select-field';
 
 const ORIGIN_OPTIONS = [
   { value: '1', label: 'Producto comprado en tienda o en una pagina web oficial' },
@@ -16,35 +15,60 @@ interface OriginSelectFieldProps {
 }
 
 export function OriginSelectField({ value, onSelect }: OriginSelectFieldProps) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const selected = ORIGIN_OPTIONS.find((option) => option.value === value);
 
+  useEffect(() => {
+    if (!open) return;
+
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node;
+      if (!containerRef.current?.contains(target)) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [open]);
+
+  function handleSelect(optionValue: string) {
+    onSelect(optionValue);
+    setOpen(false);
+  }
+
   return (
-    <SheetSelectField
-      fieldLabel="Origen del producto"
-      placeholder="Origen del producto *"
-      selectedLabel={selected?.label}
-      sheetTitle="Información del producto"
-      headerIcon={<Icon icon="ion:location-outline" className="size-6 text-neutral-900" />}
-      headerLabel="Origen del producto *"
-    >
-      {(close) =>
-        ORIGIN_OPTIONS.map((option) => (
-          <li key={option.value} className="border-b border-neutral-100 last:border-b-0">
+    <div ref={containerRef} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        aria-label="Origen del producto"
+        aria-expanded={open}
+        className={`focus:border-brand flex w-full items-center justify-between gap-2 rounded-2xl border border-neutral-300 bg-transparent px-4 py-3.5 text-left text-base focus:outline-none ${
+          selected ? 'text-neutral-900' : 'text-neutral-400'
+        }`}
+      >
+        <span>{selected?.label ?? 'Origen del producto *'}</span>
+        <Icon icon="ion:chevron-down-outline" className="size-5 shrink-0 text-neutral-500" />
+      </button>
+
+      {open ? (
+        <div className="absolute top-full z-10 mt-2 w-full rounded-2xl border border-neutral-200 bg-white py-2 shadow-lg">
+          {ORIGIN_OPTIONS.map((option) => (
             <button
+              key={option.value}
               type="button"
-              onClick={() => {
-                onSelect(option.value);
-                close();
-              }}
-              className={`w-full py-5 text-left text-base ${
+              onClick={() => handleSelect(option.value)}
+              className={`block w-full px-4 py-2.5 text-left text-base transition-colors hover:bg-neutral-50 ${
                 option.value === value ? 'text-brand font-medium' : 'text-neutral-900'
               }`}
             >
               {option.label}
             </button>
-          </li>
-        ))
-      }
-    </SheetSelectField>
+          ))}
+        </div>
+      ) : null}
+    </div>
   );
 }

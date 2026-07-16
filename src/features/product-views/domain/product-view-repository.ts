@@ -68,6 +68,7 @@ export interface ProductViewRepository {
   ): Promise<readonly Product[]>;
   getSellerPayments(productId: number, signal?: AbortSignal): Promise<readonly SellerPayment[]>;
   getProductDetail(productId: number, signal?: AbortSignal): Promise<ProductDetail>;
+  getProductIdByUuid(uuid: string, signal?: AbortSignal): Promise<number>;
   getCommission(price: number, clientId: number, signal?: AbortSignal): Promise<ProductCommission>;
   respondNegotiation(
     productId: number,

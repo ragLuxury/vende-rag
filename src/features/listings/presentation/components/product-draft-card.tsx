@@ -56,7 +56,6 @@ export function isDraftValid(draft: ProductDraft, requiresSeller: boolean): bool
     draft.photos.length >= MIN_PHOTOS &&
     draft.brandId !== null &&
     draft.origin !== '' &&
-    Number(draft.price) > 0 &&
     (!isPreloved || draft.pageName.trim() !== '') &&
     (!requiresSeller || draft.sellerId !== null)
   );
