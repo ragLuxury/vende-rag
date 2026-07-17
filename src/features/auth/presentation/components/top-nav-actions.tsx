@@ -19,10 +19,10 @@ interface MenuLink {
 }
 
 const MENU_LINKS: readonly MenuLink[] = [
-  { label: 'Información Personal', href: '/perfil?section=personal', icon: 'ion:person-outline' },
-  { label: 'Mi Dirección', href: '/perfil?section=address', icon: 'ion:navigate-outline' },
-  { label: 'Métodos De Pago', href: '/perfil?section=payment', icon: 'ion:card-outline' },
-  { label: 'Contrato', href: '/perfil?section=contract', icon: 'ion:document-text-outline' },
+  { label: 'Mi Perfil', href: '/perfil', icon: 'ion:person-outline' },
+  { label: 'Mis Solicitudes', href: '/solicitudes', icon: 'ion:document-text-outline' },
+  { label: 'Mis Publicaciones', href: '/publicaciones', icon: 'ion:pricetag-outline' },
+  { label: 'Mis Ventas', href: '/mis-ventas', icon: 'ion:bag-handle-outline' },
 ];
 
 export function TopNavActions() {
