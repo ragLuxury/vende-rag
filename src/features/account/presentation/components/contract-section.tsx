@@ -12,8 +12,6 @@ interface ContractSectionProps {
 }
 
 export function ContractSection({ clientId, open, onToggle }: ContractSectionProps) {
-  const { data: profile, isLoading, isError } = useProfile(clientId);
-
   return (
     <ProfileAccordion
       icon={<Icon icon="ion:document-text-outline" className="size-6" />}
@@ -21,6 +19,20 @@ export function ContractSection({ clientId, open, onToggle }: ContractSectionPro
       open={open}
       onToggle={onToggle}
     >
+      <ContractContent clientId={clientId} />
+    </ProfileAccordion>
+  );
+}
+
+export interface ContractContentProps {
+  clientId: number;
+}
+
+export function ContractContent({ clientId }: ContractContentProps) {
+  const { data: profile, isLoading, isError } = useProfile(clientId);
+
+  return (
+    <>
       <p className="text-base text-neutral-500">
         Consulta los términos y condiciones firmados para la venta de tus productos.
       </p>
@@ -42,6 +54,6 @@ export function ContractSection({ clientId, open, onToggle }: ContractSectionPro
           Ver Contrato
         </a>
       )}
-    </ProfileAccordion>
+    </>
   );
 }

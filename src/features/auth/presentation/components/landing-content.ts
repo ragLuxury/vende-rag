@@ -22,19 +22,19 @@ export const VALUATION_INTRO =
 
 export const VALUATION_CARDS: readonly ValuationCard[] = [
   {
-    icon: '/images/valor-reventa-icon.png',
+    icon: '/images/valuation/valor-reventa-icon.png',
     title: 'Valor de reventa',
     description:
       'Consideramos marca, modelo y ediciones limitadas para estimar cuánto vale realmente tu pieza en el mercado de lujo.',
   },
   {
-    icon: '/images/tendencia-mercado-icon.png',
+    icon: '/images/valuation/tendencia-mercado-icon.png',
     title: 'Tendencias de mercado',
     description:
       'Nuestro algoritmo analiza la demanda actual para publicar tu producto al mejor precio posible.',
   },
   {
-    icon: '/images/condicion-producto-icon.png',
+    icon: '/images/valuation/condicion-producto-icon.png',
     title: 'Condición del producto',
     description:
       'Las piezas nuevas o en excelente estado se venden más rápido y alcanzan un precio premium.',
@@ -47,6 +47,7 @@ export interface ProcessTab {
   title: string;
   heading: string;
   body: string;
+  image: string;
 }
 
 export const PROCESS_TABS: readonly ProcessTab[] = [
@@ -56,6 +57,7 @@ export const PROCESS_TABS: readonly ProcessTab[] = [
     title: 'Solicitudes',
     heading: 'Negociación de precios',
     body: 'Después de completar el formulario de venta, nuestro equipo te enviará una propuesta de precio en máximo 2 días hábiles. Al aceptar el precio y enviar tus productos a RAG, tus solicitudes se convertirán en publicaciones en nuestro sitio y podrás gestionarlas desde el Panel de Seller.',
+    image: '/images/process-rag/solicitudes.png',
   },
   {
     id: 'autenticacion',
@@ -63,6 +65,7 @@ export const PROCESS_TABS: readonly ProcessTab[] = [
     title: 'Autenticación',
     heading: 'Nuestro equipo de autentificación',
     body: 'Todos los productos recibidos pasan por un minucioso proceso de autenticación por medio de una revisión física y de un software de Inteligencia Artificial para asegurar que todo lo publicado en nuestro sitio sea auténtico.',
+    image: '/images/process-rag/autenticacion.png',
   },
   {
     id: 'publicacion',
@@ -70,6 +73,7 @@ export const PROCESS_TABS: readonly ProcessTab[] = [
     title: 'Publicación',
     heading: 'Verificamos y publicamos tu producto en RAG',
     body: 'Una vez que los productos pasan nuestro filtro de autenticación, tomamos fotografías y creamos contenido atractivo para su publicación. Nuestras estrategias de venta y promoción, tanto en plataformas físicas como digitales, maximizan la visibilidad y aumentan las posibilidades de concretar la venta.',
+    image: '/images/process-rag/publicacion.png',
   },
   {
     id: 'pago',
@@ -77,6 +81,7 @@ export const PROCESS_TABS: readonly ProcessTab[] = [
     title: 'Pago',
     heading: 'Condiciones únicas de pago',
     body: 'Los pagos a vendedores se hacen el siguiente martes tras la compra. Si el producto está apartado, recibes 30% y el 70% restante un mes después al liquidar el cliente. Somos la única plataforma que paga apartados antes de la liquidación. Si el cliente no paga, RAG cubre el monto restante.',
+    image: '/images/process-rag/pago.png',
   },
 ];
 

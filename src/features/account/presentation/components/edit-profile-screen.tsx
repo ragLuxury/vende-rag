@@ -5,13 +5,12 @@ import { useState, type FormEvent, type ReactNode } from 'react';
 import { Icon } from '@iconify/react';
 
 import { BottomNav } from '@/src/shared/ui/bottom-nav';
-import { queueToast } from '@/src/shared/ui/toast';
 import type { ClientProfile } from '@/src/features/account/domain/account-repository';
 import { useProfile } from '../hooks/use-profile';
 import { useUpdateProfile } from '../hooks/use-update-profile';
 
 const FIELD_CLASS =
-  'w-full rounded-2xl border border-neutral-300 bg-transparent px-4 py-3.5 text-base text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
+  'w-full rounded-2xl border border-neutral-300 bg-transparent px-4 py-[11px] text-[13px] text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
 
 interface EditProfileScreenProps {
   clientId: number;
@@ -49,14 +48,13 @@ export function EditProfileScreen({ clientId, onSaved }: EditProfileScreenProps)
   );
 }
 
-interface EditProfileFormProps {
+export interface EditProfileFormProps {
   clientId: number;
   profile: ClientProfile;
   onSaved?: ((fullName: string) => void) | undefined;
 }
 
-function EditProfileForm({ clientId, profile, onSaved }: EditProfileFormProps) {
-  const router = useRouter();
+export function EditProfileForm({ clientId, profile, onSaved }: EditProfileFormProps) {
   const updateProfile = useUpdateProfile();
 
   const [firstName, setFirstName] = useState(profile.firstName);
@@ -85,8 +83,6 @@ function EditProfileForm({ clientId, profile, onSaved }: EditProfileFormProps) {
       {
         onSuccess: () => {
           onSaved?.(`${trimmedFirstName} ${trimmedLastName}`);
-          queueToast('Información actualizada correctamente');
-          router.push('/perfil');
         },
       },
     );
@@ -94,42 +90,46 @@ function EditProfileForm({ clientId, profile, onSaved }: EditProfileFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      <Field label="Nombre">
-        <input
-          value={firstName}
-          onChange={(event) => setFirstName(event.target.value)}
-          aria-label="Nombre"
-          className={FIELD_CLASS}
-        />
-      </Field>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <Field label="Nombre">
+          <input
+            value={firstName}
+            onChange={(event) => setFirstName(event.target.value)}
+            aria-label="Nombre"
+            className={FIELD_CLASS}
+          />
+        </Field>
 
-      <Field label="Apellidos">
-        <input
-          value={lastName}
-          onChange={(event) => setLastName(event.target.value)}
-          aria-label="Apellidos"
-          className={FIELD_CLASS}
-        />
-      </Field>
+        <Field label="Apellidos">
+          <input
+            value={lastName}
+            onChange={(event) => setLastName(event.target.value)}
+            aria-label="Apellidos"
+            className={FIELD_CLASS}
+          />
+        </Field>
+      </div>
 
-      <Field label="Teléfono">
-        <input
-          value={phone}
-          onChange={(event) => setPhone(event.target.value.replace(/[^\d]/g, ''))}
-          inputMode="numeric"
-          aria-label="Teléfono"
-          className={FIELD_CLASS}
-        />
-      </Field>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <Field label="Teléfono">
+          <input
+            value={phone}
+            onChange={(event) => setPhone(event.target.value.replace(/[^\d]/g, ''))}
+            inputMode="numeric"
+            aria-label="Teléfono"
+            className={FIELD_CLASS}
+          />
+        </Field>
 
-      <Field label="Correo">
-        <input
-          value={profile.email}
-          disabled
-          aria-label="Correo"
-          className="w-full rounded-2xl border border-neutral-200 bg-neutral-100 px-4 py-3.5 text-base text-neutral-400"
-        />
-      </Field>
+        <Field label="Correo">
+          <input
+            value={profile.email}
+            disabled
+            aria-label="Correo"
+            className="w-full rounded-2xl border border-neutral-200 bg-neutral-100 px-4 py-[11px] text-[13px] text-neutral-400"
+          />
+        </Field>
+      </div>
 
       {updateProfile.isError ? (
         <p className="rounded-2xl bg-red-50 px-4 py-3 text-center text-sm text-red-700">
@@ -140,7 +140,7 @@ function EditProfileForm({ clientId, profile, onSaved }: EditProfileFormProps) {
       <button
         type="submit"
         disabled={!isValid || updateProfile.isPending}
-        className={`mt-2 flex h-14 w-full items-center justify-center gap-2 rounded-2xl text-base font-medium transition-colors ${
+        className={`mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-2xl text-sm font-medium transition-colors md:mx-auto md:w-auto md:px-16 ${
           isValid && !updateProfile.isPending
             ? 'bg-brand hover:bg-brand/90 text-white'
             : 'cursor-not-allowed bg-neutral-200 text-neutral-400'
@@ -161,7 +161,7 @@ interface FieldProps {
 function Field({ label, children }: FieldProps) {
   return (
     <div>
-      <label className="text-base font-semibold text-neutral-900">
+      <label className="text-base font-semibold text-neutral-900 md:text-xs md:font-semibold md:tracking-wide md:text-neutral-500 md:uppercase">
         {label} <span className="text-red-500">*</span>
       </label>
       <div className="mt-3">{children}</div>

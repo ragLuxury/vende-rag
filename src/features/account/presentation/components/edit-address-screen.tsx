@@ -4,14 +4,13 @@ import { useRouter } from 'next/navigation';
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { Icon } from '@iconify/react';
 
-import { queueToast } from '@/src/shared/ui/toast';
 import type { ClientProfile } from '@/src/features/account/domain/account-repository';
 import { useProfile } from '../hooks/use-profile';
 import { useSaveAddress } from '../hooks/use-save-address';
 import { AddressMap, type SelectedPlace } from './address-map';
 
 const FIELD_CLASS =
-  'w-full rounded-2xl border border-neutral-300 bg-transparent px-4 py-3.5 text-base text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
+  'w-full rounded-2xl border border-neutral-300 bg-transparent px-4 py-[11px] text-[13px] text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
 
 const DEFAULT_CENTER = { lat: 18.1345, lng: -94.4585 };
 
@@ -31,9 +30,10 @@ interface LatLng {
 
 interface EditAddressScreenProps {
   clientId: number;
+  onSaved?: () => void;
 }
 
-export function EditAddressScreen({ clientId }: EditAddressScreenProps) {
+export function EditAddressScreen({ clientId, onSaved }: EditAddressScreenProps) {
   const router = useRouter();
   const { data: profile, isLoading } = useProfile(clientId);
 
@@ -55,20 +55,20 @@ export function EditAddressScreen({ clientId }: EditAddressScreenProps) {
         {isLoading || !profile ? (
           <p className="text-base text-neutral-400">Cargando...</p>
         ) : (
-          <EditAddressForm clientId={clientId} profile={profile} />
+          <EditAddressForm clientId={clientId} profile={profile} onSaved={onSaved} />
         )}
       </div>
     </div>
   );
 }
 
-interface EditAddressFormProps {
+export interface EditAddressFormProps {
   clientId: number;
   profile: ClientProfile;
+  onSaved?: (() => void) | undefined;
 }
 
-function EditAddressForm({ clientId, profile }: EditAddressFormProps) {
-  const router = useRouter();
+export function EditAddressForm({ clientId, profile, onSaved }: EditAddressFormProps) {
   const saveAddress = useSaveAddress();
   const existing = profile.address;
 
@@ -139,8 +139,7 @@ function EditAddressForm({ clientId, profile }: EditAddressFormProps) {
       },
       {
         onSuccess: () => {
-          queueToast('Información actualizada correctamente');
-          router.push('/perfil');
+          onSaved?.();
         },
       },
     );
@@ -172,7 +171,7 @@ function EditAddressForm({ clientId, profile }: EditAddressFormProps) {
         <div className="flex gap-3 rounded-2xl border border-neutral-200 px-4 py-3">
           <Icon icon="ion:location-outline" className="size-5 shrink-0 text-neutral-500" />
           <div>
-            <p className="text-base font-semibold text-neutral-900">
+            <p className="text-sm font-semibold text-neutral-900">
               {formatLocationLabel(fields.street, fields.neighborhood)}
             </p>
             <p className="text-sm text-neutral-400">
@@ -222,7 +221,7 @@ function EditAddressForm({ clientId, profile }: EditAddressFormProps) {
       <button
         type="submit"
         disabled={!isValid || saveAddress.isPending}
-        className={`mt-2 flex h-14 w-full items-center justify-center gap-2 rounded-2xl text-base font-medium transition-colors ${
+        className={`mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-2xl text-sm font-medium transition-colors md:mx-auto md:w-auto md:px-16 ${
           isValid && !saveAddress.isPending
             ? 'bg-brand hover:bg-brand/90 text-white'
             : 'cursor-not-allowed bg-neutral-200 text-neutral-400'
@@ -248,7 +247,7 @@ interface FieldProps {
 function Field({ label, required = false, children }: FieldProps) {
   return (
     <div>
-      <label className="text-base font-semibold text-neutral-900">
+      <label className="text-base font-semibold text-neutral-900 md:text-xs md:font-semibold md:tracking-wide md:text-neutral-500 md:uppercase">
         {label} {required ? <span className="text-red-500">*</span> : null}
       </label>
       <div className="mt-3">{children}</div>

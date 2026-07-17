@@ -14,7 +14,7 @@ export function MarketingHeader() {
       <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-6 md:px-8">
         <Link href={user ? '/vender' : '/welcome'} aria-label="RAG" className="shrink-0">
           <Image
-            src="/images/headerv2.png"
+            src="/images/header/headerv2.png"
             alt="RAG"
             width={160}
             height={36}

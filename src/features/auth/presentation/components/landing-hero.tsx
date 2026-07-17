@@ -10,7 +10,7 @@ export function LandingHero() {
     <section className="grid min-h-[530px] w-full grid-cols-[calc(50%+50px)_calc(50%-50px)] border-t border-gray-100 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
       <div className="relative min-h-[530px] overflow-hidden">
         <Image
-          src="/images/header-bolsas.jpg"
+          src="/images/hero/header-bolsas.jpg"
           alt="Piezas de lujo en consignación con RAG"
           fill
           priority

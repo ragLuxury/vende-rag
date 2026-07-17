@@ -43,8 +43,8 @@ export function LandingProcessTabs() {
             </div>
             <div className="relative aspect-square overflow-hidden rounded-3xl bg-neutral-50">
               <Image
-                src="/images/process-rag/precio-4.png"
-                alt="Proceso de venta RAG"
+                src={activeTab.image}
+                alt={`Proceso de ${activeTab.title}`}
                 fill
                 className="object-cover"
               />

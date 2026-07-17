@@ -13,7 +13,7 @@ export function InfoScreen() {
 
         <div className="-mx-6 mt-6">
           <Image
-            src="/images/header-bolsas.jpg"
+            src="/images/hero/header-bolsas.jpg"
             alt="Bolsas de lujo en consignación con RAG"
             width={1626}
             height={1172}

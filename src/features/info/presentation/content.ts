@@ -25,7 +25,7 @@ export const VALUATION_INTRO =
 export const VALUATION_ITEMS: readonly ValuationItem[] = [
   {
     id: 'valor-reventa',
-    icon: '/images/valor-reventa-icon.png',
+    icon: '/images/valuation/valor-reventa-icon.png',
     title: 'Valor de reventa',
     body: 'Varía dependiendo de ciertos factores como:',
     bullets: [
@@ -39,13 +39,13 @@ export const VALUATION_ITEMS: readonly ValuationItem[] = [
   },
   {
     id: 'tendencias-mercado',
-    icon: '/images/tendencia-mercado-icon.png',
+    icon: '/images/valuation/tendencia-mercado-icon.png',
     title: 'Tendencias de mercado',
     body: 'Nuestro algoritmo determina los mejores precios posibles al analizar la demanda y oferta de productos en el mercado, así como las búsquedas y ventas previas en nuestro sitio.',
   },
   {
     id: 'condicion-producto',
-    icon: '/images/condicion-producto-icon.png',
+    icon: '/images/valuation/condicion-producto-icon.png',
     title: 'Condición del producto',
     body: 'Los productos nuevos o en excelente estado se venden más caros y 3 veces más rápido. No aceptamos productos rotos, con daños considerables o con defectos que afecten su estética.',
   },

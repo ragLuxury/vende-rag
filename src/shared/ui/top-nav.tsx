@@ -2,69 +2,41 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
-interface NavItem {
-  label: string;
-  href: string;
-}
-
-const ITEMS: readonly NavItem[] = [
-  { label: 'Mis Solicitudes', href: '/solicitudes' },
-  { label: 'Mis Publicaciones', href: '/publicaciones' },
-  { label: 'Mis Ventas', href: '/mis-ventas' },
-  { label: 'Mis Devoluciones', href: '/devoluciones' },
-];
 
 interface TopNavProps {
   trailing?: React.ReactNode;
 }
 
+// Grid (not flex + absolute-centering) keeps the wordmark truly centered
+// regardless of how wide `trailing` renders — the outer columns are equal
+// width, so the middle column's center always lands on the header's center.
 export function TopNav({ trailing }: TopNavProps) {
-  const pathname = usePathname();
-
   return (
-    <header className="fixed inset-x-0 top-0 z-[110] hidden h-20 items-center justify-between border-b border-neutral-200 bg-white px-8 md:flex">
-      <Link href="/welcome" aria-label="RAG" className="shrink-0">
+    <header className="hidden h-32 grid-cols-3 items-center bg-white/90 px-8 backdrop-blur md:grid">
+      <Image
+        src="/images/header/isotipo.svg"
+        alt=""
+        width={48}
+        height={48}
+        className="size-12 shrink-0"
+      />
+
+      <Link href="/welcome" aria-label="RAG" className="shrink-0 justify-self-center">
         <Image
-          src="/images/headerv2.png"
+          src="/images/header/headerv2.png"
           alt="RAG"
-          width={160}
-          height={36}
+          width={245}
+          height={56}
           priority
-          className="h-8 w-auto"
+          className="h-[105px] w-auto"
         />
       </Link>
 
-      <nav className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <ul className="flex items-center gap-1">
-          {ITEMS.map((item) => {
-            const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
-
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={active ? 'page' : undefined}
-                  className={`block rounded-lg px-3 py-2 text-sm whitespace-nowrap transition-colors ${
-                    active
-                      ? 'bg-neutral-100 font-medium text-neutral-900'
-                      : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-
-      <div className="shrink-0">
+      <div className="shrink-0 justify-self-end">
         {trailing ?? (
           <Link
             href="/vender"
-            className="bg-brand rounded-full px-5 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+            className="bg-brand rounded-[8px] px-5 py-2 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
           >
             Vender
           </Link>
