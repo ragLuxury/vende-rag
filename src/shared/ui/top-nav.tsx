@@ -12,7 +12,7 @@ interface TopNavProps {
 // width, so the middle column's center always lands on the header's center.
 export function TopNav({ trailing }: TopNavProps) {
   return (
-    <header className="hidden h-32 grid-cols-3 items-center bg-white/90 px-8 backdrop-blur md:grid">
+    <header className="relative z-[150] hidden h-32 grid-cols-3 items-center bg-white/90 px-8 backdrop-blur md:grid">
       <Image
         src="/images/header/isotipo.svg"
         alt=""

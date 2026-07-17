@@ -76,7 +76,7 @@ export function TopNavActions() {
         </button>
 
         {menuOpen ? (
-          <div className="absolute top-full right-0 z-10 mt-2 w-64 rounded-2xl border border-neutral-200 bg-white py-4 shadow-lg">
+          <div className="absolute top-full right-0 z-50 mt-2 w-64 rounded-2xl border border-neutral-200 bg-white py-4 shadow-lg">
             <div className="px-5 pb-3">
               <p className="text-xs font-medium tracking-wide text-neutral-400 uppercase">
                 Bienvenido

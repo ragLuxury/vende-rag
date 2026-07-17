@@ -14,7 +14,9 @@ export const NAV_LINKS: readonly NavLink[] = [
 export interface ValuationCard {
   icon: string;
   title: string;
-  description: string;
+  detailIntro?: string;
+  detailBullets?: readonly string[];
+  detailBody?: string;
 }
 
 export const VALUATION_INTRO =
@@ -24,20 +26,27 @@ export const VALUATION_CARDS: readonly ValuationCard[] = [
   {
     icon: '/images/valuation/valor-reventa-icon.png',
     title: 'Valor de reventa',
-    description:
-      'Consideramos marca, modelo y ediciones limitadas para estimar cuánto vale realmente tu pieza en el mercado de lujo.',
+    detailIntro: 'Varía dependiendo de ciertos factores como:',
+    detailBullets: [
+      'Marca',
+      'Modelo',
+      'Ediciones Limitadas',
+      'Colaboraciones',
+      'Productos de temporada',
+      'Escasez',
+    ],
   },
   {
     icon: '/images/valuation/tendencia-mercado-icon.png',
     title: 'Tendencias de mercado',
-    description:
-      'Nuestro algoritmo analiza la demanda actual para publicar tu producto al mejor precio posible.',
+    detailBody:
+      'Nuestro algoritmo determina los mejores precios posibles al analizar la demanda y oferta de productos en el mercado, así como las búsquedas y ventas previas en nuestro sitio.',
   },
   {
     icon: '/images/valuation/condicion-producto-icon.png',
     title: 'Condición del producto',
-    description:
-      'Las piezas nuevas o en excelente estado se venden más rápido y alcanzan un precio premium.',
+    detailBody:
+      'Los productos nuevos o en excelente estado se venden más caros y 3 veces más rápido. No aceptamos productos rotos, con daños considerables o con defectos que afecten su estética.',
   },
 ];
 
