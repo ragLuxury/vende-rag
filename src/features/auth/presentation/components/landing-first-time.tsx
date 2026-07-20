@@ -3,7 +3,7 @@ import { FIRST_TIME_CARDS } from './landing-content';
 
 export function LandingFirstTime() {
   return (
-    <section className="bg-neutral-100 py-10">
+    <section className="bg-[#ededed] py-10">
       <div className="mx-auto w-full max-w-6xl px-8">
         <h2 className="font-editors text-center text-4xl text-neutral-900">
           Mi Primera <span className="italic">vez en RAG</span>
@@ -22,7 +22,7 @@ export function LandingFirstTime() {
               <p className="mt-3 text-sm leading-relaxed text-neutral-500">{card.description}</p>
               <Link
                 href={card.href}
-                className="bg-brand mt-6 rounded-[10px] px-6 py-3 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
+                className="bg-brand mt-6 rounded-[10px] px-6 py-2.5 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
               >
                 {card.ctaLabel}
               </Link>

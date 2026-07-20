@@ -23,7 +23,7 @@ export function LandingShipping() {
               <p className="mt-3 text-sm leading-relaxed text-neutral-500">{option.description}</p>
               <Link
                 href={option.href}
-                className="bg-brand mt-6 rounded-[10px] px-6 py-3 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
+                className="bg-brand mt-6 rounded-[10px] px-6 py-2.5 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
               >
                 {option.ctaLabel}
               </Link>

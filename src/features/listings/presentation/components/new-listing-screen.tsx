@@ -154,7 +154,7 @@ export function NewListingScreen({ userId, userEmail }: NewListingScreenProps) {
         <button
           type="submit"
           disabled={!isValid || createProducts.isPending}
-          className={`mt-6 flex h-14 w-full items-center justify-center rounded-2xl text-base font-medium transition-colors ${
+          className={`mt-6 flex h-12 w-full items-center justify-center rounded-2xl text-base font-medium transition-colors ${
             isValid && !createProducts.isPending
               ? 'bg-brand hover:bg-brand/90 text-white'
               : 'cursor-not-allowed bg-neutral-200 text-neutral-400'

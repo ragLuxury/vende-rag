@@ -149,7 +149,7 @@ export function EditPaymentMethodForm({ clientId, profile, onSaved }: EditPaymen
       <button
         type="submit"
         disabled={!isValid || savePaymentMethod.isPending}
-        className={`mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-2xl text-sm font-medium transition-colors md:mx-auto md:w-auto md:px-16 ${
+        className={`mt-2 flex h-10 w-full items-center justify-center gap-2 rounded-[10px] text-sm font-medium transition-colors md:mx-auto md:w-auto md:px-6 ${
           isValid && !savePaymentMethod.isPending
             ? 'bg-brand hover:bg-brand/90 text-white'
             : 'cursor-not-allowed bg-neutral-200 text-neutral-400'

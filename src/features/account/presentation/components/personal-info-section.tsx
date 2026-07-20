@@ -37,7 +37,7 @@ export function PersonalInfoSection({ clientId, open, onToggle }: PersonalInfoSe
 
           <Link
             href="/perfil/editar"
-            className="bg-brand/30 mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-2xl text-base font-medium text-neutral-700"
+            className="bg-brand/30 mt-6 flex h-10 w-full items-center justify-center gap-2 rounded-2xl text-base font-medium text-neutral-700"
           >
             Editar
             <Icon icon="ion:pencil-outline" className="size-5" />

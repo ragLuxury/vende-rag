@@ -53,7 +53,7 @@ export function TopNavActions() {
     <div className="flex items-center gap-3">
       <Link
         href="/vender"
-        className="bg-brand rounded-[8px] px-5 py-2 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
+        className="bg-brand rounded-[8px] px-5 py-1.5 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
       >
         Vender
       </Link>

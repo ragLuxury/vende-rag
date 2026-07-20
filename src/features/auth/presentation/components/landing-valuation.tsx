@@ -20,7 +20,7 @@ export function LandingValuation() {
   }
 
   return (
-    <section id="como-valuamos" className="border-t border-neutral-100 bg-neutral-100 py-10">
+    <section id="como-valuamos" className="border-t border-[#ededed] bg-[#ededed] py-10">
       <div className="mx-auto w-full max-w-6xl px-8">
         <h2 className="font-editors text-center text-4xl text-neutral-900">
           Cómo <span className="italic">valuamos</span>

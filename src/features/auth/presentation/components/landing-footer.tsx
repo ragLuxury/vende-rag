@@ -38,7 +38,7 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
           />
           <button
             type="submit"
-            className="bg-brand px-6 py-3 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
+            className="bg-brand px-6 py-2.5 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
           >
             Confirmar
           </button>

@@ -15,7 +15,7 @@ export function LandingHero() {
           fill
           priority
           sizes="50vw"
-          className="object-cover"
+          className="!h-full !w-[92%] object-cover"
         />
       </div>
 
@@ -28,7 +28,7 @@ export function LandingHero() {
           Es muy <span className="italic">fácil</span>
         </h1>
 
-        <p className="mt-8 max-w-xl text-base leading-relaxed text-neutral-700">
+        <p className="mt-8 max-w-xl text-sm leading-relaxed text-neutral-700">
           Estás a un paso de vender en la plataforma más completa de consignación de lujo en México.
           Nuestro Panel de Seller está automatizado para dar visibilidad y control de las
           solicitudes y ventas de tus productos. RAG se encarga de todo el proceso de venta:
@@ -39,7 +39,7 @@ export function LandingHero() {
         <button
           type="button"
           onClick={open}
-          className="bg-brand mt-10 inline-block rounded-[14px] px-8 py-4 text-base font-medium text-white uppercase transition-opacity hover:opacity-90"
+          className="bg-brand mt-10 inline-block rounded-[10px] px-4 py-1.5 text-base font-medium text-white uppercase transition-opacity hover:opacity-90"
         >
           Quiero vender
         </button>

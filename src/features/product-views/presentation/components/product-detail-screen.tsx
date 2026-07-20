@@ -243,7 +243,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       type="button"
                       onClick={handleApprove}
                       disabled={respondNegotiation.isPending}
-                      className="bg-brand flex-1 rounded-full py-4 text-sm font-medium text-white disabled:opacity-50"
+                      className="bg-brand flex-1 rounded-full py-3 text-sm font-medium text-white disabled:opacity-50"
                     >
                       Aceptar
                     </button>
@@ -429,7 +429,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         type="button"
                         onClick={handleApprove}
                         disabled={respondNegotiation.isPending}
-                        className="bg-brand flex-1 rounded-full py-4 text-sm font-medium text-white disabled:opacity-50"
+                        className="bg-brand flex-1 rounded-full py-3 text-sm font-medium text-white disabled:opacity-50"
                       >
                         Aceptar
                       </button>
