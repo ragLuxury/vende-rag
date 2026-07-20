@@ -42,7 +42,7 @@ export function TopNav({ trailing }: TopNavProps) {
             width={245}
             height={56}
             priority
-            className="h-[95px] w-auto"
+            className="h-[95px] w-auto ml-[65px]"
           />
         </Link>
 

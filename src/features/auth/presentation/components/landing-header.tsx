@@ -18,7 +18,7 @@ export function LandingHeader() {
           width={245}
           height={56}
           priority
-          className="h-[95px] w-auto"
+          className="h-[95px] w-auto ml-[65px]"
         />
         <div className="flex items-center gap-5">
           <button
