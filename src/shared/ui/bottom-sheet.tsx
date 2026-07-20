@@ -94,7 +94,7 @@ export function BottomSheet({ open, label, onClose, children }: BottomSheetProps
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto pb-[calc(5rem+env(safe-area-inset-bottom))]">
+        <div className="scrollbar-hide flex-1 overflow-y-auto pb-[calc(5rem+env(safe-area-inset-bottom))]">
           {children}
         </div>
       </div>

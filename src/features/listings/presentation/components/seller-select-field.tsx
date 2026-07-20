@@ -80,7 +80,7 @@ export function SellerSelectField({ value, onSelect }: SellerSelectFieldProps) {
       />
 
       {showSuggestions ? (
-        <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-2xl border border-neutral-200 bg-white shadow-lg">
+        <ul className="scrollbar-hide absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-2xl border border-neutral-200 bg-white shadow-lg">
           {isPending ? (
             <li className="px-4 py-3 text-base text-neutral-400">Cargando clientes…</li>
           ) : null}

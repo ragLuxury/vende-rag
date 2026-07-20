@@ -42,12 +42,18 @@ export function LandingProcessTabs() {
               <p className="mt-6 leading-relaxed text-neutral-500">{activeTab.body}</p>
             </div>
             <div className="relative aspect-square overflow-hidden rounded-3xl bg-neutral-50">
-              <Image
-                src={activeTab.image}
-                alt={`Proceso de ${activeTab.title}`}
-                fill
-                className="object-cover"
-              />
+              {PROCESS_TABS.map((tab) => (
+                <Image
+                  key={tab.id}
+                  src={tab.image}
+                  alt={`Proceso de ${tab.title}`}
+                  fill
+                  aria-hidden={tab.id !== activeTab.id}
+                  className={`object-cover transition-opacity duration-300 ${
+                    tab.id === activeTab.id ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+              ))}
             </div>
           </div>
         ) : null}

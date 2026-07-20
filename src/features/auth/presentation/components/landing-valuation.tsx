@@ -20,7 +20,7 @@ export function LandingValuation() {
   }
 
   return (
-    <section id="como-valuamos" className="border-t border-neutral-100 bg-neutral-50 py-10">
+    <section id="como-valuamos" className="border-t border-neutral-100 bg-neutral-100 py-10">
       <div className="mx-auto w-full max-w-6xl px-8">
         <h2 className="font-editors text-center text-4xl text-neutral-900">
           Cómo <span className="italic">valuamos</span>
@@ -57,7 +57,7 @@ export function LandingValuation() {
                     <span className="text-brand mt-4 text-sm font-medium">Saber más...</span>
                   </div>
 
-                  <div className="absolute inset-0 flex [transform:rotateY(180deg)] flex-col items-center justify-center overflow-y-auto rounded-xl border border-neutral-200 bg-white px-4 py-8 text-center [backface-visibility:hidden]">
+                  <div className="scrollbar-hide absolute inset-0 flex [transform:rotateY(180deg)] flex-col items-center justify-center overflow-y-auto rounded-xl border border-neutral-200 bg-white px-4 py-8 text-center [backface-visibility:hidden]">
                     <h3 className="text-sm font-semibold text-neutral-900">{item.title}</h3>
                     {item.detailIntro ? (
                       <p className="mt-3 text-sm text-neutral-500">{item.detailIntro}</p>

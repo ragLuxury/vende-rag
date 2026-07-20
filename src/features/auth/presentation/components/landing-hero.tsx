@@ -39,7 +39,7 @@ export function LandingHero() {
         <button
           type="button"
           onClick={open}
-          className="bg-brand mt-10 inline-block rounded-[14px] px-8 py-4 text-base font-medium text-white transition-opacity hover:opacity-90"
+          className="bg-brand mt-10 inline-block rounded-[14px] px-8 py-4 text-base font-medium text-white uppercase transition-opacity hover:opacity-90"
         >
           Quiero vender
         </button>

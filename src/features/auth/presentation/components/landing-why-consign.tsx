@@ -3,7 +3,7 @@ import { WHY_CONSIGN } from './landing-content';
 
 export function LandingWhyConsign() {
   return (
-    <section id="por-que-elegirnos" className="bg-neutral-50 py-10">
+    <section id="por-que-elegirnos" className="bg-neutral-100 py-10">
       <div className="mx-auto w-full max-w-6xl px-8">
         <h2 className="font-editors text-center text-4xl text-neutral-900">
           Por qué consignar <span className="italic">con nosotros</span>

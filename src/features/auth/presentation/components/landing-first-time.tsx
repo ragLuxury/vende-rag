@@ -3,7 +3,7 @@ import { FIRST_TIME_CARDS } from './landing-content';
 
 export function LandingFirstTime() {
   return (
-    <section className="bg-neutral-50 py-10">
+    <section className="bg-neutral-100 py-10">
       <div className="mx-auto w-full max-w-6xl px-8">
         <h2 className="font-editors text-center text-4xl text-neutral-900">
           Mi Primera <span className="italic">vez en RAG</span>
