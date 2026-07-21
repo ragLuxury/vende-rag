@@ -52,9 +52,11 @@ function amountFor(
   amount: CurrencyAmount,
   paidById: ReadonlyMap<number, number>,
 ): number {
-  const paid = paidById.get(product.id) ?? 0;
-  if (amount === 'paid') return paid;
-  if (amount === 'pending') return Math.max(product.earning - paid, 0);
+  if (amount === 'paid' || amount === 'pending') {
+    const itemizedPaid = paidById.get(product.id) ?? 0;
+    const resolved = resolvePayment(product.status, product.earning, itemizedPaid);
+    return amount === 'paid' ? resolved.paid : resolved.pending;
+  }
   if (amount === 'salePrice') return Math.max(product.salePrice - product.discountAmount, 0);
   return product.earning;
 }
@@ -305,7 +307,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
                   Estatus
                 </p>
 
-                <div className="mt-3 flex flex-col gap-3">
+                <div className="mt-3 grid grid-cols-[max-content_min-content] items-center gap-x-3 gap-y-3">
                   {summary.map((item, index) => {
                     const checked = checkedStatuses.has(index);
                     const display =
@@ -316,7 +318,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
                     return (
                       <label
                         key={item.label}
-                        className="flex cursor-pointer items-center justify-between gap-3 text-sm text-neutral-700"
+                        className="contents cursor-pointer text-sm text-neutral-700"
                       >
                         <span className="flex items-center gap-2">
                           <input
@@ -327,7 +329,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
                           />
                           {item.label}
                         </span>
-                        <span className="text-xs text-neutral-400">{display}</span>
+                        <span className="text-center text-xs text-neutral-400">{display}</span>
                       </label>
                     );
                   })}
