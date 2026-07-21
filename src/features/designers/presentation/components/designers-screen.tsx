@@ -14,7 +14,7 @@ export function DesignersScreen() {
 
   return (
     <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-16 md:px-8 md:py-20">
-      <h1 className="font-editors text-center text-4xl text-neutral-900 md:text-5xl">
+      <h1 className="font-editors text-center text-2xl text-neutral-900 md:text-5xl">
         Directorio de Diseñadores
       </h1>
 

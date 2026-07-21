@@ -9,16 +9,16 @@ export function LandingNewProducts() {
   return (
     <section className="py-20">
       <div className="mx-auto w-full max-w-6xl px-8">
-        <h2 className="font-editors text-center text-4xl text-neutral-900">
-          Nuevos <span className="italic">Productos</span>
+        <h2 className="font-cormorant text-center text-3xl font-semibold text-neutral-900">
+          Nuevos <span className="font-normal italic">Productos</span>
         </h2>
 
-        <div className="mt-12 overflow-hidden">
+        <div className="mt-12 max-w-[624px] mx-auto overflow-hidden">
           <div className="animate-marquee flex w-max gap-6 hover:[animation-play-state:paused]">
             {MARQUEE_ITEMS.map((product, index) => (
               <div
                 key={`${product.id}-${index}`}
-                className="w-56 shrink-0"
+                className="w-48 shrink-0"
                 aria-hidden={index >= NEW_PRODUCTS.length}
               >
                 <div className="relative aspect-square overflow-hidden rounded-2xl bg-neutral-100">

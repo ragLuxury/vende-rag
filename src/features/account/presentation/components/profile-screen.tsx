@@ -101,7 +101,7 @@ export function ProfileScreen({
             <span className="flex size-28 items-center justify-center rounded-full bg-neutral-100 text-neutral-400">
               <Icon icon="ion:person-outline" className="size-12" />
             </span>
-            <h1 className="font-editors text-4xl text-neutral-900">
+            <h1 className="font-editors text-2xl text-neutral-900">
               {profile ? `${profile.firstName} ${profile.lastName}` : name}
             </h1>
           </div>
@@ -168,7 +168,7 @@ export function ProfileScreen({
       <div className="hidden flex-1 flex-col md:flex">
         <div className="px-8 py-10">
           <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col">
-            <h1 className="font-editors text-4xl text-neutral-900">
+            <h1 className="font-editors text-2xl text-neutral-900">
               ¡Hola!, bienvenid@{' '}
               {summary ? (
                 <span className="italic">

@@ -1,3 +1,6 @@
+import { VALUATION_INTRO, VALUATION_ITEMS } from '@/src/shared/content/valuation-content';
+import { PROCESS_STEPS } from '@/src/shared/content/process-content';
+
 export interface NavLink {
   label: string;
   href: string;
@@ -19,36 +22,15 @@ export interface ValuationCard {
   detailBody?: string;
 }
 
-export const VALUATION_INTRO =
-  'Los precios de los productos se establecen mediante una combinación del conocimiento de nuestros curadores y los resultados de nuestro algoritmo, que analiza precios de mercado y ventas pasadas. Nuestro esquema de comisiones nos alinea con el cliente para vender al mejor precio posible.';
+export { VALUATION_INTRO };
 
-export const VALUATION_CARDS: readonly ValuationCard[] = [
-  {
-    icon: '/images/valuation/valor-reventa-icon.png',
-    title: 'Valor de reventa',
-    detailIntro: 'Varía dependiendo de ciertos factores como:',
-    detailBullets: [
-      'Marca',
-      'Modelo',
-      'Ediciones Limitadas',
-      'Colaboraciones',
-      'Productos de temporada',
-      'Escasez',
-    ],
-  },
-  {
-    icon: '/images/valuation/tendencia-mercado-icon.png',
-    title: 'Tendencias de mercado',
-    detailBody:
-      'Nuestro algoritmo determina los mejores precios posibles al analizar la demanda y oferta de productos en el mercado, así como las búsquedas y ventas previas en nuestro sitio.',
-  },
-  {
-    icon: '/images/valuation/condicion-producto-icon.png',
-    title: 'Condición del producto',
-    detailBody:
-      'Los productos nuevos o en excelente estado se venden más caros y 3 veces más rápido. No aceptamos productos rotos, con daños considerables o con defectos que afecten su estética.',
-  },
-];
+export const VALUATION_CARDS: readonly ValuationCard[] = VALUATION_ITEMS.map((item) => ({
+  icon: item.icon,
+  title: item.title,
+  ...(item.bullets
+    ? { detailIntro: item.body, detailBullets: item.bullets }
+    : { detailBody: item.body }),
+}));
 
 export interface ProcessTab {
   id: string;
@@ -59,40 +41,14 @@ export interface ProcessTab {
   image: string;
 }
 
-export const PROCESS_TABS: readonly ProcessTab[] = [
-  {
-    id: 'solicitudes',
-    step: '1. Solicitudes',
-    title: 'Solicitudes',
-    heading: 'Negociación de precios',
-    body: 'Después de completar el formulario de venta, nuestro equipo te enviará una propuesta de precio en máximo 2 días hábiles. Al aceptar el precio y enviar tus productos a RAG, tus solicitudes se convertirán en publicaciones en nuestro sitio y podrás gestionarlas desde el Panel de Seller.',
-    image: '/images/process-rag/solicitudes.png',
-  },
-  {
-    id: 'autenticacion',
-    step: '2. Autenticación',
-    title: 'Autenticación',
-    heading: 'Nuestro equipo de autentificación',
-    body: 'Todos los productos recibidos pasan por un minucioso proceso de autenticación por medio de una revisión física y de un software de Inteligencia Artificial para asegurar que todo lo publicado en nuestro sitio sea auténtico.',
-    image: '/images/process-rag/autenticacion.png',
-  },
-  {
-    id: 'publicacion',
-    step: '3. Publicación',
-    title: 'Publicación',
-    heading: 'Verificamos y publicamos tu producto en RAG',
-    body: 'Una vez que los productos pasan nuestro filtro de autenticación, tomamos fotografías y creamos contenido atractivo para su publicación. Nuestras estrategias de venta y promoción, tanto en plataformas físicas como digitales, maximizan la visibilidad y aumentan las posibilidades de concretar la venta.',
-    image: '/images/process-rag/publicacion.png',
-  },
-  {
-    id: 'pago',
-    step: '4. Pago',
-    title: 'Pago',
-    heading: 'Condiciones únicas de pago',
-    body: 'Los pagos a vendedores se hacen el siguiente martes tras la compra. Si el producto está apartado, recibes 30% y el 70% restante un mes después al liquidar el cliente. Somos la única plataforma que paga apartados antes de la liquidación. Si el cliente no paga, RAG cubre el monto restante.',
-    image: '/images/process-rag/pago.png',
-  },
-];
+export const PROCESS_TABS: readonly ProcessTab[] = PROCESS_STEPS.map((step) => ({
+  id: step.id,
+  step: `${step.step}. ${step.title}`,
+  title: step.title,
+  heading: step.heading,
+  body: step.body,
+  image: step.image,
+}));
 
 export interface TimelineMilestone {
   week: string;

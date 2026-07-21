@@ -6,6 +6,12 @@ import { Icon } from '@iconify/react';
 
 import { resolvePayment } from '@/src/features/product-views/domain/payment-status';
 import type { SellerPayment } from '@/src/features/product-views/domain/product-view-repository';
+// Reused as-is below the desktop product detail (same section LandingScreen and
+// profile-screen.tsx render at the bottom of their desktop views); no shared
+// cross-feature abstraction exists yet for this read (same precedent as
+// profile-screen.tsx's own import of LandingFooter).
+// eslint-disable-next-line boundaries/element-types
+import { LandingFooter } from '@/src/features/auth/presentation/components/landing-footer';
 import { useCommission } from '../hooks/use-commission';
 import { useProductDetail } from '../hooks/use-product-detail';
 import { useRespondNegotiation } from '../hooks/use-respond-negotiation';
@@ -454,6 +460,10 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                   ) : null}
                 </div>
               </div>
+            </div>
+
+            <div className="hidden md:block">
+              <LandingFooter isAuthenticated />
             </div>
           </>
         )}

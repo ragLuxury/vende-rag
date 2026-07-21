@@ -10,8 +10,8 @@ export function LandingFaq() {
   return (
     <section id="preguntas-frecuentes" className="pt-1 pb-10">
       <div className="mx-auto w-full max-w-3xl px-8">
-        <h2 className="font-editors text-center text-4xl text-neutral-900">
-          Preguntas <span className="italic">frecuentes</span>
+        <h2 className="font-cormorant text-center text-3xl font-semibold text-neutral-900">
+          Preguntas <span className="font-normal italic">frecuentes</span>
         </h2>
 
         <ul className="mt-12 flex flex-col gap-3">

@@ -25,7 +25,7 @@ export function FaqScreen() {
       </header>
 
       <div className="flex-1 px-6 pt-8 pb-10">
-        <p className="font-editors text-4xl text-neutral-900">¿En qué podemos ayudarte?</p>
+        <p className="font-editors text-2xl text-neutral-900">¿En qué podemos ayudarte?</p>
         <p className="mt-3 text-sm leading-relaxed text-neutral-500">
           Encuentra respuestas a las preguntas más comunes sobre nuestra plataforma de consignación.
         </p>

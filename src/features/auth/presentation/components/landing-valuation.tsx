@@ -22,12 +22,14 @@ export function LandingValuation() {
   return (
     <section id="como-valuamos" className="border-t border-[#ededed] bg-[#ededed] py-10">
       <div className="mx-auto w-full max-w-6xl px-8">
-        <h2 className="font-editors text-center text-4xl text-neutral-900">
-          Cómo <span className="italic">valuamos</span>
+        <h2 className="font-cormorant text-center text-3xl font-semibold text-neutral-900">
+          Cómo <span className="font-normal italic">valuamos</span>
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-center text-neutral-500">{VALUATION_INTRO}</p>
+        <p className="mx-auto mt-4 max-w-2xl text-center text-sm text-neutral-500">
+          {VALUATION_INTRO}
+        </p>
 
-        <div className="mt-12 grid grid-cols-3 gap-8">
+        <div className="mt-12 grid max-w-[800px] grid-cols-3 gap-4 mx-auto">
           {VALUATION_CARDS.map((item) => {
             const isFlipped = flippedTitles.has(item.title);
 
@@ -45,15 +47,15 @@ export function LandingValuation() {
                     isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'
                   }`}
                 >
-                  <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl border border-neutral-200 bg-white px-3 py-8 text-center [backface-visibility:hidden]">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl border border-neutral-200 bg-white px-3 py-4 text-center [backface-visibility:hidden]">
                     <Image
                       src={item.icon}
                       alt=""
                       width={144}
                       height={144}
-                      className="size-36 max-w-none object-contain"
+                      className="size-40 max-w-none object-contain"
                     />
-                    <h3 className="mt-6 text-lg font-semibold text-neutral-900">{item.title}</h3>
+                    <h3 className="mt-2 font-[manrope] text-md text-neutral-900">{item.title}</h3>
                     <span className="text-brand mt-4 text-sm font-medium">Saber más...</span>
                   </div>
 

@@ -33,7 +33,7 @@ export function LoginFormBody() {
   return (
     <>
       <header className="mb-10 text-center">
-        <h1 className="font-editors text-4xl text-neutral-900">Iniciar Sesión</h1>
+        <h1 className="font-editors text-2xl text-neutral-900">Iniciar Sesión</h1>
         <p className="mt-3 text-neutral-500">Ingresa tu correo electrónico para acceder a la App</p>
       </header>
 

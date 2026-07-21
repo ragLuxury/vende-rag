@@ -15,6 +15,7 @@
   --font-commuters: var(--font-commuters-sans);
   --font-editors: var(--font-editors-note);
   --font-alfredino: var(--font-alfredino);
+  --font-cormorant: var(--font-cormorant-garamond);
 }
 
 body {

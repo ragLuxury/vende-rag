@@ -9,7 +9,7 @@ export function LandingHeader() {
   const { open } = useLoginModal();
 
   return (
-    <header className="top-0 z-50 bg-white/90 backdrop-blur">
+    <header className="top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-26 w-full items-start mt-[15px] justify-between px-4">
         <Image src="/images/header/isotipo.svg" alt="" width={48} height={48} className="size-10" />
         <Image

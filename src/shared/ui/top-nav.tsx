@@ -31,7 +31,11 @@ export function TopNav({ trailing }: TopNavProps) {
   );
 
   return (
-    <header className="relative z-[150] bg-white/90 backdrop-blur">
+    <header
+      className={`relative z-[150] bg-white/90 backdrop-blur ${
+        hideNavStrip ? 'shadow-[0_6px_14px_-12px_rgba(0,0,0,0.25)]' : 'border-b border-neutral-200'
+      }`}
+    >
       <div className="mx-auto hidden h-26 w-full items-start mt-[15px] justify-between px-4 md:flex">
         <Image src="/images/header/isotipo.svg" alt="" width={48} height={48} className="size-10" />
 

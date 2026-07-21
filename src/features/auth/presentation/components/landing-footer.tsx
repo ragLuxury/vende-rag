@@ -18,9 +18,9 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
 
   return (
     <footer className="bg-neutral-50">
-      <div className="mx-auto w-full max-w-6xl px-8 py-16 text-center">
-        <h2 className="font-editors text-3xl text-neutral-900">
-          Síguenos <span className="italic">y Suscríbete</span>
+      <div className="mx-auto w-full max-w-6xl px-8 py-10 text-center">
+        <h2 className="font-cormorant text-3xl font-semibold text-neutral-900">
+          Síguenos <span className="font-normal italic">y Suscríbete</span>
         </h2>
         <p className="mt-3 text-sm text-neutral-500">
           Únete a nuestra comunidad, regístrate para recibir nuestro newsletter periódicamente.
@@ -28,17 +28,17 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
 
         <form
           onSubmit={handleNewsletterSubmit}
-          className="mx-auto mt-6 flex max-w-md items-stretch overflow-hidden rounded-full border border-neutral-300 bg-white focus-within:border-neutral-500"
+          className="mx-auto mt-6 flex max-w-[600px] items-stretch overflow-hidden rounded-full border border-neutral-300 bg-white focus-within:border-neutral-500"
         >
           <input
             type="email"
             required
             placeholder="Ingresa tu correo electrónico"
-            className="flex-1 bg-transparent px-5 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
+            className="flex-1 bg-transparent px-5 py-1 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
           />
           <button
             type="submit"
-            className="bg-brand px-6 py-2.5 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
+            className="bg-brand px-6 py-1.5 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
           >
             Confirmar
           </button>
@@ -56,7 +56,7 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
             >
               <span
                 role="tooltip"
-                className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 rounded-md bg-neutral-900 px-2 py-1 text-xs whitespace-nowrap text-white opacity-0 invisible transition-opacity group-hover:opacity-100 group-hover:visible"
+                className="pointer-events-none invisible absolute -top-8 left-1/2 -translate-x-1/2 rounded-md bg-neutral-900 px-2 py-1 text-xs whitespace-nowrap text-white opacity-0 transition-opacity group-hover:visible group-hover:opacity-100"
               >
                 {social.label}
               </span>
@@ -66,19 +66,19 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
         </div>
       </div>
 
-      <div className="bg-white py-8">
-        <div className="mx-auto flex w-full max-w-6xl flex-col justify-around gap-8 px-8 md:flex-row">
+      <div className="bg-white py-4">
+        <div className="mx-auto flex w-full max-w-6xl flex-col justify-around gap-4 px-8 md:flex-row md:gap-8">
           {footerColumns.map((column) => (
             <nav key={column.title}>
-              <p className="text-sm font-semibold tracking-[0.2em] text-neutral-900 uppercase">
+              <p className="text-xs font-semibold tracking-[0.2em] text-neutral-900 uppercase">
                 {column.title}
               </p>
-              <ul className="mt-4 flex flex-col gap-3">
+              <ul className="mt-4 flex flex-col gap-1">
                 {column.links.map((link) => (
                   <li key={link.href + link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-neutral-500 transition-colors hover:text-neutral-900"
+                      className="text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                     >
                       {link.label}
                     </Link>
@@ -89,7 +89,7 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
           ))}
         </div>
 
-        <div className="mx-auto mt-10 w-full max-w-6xl px-8">
+        <div className="mx-auto mt-2 w-full max-w-6xl px-8">
           <p className="text-xs text-neutral-400">© {new Date().getFullYear()} RAG</p>
         </div>
       </div>

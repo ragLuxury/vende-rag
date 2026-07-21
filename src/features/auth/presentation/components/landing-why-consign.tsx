@@ -5,8 +5,8 @@ export function LandingWhyConsign() {
   return (
     <section id="por-que-elegirnos" className="bg-[#ededed] py-10">
       <div className="mx-auto w-full max-w-6xl px-8">
-        <h2 className="font-editors text-center text-4xl text-neutral-900">
-          Por qué consignar <span className="italic">con nosotros</span>
+        <h2 className="font-cormorant text-center text-3xl font-semibold text-neutral-900">
+          Por qué consignar <span className="font-normal italic">con nosotros</span>
         </h2>
 
         <div className="mt-12 grid grid-cols-5 gap-6">
@@ -17,7 +17,7 @@ export function LandingWhyConsign() {
                 alt={item.title}
                 width={96}
                 height={96}
-                className="size-24 max-w-none object-contain"
+                className="size-28 max-w-none object-contain"
               />
               <h3 className="mt-5 text-sm font-semibold text-neutral-900">{item.title}</h3>
               <p className="mt-2 text-xs leading-relaxed text-neutral-500">{item.description}</p>

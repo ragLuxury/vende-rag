@@ -284,7 +284,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
       <div className="hidden flex-1 flex-col md:flex">
         <div className="px-8 py-10">
           <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col">
-            <h1 className="font-editors text-4xl text-neutral-900">
+            <h1 className="font-editors text-2xl text-neutral-900">
               ¡Hola!, bienvenid@{' '}
               {profileSummary ? (
                 <span className="italic">
