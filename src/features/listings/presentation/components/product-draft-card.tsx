@@ -169,8 +169,8 @@ export function ProductDraftCard({
             />
           </div>
 
-          <div className="mt-6">
-            <label className="flex items-center gap-2 text-sm text-neutral-800">
+          <div className="mt-6 ">
+            <label className="flex items-center justify-center text-center gap-2 text-sm text-neutral-800">
               ¿En cuanto te gustaría venderlo?
               <Icon icon="ion:information-circle-outline" className="size-5 text-neutral-400" />
             </label>
@@ -185,7 +185,7 @@ export function ProductDraftCard({
           </div>
 
           <div className="mt-6">
-            <p className="text-sm text-neutral-800">Esta sería tu ganancia</p>
+            <p className="text-sm flex justify-center text-neutral-800">Esta sería tu ganancia</p>
             <input
               disabled
               aria-label="Ganancia estimada"
@@ -224,7 +224,7 @@ export function ProductDraftCard({
           ) : null}
 
           <div className="mt-6">
-            <p className="text-sm font-semibold text-neutral-900">Describe los Detalles</p>
+            <p className="text-sm flex justify-center text-neutral-800">Describe los Detalles</p>
             <textarea
               value={draft.details}
               onChange={(event) => update({ details: event.target.value })}
