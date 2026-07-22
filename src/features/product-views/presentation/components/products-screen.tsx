@@ -203,6 +203,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
                   value: amountFor(product, config.cardSecondary.amount, paidById),
                 }
           }
+          showReceivedDisclaimer={view === 'publicaciones'}
         />
       </Link>
     );

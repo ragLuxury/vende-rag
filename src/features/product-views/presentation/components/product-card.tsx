@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import type { Product } from '@/src/features/product-views/domain/product-view-repository';
+import { resolvePublicationPillLabel } from '@/src/features/product-views/domain/publication-status';
 import { getStatusStyle } from './product-status';
 
 const currencyFormatter = new Intl.NumberFormat('es-MX', {
@@ -20,14 +21,19 @@ interface CardSecondary {
 interface ProductCardProps {
   product: Product;
   secondary: CardSecondary;
+  showReceivedDisclaimer: boolean;
 }
 
-export function ProductCard({ product, secondary }: ProductCardProps) {
+export function ProductCard({ product, secondary, showReceivedDisclaimer }: ProductCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
   const showImage = product.image !== '' && !imageFailed;
 
   const isReceived = product.status.trim().toLowerCase() === 'recibido';
-  const pillStatus = isReceived && product.statusIntern ? product.statusIntern : product.status;
+  const pillStatus =
+    isReceived && product.statusIntern
+      ? resolvePublicationPillLabel(product.statusIntern)
+      : product.status;
+  const isPreaprobada = pillStatus.trim().toLowerCase() === 'preaprobada';
 
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-neutral-300">
@@ -58,6 +64,14 @@ export function ProductCard({ product, secondary }: ProductCardProps) {
           {secondary.label}: {currencyFormatter.format(secondary.value)}
         </p>
         <p className="mb-2 text-xs text-neutral-400">ID: {product.id}</p>
+
+
+        {isPreaprobada && showReceivedDisclaimer ? (
+          <p className=" flex items-center justify-center gap-1 text-center text-[10px] text-neutral-400">
+            <Icon icon="ion:information-circle-outline" className="size-3 shrink-0" />
+            Recibido en tienda
+          </p>
+        ) : null}
 
         <span
           className="mt-auto w-40 self-center rounded-full py-1.5 text-center text-sm font-medium"

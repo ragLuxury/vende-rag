@@ -37,6 +37,7 @@ export interface ProductDetail {
   uuid: string;
   name: string;
   status: string;
+  statusIntern: string;
   state: number;
   brand: string;
   model: string;
@@ -53,6 +54,9 @@ export interface ProductDetail {
   earning: number;
   commission: number;
   images: readonly string[];
+  hasPhotos: boolean;
+  hasVideo: boolean;
+  hasTag: boolean;
 }
 
 export type NegotiationDecision =

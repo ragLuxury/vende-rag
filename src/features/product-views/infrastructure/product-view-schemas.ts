@@ -36,6 +36,7 @@ export const productDetailResponseSchema = z.object({
     detalle: z.string().nullish(),
     estatus: z.string().nullish(),
     Estado: z.string().nullish(),
+    status_intern: z.string().nullish(),
     state: z.coerce.number().nullish(),
     Fecha: z.string().nullish(),
     original_price: z.number(),
@@ -44,6 +45,9 @@ export const productDetailResponseSchema = z.object({
     precio_descuento: z.coerce.number().nullish(),
     rag: z.coerce.number().nullish(),
     galeria: z.array(z.string()).nullish(),
+    fotos: z.coerce.number().nullish(),
+    video: z.coerce.number().nullish(),
+    etiquetado: z.coerce.number().nullish(),
   }),
 });
 

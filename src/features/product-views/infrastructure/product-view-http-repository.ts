@@ -87,6 +87,7 @@ export const productViewHttpRepository = {
       uuid: data.uuid,
       name: data.name_product ?? data.modelo ?? '',
       status: data.estatus || data.Estado || findProductStatusByCode(data.state ?? 0)?.label || '',
+      statusIntern: data.status_intern ?? '',
       state: data.state ?? 0,
       brand: data.marca ?? '',
       model: data.modelo ?? '',
@@ -103,6 +104,9 @@ export const productViewHttpRepository = {
       earning: data.precio,
       commission: salePrice - data.precio,
       images: (data.galeria ?? []).map(resolveImageUrl),
+      hasPhotos: Boolean(data.fotos),
+      hasVideo: Boolean(data.video),
+      hasTag: Boolean(data.etiquetado),
     };
   },
 

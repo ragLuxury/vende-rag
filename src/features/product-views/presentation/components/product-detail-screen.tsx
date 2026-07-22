@@ -6,6 +6,11 @@ import { Icon } from '@iconify/react';
 
 import { resolvePayment } from '@/src/features/product-views/domain/payment-status';
 import type { SellerPayment } from '@/src/features/product-views/domain/product-view-repository';
+import {
+  isPublicationApproved,
+  isPublicationInfoGenerated,
+  resolvePublicationPillLabel,
+} from '@/src/features/product-views/domain/publication-status';
 // Reused as-is below the desktop product detail (same section LandingScreen and
 // profile-screen.tsx render at the bottom of their desktop views); no shared
 // cross-feature abstraction exists yet for this read (same precedent as
@@ -18,6 +23,8 @@ import { useRespondNegotiation } from '../hooks/use-respond-negotiation';
 import { useSellerPayments } from '../hooks/use-seller-payments';
 import { ProductGallery } from './product-gallery';
 import { getStatusStyle } from './product-status';
+import { PublicationGenerationChecklist } from './publication-generation-checklist';
+import { PublicationTimeline } from './publication-timeline';
 
 const NEGOTIATION_STATE = 2;
 
@@ -59,7 +66,11 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
     commission?.sellerNet ?? (isNegotiation ? product?.negotiationPrice : product?.earning) ?? 0;
   const itemizedPaid = (payments ?? []).reduce((total, payment) => total + payment.amount, 0);
   const { isPaid, paid, pending } = resolvePayment(product?.status ?? '', earning, itemizedPaid);
-  const pillStatus = product?.status ?? '';
+  const isReceived = (product?.status ?? '').trim().toLowerCase() === 'recibido';
+  const pillStatus =
+    isReceived && product?.statusIntern
+      ? resolvePublicationPillLabel(product.statusIntern)
+      : (product?.status ?? '');
 
   function handleApprove() {
     if (!product) return;
@@ -129,6 +140,21 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     </span>
                   ) : null}
                 </div>
+
+                {view === 'publicaciones' && product.statusIntern ? (
+                  <div className="mt-4 px-6">
+                    {isPublicationApproved(product.statusIntern) ? (
+                      <PublicationGenerationChecklist
+                        infoGenerated={isPublicationInfoGenerated(product.statusIntern)}
+                        hasVideo={product.hasVideo}
+                        hasPhotos={product.hasPhotos}
+                        hasTag={product.hasTag}
+                      />
+                    ) : (
+                      <PublicationTimeline statusIntern={product.statusIntern} />
+                    )}
+                  </div>
+                ) : null}
 
                 <section className="mt-6 border-t border-neutral-200">
                   <button
@@ -298,6 +324,21 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                   ) : null}
                 </div>
 
+                {view === 'publicaciones' && product.statusIntern ? (
+                  <div className="mt-6">
+                    {isPublicationApproved(product.statusIntern) ? (
+                      <PublicationGenerationChecklist
+                        infoGenerated={isPublicationInfoGenerated(product.statusIntern)}
+                        hasVideo={product.hasVideo}
+                        hasPhotos={product.hasPhotos}
+                        hasTag={product.hasTag}
+                      />
+                    ) : (
+                      <PublicationTimeline statusIntern={product.statusIntern} />
+                    )}
+                  </div>
+                ) : null}
+
                 <div className="mt-8 flex flex-col border-t border-neutral-200">
                   <section>
                     {isSale ? (
@@ -443,9 +484,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 
                   {isSale ? (
                     <div className="mt-6 border-t border-neutral-200 pt-6">
-                      <h3 className="text-sm font-semibold text-neutral-900">
-                        Historial de Pagos
-                      </h3>
+                      <h3 className="text-sm font-semibold text-neutral-900">Historial de Pagos</h3>
                       {payments && payments.length > 0 ? (
                         <ul className="mt-4 space-y-3">
                           {payments.map((payment) => (
