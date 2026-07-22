@@ -9,6 +9,8 @@ import { BottomSheet } from '@/src/shared/ui/bottom-sheet';
 export const MIN_PHOTOS = 3;
 export const MAX_PHOTOS = 6;
 
+const DESKTOP_QUERY = '(min-width: 768px)';
+
 interface PhotoUploaderProps {
   photos: readonly File[];
   onChange: (photos: readonly File[]) => void;
@@ -87,6 +89,14 @@ export function PhotoUploader({ photos, onChange }: PhotoUploaderProps) {
     ref.current?.click();
   }
 
+  function openPicker() {
+    if (window.matchMedia(DESKTOP_QUERY).matches) {
+      galleryInputRef.current?.click();
+    } else {
+      setSheetOpen(true);
+    }
+  }
+
   return (
     <div>
       <input
@@ -115,7 +125,7 @@ export function PhotoUploader({ photos, onChange }: PhotoUploaderProps) {
       {photos.length === 0 ? (
         <button
           type="button"
-          onClick={() => setSheetOpen(true)}
+          onClick={openPicker}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
@@ -156,7 +166,7 @@ export function PhotoUploader({ photos, onChange }: PhotoUploaderProps) {
           {canAddMore ? (
             <button
               type="button"
-              onClick={() => setSheetOpen(true)}
+              onClick={openPicker}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}

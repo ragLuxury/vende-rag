@@ -6,7 +6,7 @@ import type { Seller } from '@/src/features/listings/domain/seller-repository';
 import { useSellers } from '../hooks/use-sellers';
 
 const FIELD_CLASS =
-  'w-full rounded-2xl border border-neutral-300 bg-transparent px-4 py-3.5 text-base text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
+  'w-full rounded-2xl border border-neutral-300 bg-transparent px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
 
 const MAX_RESULTS = 50;
 

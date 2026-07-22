@@ -45,7 +45,7 @@ export function OriginSelectField({ value, onSelect }: OriginSelectFieldProps) {
         onClick={() => setOpen((current) => !current)}
         aria-label="Origen del producto"
         aria-expanded={open}
-        className={`focus:border-brand flex w-full items-center justify-between gap-2 rounded-2xl border border-neutral-300 bg-transparent px-4 py-3.5 text-left text-base focus:outline-none ${
+        className={`focus:border-brand flex w-full items-center justify-between gap-2 rounded-2xl border border-neutral-300 bg-transparent px-3 py-2.5 text-left text-sm focus:outline-none ${
           selected ? 'text-neutral-900' : 'text-neutral-400'
         }`}
       >

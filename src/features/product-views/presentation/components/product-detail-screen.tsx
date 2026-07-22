@@ -20,7 +20,6 @@ import { ProductGallery } from './product-gallery';
 import { getStatusStyle } from './product-status';
 
 const NEGOTIATION_STATE = 2;
-const PAID_STATE = 21;
 
 const currencyFormatter = new Intl.NumberFormat('es-MX', {
   style: 'currency',
@@ -507,13 +506,10 @@ function DetailField({ label, value }: RowProps) {
 function PaymentRow({ payment }: { payment: SellerPayment }) {
   return (
     <li className="rounded-2xl border border-neutral-200 px-5 py-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center">
         <p className="text-2xl font-semibold text-neutral-900">
           {currencyFormatter.format(payment.amount)}
         </p>
-        <span className="shrink-0 rounded-full bg-emerald-50 px-4 py-1.5 text-sm font-medium text-emerald-700">
-          {payment.method}
-        </span>
       </div>
       <div className="mt-3 flex items-center justify-between text-sm text-neutral-400">
         <span className="flex items-center gap-1.5">
