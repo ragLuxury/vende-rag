@@ -15,7 +15,7 @@ export function ContactScreen() {
       <div className="flex-1 pb-10">
         <div className="relative">
           <Image
-            src="/images/header-contacto.jpg"
+            src="/images/hero/header-contacto.jpg"
             alt="Bolsas y zapatos de lujo en consignación con RAG"
             width={4176}
             height={2784}

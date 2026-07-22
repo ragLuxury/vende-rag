@@ -21,7 +21,7 @@ export function LandingScreen() {
 
   return (
     <LoginModalProvider>
-      <div className={`flex min-h-full flex-col bg-white ${user ? 'md:pt-20' : ''}`}>
+      <div className="flex min-h-full flex-col bg-white">
         {user ? <TopNav trailing={<TopNavActions />} /> : <LandingHeader />}
 
         <LandingHero />

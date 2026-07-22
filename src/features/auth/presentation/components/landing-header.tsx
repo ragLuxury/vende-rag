@@ -9,22 +9,22 @@ export function LandingHeader() {
   const { open } = useLoginModal();
 
   return (
-    <header className="top-0 z-50 bg-white/90 backdrop-blur">
-      <div className="mx-auto flex h-16 w-full items-center justify-between px-4">
-        <Icon icon="ion:diamond-outline" className="text-brand size-7" />
+    <header className="top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur">
+      <div className="mx-auto flex h-26 w-full items-start mt-[15px] justify-between px-4">
+        <Image src="/images/header/isotipo.svg" alt="" width={48} height={48} className="size-10" />
         <Image
-          src="/images/headerv2.png"
+          src="/images/header/headerv2.png"
           alt="RAG"
-          width={140}
-          height={32}
+          width={245}
+          height={56}
           priority
-          className="h-15 w-auto"
+          className="h-[95px] w-auto ml-[65px]"
         />
         <div className="flex items-center gap-5">
           <button
             type="button"
             onClick={open}
-            className="bg-brand rounded-[8px] px-5 py-2 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
+            className="bg-brand rounded-[8px] px-5 py-1.5 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
           >
             Vender
           </button>

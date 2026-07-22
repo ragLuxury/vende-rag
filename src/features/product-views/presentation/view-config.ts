@@ -1,7 +1,12 @@
+import {
+  findProductStatusByCode,
+  normalizeStatusText,
+} from '@/src/features/product-views/domain/product-status';
 import type {
   Product,
   ProductView,
 } from '@/src/features/product-views/domain/product-view-repository';
+import { AppError } from '@/src/shared/domain/errors';
 
 export type CurrencyAmount = 'salePrice' | 'earning' | 'pending' | 'paid';
 
@@ -36,6 +41,15 @@ function statusIncludes(...needles: readonly string[]) {
   };
 }
 
+/** Label for a known numeric product status code, from the single source of truth. */
+function statusLabel(code: number): string {
+  const status = findProductStatusByCode(code);
+  if (!status) {
+    throw new AppError(`Unknown product status code: ${code}`);
+  }
+  return status.label;
+}
+
 export const VIEW_CONFIG: Record<ProductView, ViewConfig> = {
   solicitudes: {
     title: 'Solicitudes',
@@ -44,21 +58,22 @@ export const VIEW_CONFIG: Record<ProductView, ViewConfig> = {
     cardSecondary: SALE_PRICE_SECONDARY,
     summary: [
       {
-        label: 'Preaprobada',
+        label: statusLabel(3),
         icon: 'ion:checkmark-circle-outline',
         format: 'count',
-        matches: statusIncludes('preaprobada'),
+        matches: statusIncludes(normalizeStatusText(statusLabel(3))),
       },
       {
-        label: 'Negociación',
+        label: statusLabel(2),
         icon: 'ion:sync-outline',
         format: 'count',
-        matches: statusIncludes('negociación'),
+        matches: statusIncludes(normalizeStatusText(statusLabel(2))),
       },
       {
-        label: 'En Revisión',
+        label: statusLabel(1),
         icon: 'ion:refresh-outline',
         format: 'count',
+        // Partial needle: intentionally also matches truncated/prefixed variants of "En Revisión".
         matches: statusIncludes('revisión'),
       },
       {
@@ -79,12 +94,13 @@ export const VIEW_CONFIG: Record<ProductView, ViewConfig> = {
         label: 'Publicadas',
         icon: 'ion:pricetag-outline',
         format: 'count',
-        matches: statusIncludes('activa'),
+        matches: statusIncludes(normalizeStatusText(statusLabel(11))),
       },
       {
         label: 'Recibidas',
         icon: 'ion:cube-outline',
         format: 'count',
+        // Partial needle: intentionally also matches gender/plural variants of "Recibido".
         matches: statusIncludes('recibid'),
       },
     ],
@@ -96,16 +112,17 @@ export const VIEW_CONFIG: Record<ProductView, ViewConfig> = {
     cardSecondary: SALE_PRICE_SECONDARY,
     summary: [
       {
-        label: 'Por Devolver',
+        label: statusLabel(13),
         icon: 'ion:arrow-undo-outline',
         format: 'count',
-        matches: statusIncludes('por devolver', 'devolución'),
+        // 'devolución' is an extra fuzzy needle with no dedicated status code.
+        matches: statusIncludes(normalizeStatusText(statusLabel(13)), 'devolución'),
       },
       {
-        label: 'Devuelto',
+        label: statusLabel(14),
         icon: 'ion:checkmark-circle-outline',
         format: 'count',
-        matches: statusIncludes('devuelto'),
+        matches: statusIncludes(normalizeStatusText(statusLabel(14))),
       },
     ],
   },
@@ -117,17 +134,17 @@ export const VIEW_CONFIG: Record<ProductView, ViewConfig> = {
     cardSecondary: { label: 'Por pagar', amount: 'pending' },
     summary: [
       {
-        label: 'Por Pagar',
+        label: statusLabel(20),
         icon: 'ion:lock-closed-outline',
         format: 'currency',
-        matches: statusIncludes('por pagar'),
+        matches: statusIncludes(normalizeStatusText(statusLabel(20))),
         amount: 'pending',
       },
       {
-        label: 'Pagado',
+        label: statusLabel(21),
         icon: 'ion:cash-outline',
         format: 'currency',
-        matches: statusIncludes('pagado'),
+        matches: statusIncludes(normalizeStatusText(statusLabel(21))),
         amount: 'paid',
       },
     ],

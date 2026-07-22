@@ -4,7 +4,7 @@
   color-scheme: light;
   --background: #ffffff;
   --foreground: #171717;
-  --brand: #6f5644;
+  --brand: #c1a08b;
 }
 
 @theme inline {
@@ -15,12 +15,24 @@
   --font-commuters: var(--font-commuters-sans);
   --font-editors: var(--font-editors-note);
   --font-alfredino: var(--font-alfredino);
+  --font-cormorant: var(--font-cormorant-garamond);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+}
+
+html,
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 @utility scrollbar-hide {

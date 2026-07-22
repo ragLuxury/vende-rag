@@ -5,11 +5,24 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from '@iconify/react';
 
+import { resolvePayment } from '@/src/features/product-views/domain/payment-status';
 import type {
   Product,
   ProductView,
 } from '@/src/features/product-views/domain/product-view-repository';
+import { AccountTabs } from '@/src/shared/ui/account-tabs';
 import { BottomNav } from '@/src/shared/ui/bottom-nav';
+// The desktop welcome heading needs the account profile's trimmed display name;
+// no shared cross-feature abstraction exists yet for this read (same precedent
+// as top-nav-actions.tsx, which reads this same hook for its own display name).
+// eslint-disable-next-line boundaries/element-types
+import { useProfileSummary } from '@/src/features/account/presentation/hooks/use-profile-summary';
+// Reused as-is below the desktop product grid (same section LandingScreen and
+// profile-screen.tsx render at the bottom of their desktop views); no shared
+// cross-feature abstraction exists yet for this read (same precedent as
+// profile-screen.tsx's own import of LandingFooter).
+// eslint-disable-next-line boundaries/element-types
+import { LandingFooter } from '@/src/features/auth/presentation/components/landing-footer';
 import { useProducts } from '../hooks/use-products';
 import { usePaidByProduct } from '../hooks/use-paid-by-product';
 import { VIEW_CONFIG, type CurrencyAmount } from '../view-config';
@@ -18,28 +31,42 @@ import { ProductSummary, type SummaryItem } from './product-summary';
 
 type SortOrder = 'price-desc' | 'price-asc' | 'oldest' | 'newest';
 
+const currencyFormatter = new Intl.NumberFormat('es-MX', {
+  style: 'currency',
+  currency: 'MXN',
+  maximumFractionDigits: 0,
+});
+
+function sortProducts(list: readonly Product[], order: SortOrder | null): Product[] {
+  if (order === null) return [...list];
+  return [...list].sort((a, b) => {
+    if (order === 'price-desc') return b.salePrice - a.salePrice;
+    if (order === 'price-asc') return a.salePrice - b.salePrice;
+    if (order === 'oldest') return a.id - b.id;
+    return b.id - a.id;
+  });
+}
+
 function amountFor(
   product: Product,
   amount: CurrencyAmount,
   paidById: ReadonlyMap<number, number>,
 ): number {
-  const paid = paidById.get(product.id) ?? 0;
-  if (amount === 'paid') return paid;
-  if (amount === 'pending') return Math.max(product.earning - paid, 0);
+  if (amount === 'paid' || amount === 'pending') {
+    const itemizedPaid = paidById.get(product.id) ?? 0;
+    const resolved = resolvePayment(product.status, product.earning, itemizedPaid);
+    return amount === 'paid' ? resolved.paid : resolved.pending;
+  }
   if (amount === 'salePrice') return Math.max(product.salePrice - product.discountAmount, 0);
   return product.earning;
 }
 
-function isPaidStatus(product: Product): boolean {
-  return product.status.trim().toLowerCase().includes('pagado');
-}
-
 function ventasSecondary(product: Product, paidById: ReadonlyMap<number, number>) {
-  const paid = paidById.get(product.id) ?? 0;
-  if (isPaidStatus(product)) {
-    return { label: 'Pagado', value: paid > 0 ? paid : product.earning };
-  }
-  return { label: 'Por pagar', value: Math.max(product.earning - paid, 0) };
+  const itemizedPaid = paidById.get(product.id) ?? 0;
+  const resolved = resolvePayment(product.status, product.earning, itemizedPaid);
+  return resolved.isPaid
+    ? { label: 'Pagado', value: resolved.paid }
+    : { label: 'Por pagar', value: resolved.pending };
 }
 
 interface ProductsScreenProps {
@@ -50,9 +77,11 @@ interface ProductsScreenProps {
 export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
   const router = useRouter();
   const config = VIEW_CONFIG[view];
+  const { data: profileSummary } = useProfileSummary(clientId);
 
-  const [sortOrder, setSortOrder] = useState<SortOrder>('price-desc');
+  const [sortOrder, setSortOrder] = useState<SortOrder | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [checkedStatuses, setCheckedStatuses] = useState<ReadonlySet<number>>(new Set());
   const [mobileSortMenuOpen, setMobileSortMenuOpen] = useState(false);
   const [desktopSortMenuOpen, setDesktopSortMenuOpen] = useState(false);
   const mobileSortMenuRef = useRef<HTMLDivElement>(null);
@@ -97,7 +126,9 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
         ? 'Precio: menor a mayor'
         : sortOrder === 'oldest'
           ? 'Más antigua'
-          : 'Más reciente';
+          : sortOrder === 'newest'
+            ? 'Más reciente'
+            : 'Ordenar por';
 
   const summary = useMemo<readonly SummaryItem[]>(() => {
     const list = products ?? [];
@@ -119,20 +150,40 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
     });
   }, [products, config, paidById]);
 
-  const visibleProducts = useMemo(() => {
+  // Mobile keeps the original tap-to-toggle single-select chip behavior.
+  const mobileVisibleProducts = useMemo(() => {
     const predicate = selectedIndex === null ? null : config.summary[selectedIndex]?.matches;
     const filtered = (products ?? []).filter((product) => !predicate || predicate(product));
-
-    return [...filtered].sort((a, b) => {
-      if (sortOrder === 'price-desc') return b.salePrice - a.salePrice;
-      if (sortOrder === 'price-asc') return a.salePrice - b.salePrice;
-      if (sortOrder === 'oldest') return a.id - b.id;
-      return b.id - a.id;
-    });
+    return sortProducts(filtered, sortOrder);
   }, [products, sortOrder, selectedIndex, config]);
+
+  // Desktop sidebar checkboxes are naturally multi-select: with none checked
+  // show everything, otherwise OR-match against every checked status.
+  const desktopVisibleProducts = useMemo(() => {
+    const activeMatchers = config.summary
+      .filter((_, index) => checkedStatuses.has(index))
+      .map((item) => item.matches);
+    const filtered = (products ?? []).filter(
+      (product) =>
+        activeMatchers.length === 0 || activeMatchers.some((matches) => matches(product)),
+    );
+    return sortProducts(filtered, sortOrder);
+  }, [products, sortOrder, checkedStatuses, config]);
 
   function handleSummarySelect(index: number) {
     setSelectedIndex((current) => (current === index ? null : index));
+  }
+
+  function handleStatusToggle(index: number) {
+    setCheckedStatuses((current) => {
+      const next = new Set(current);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
   }
 
   function renderCard(product: Product) {
@@ -221,79 +272,124 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
               <p className="py-12 text-center text-sm text-red-600">
                 No pudimos cargar la información. Inténtalo de nuevo.
               </p>
-            ) : visibleProducts.length === 0 ? (
+            ) : mobileVisibleProducts.length === 0 ? (
               <p className="py-12 text-center text-sm text-neutral-400">{config.emptyText}</p>
             ) : (
               <div className="grid auto-rows-fr grid-cols-2 gap-4">
-                {visibleProducts.map(renderCard)}
+                {mobileVisibleProducts.map(renderCard)}
               </div>
             )}
           </div>
         </div>
       </div>
 
-      <div className="hidden flex-1 flex-col px-8 py-10 md:flex">
-        <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col">
-          <div className="flex justify-center py-2">
-            <div className="w-fit">
-              <ProductSummary
-                items={summary}
-                selectedIndex={selectedIndex}
-                onSelect={handleSummarySelect}
-              />
+      <div className="hidden flex-1 flex-col md:flex">
+        <div className="px-8 py-10">
+          <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col">
+            <h1 className="font-editors text-2xl text-neutral-900">
+              ¡Hola!, bienvenid@{' '}
+              {profileSummary ? (
+                <span className="italic">
+                  {profileSummary.firstName} {profileSummary.lastName}
+                </span>
+              ) : null}
+            </h1>
+
+            <div className="mt-8">
+              <AccountTabs />
             </div>
-          </div>
 
-          <div className="mt-1 flex-1">
-            <div className="mb-2 flex justify-end">
-              <div ref={desktopSortMenuRef} className="relative shrink-0">
-                <button
-                  type="button"
-                  onClick={() => setDesktopSortMenuOpen((open) => !open)}
-                  aria-label="Ordenar por"
-                  aria-expanded={desktopSortMenuOpen}
-                  className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-neutral-400 bg-white text-neutral-500 transition-all duration-300 ease-out hover:border-neutral-900 hover:bg-neutral-900 hover:text-white"
-                >
-                  <Icon icon="ion:funnel-outline" className="size-4" />
-                </button>
+            <div className="mt-8 flex flex-1 gap-10">
+              <aside className="w-56 shrink-0">
+                <h2 className="font-editors text-2xl text-neutral-900">Mis {config.title}</h2>
 
-                {desktopSortMenuOpen ? (
-                  <div className="absolute top-full right-0 z-10 mt-2 w-40 rounded-2xl border border-neutral-200 bg-white py-2 shadow-lg">
-                    {[
-                      { value: 'price-desc', label: 'Precio: mayor a menor' },
-                      { value: 'price-asc', label: 'Precio: menor a mayor' },
-                      { value: 'oldest', label: 'Más antigua' },
-                      { value: 'newest', label: 'Más reciente' },
-                    ].map((option) => (
-                      <button
-                        key={option.value}
-                        type="button"
-                        onClick={() => handleSortSelect(option.value as SortOrder)}
-                        className={`block w-full px-4 py-2.5 text-left text-sm transition-colors hover:bg-neutral-50 ${sortOrder === option.value ? 'font-semibold text-neutral-900' : 'text-neutral-600'}`}
+                <p className="mt-8 text-xs font-semibold tracking-[0.2em] text-neutral-400 uppercase">
+                  Estatus
+                </p>
+
+                <div className="mt-3 grid grid-cols-[max-content_min-content] items-center gap-x-3 gap-y-3">
+                  {summary.map((item, index) => {
+                    const checked = checkedStatuses.has(index);
+                    const display =
+                      item.format === 'currency'
+                        ? currencyFormatter.format(item.value)
+                        : String(item.value);
+
+                    return (
+                      <label
+                        key={item.label}
+                        className="contents cursor-pointer text-sm text-neutral-700"
                       >
-                        {option.label}
-                      </button>
-                    ))}
+                        <span className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={() => handleStatusToggle(index)}
+                            className="accent-brand size-4 rounded border-neutral-300"
+                          />
+                          {item.label}
+                        </span>
+                        <span className="text-center text-xs text-neutral-400">{display}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </aside>
+
+              <div className="min-w-0 flex-1">
+                <div className="mb-4 flex justify-end">
+                  <div ref={desktopSortMenuRef} className="relative shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setDesktopSortMenuOpen((open) => !open)}
+                      aria-label="Ordenar por"
+                      aria-expanded={desktopSortMenuOpen}
+                      className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-neutral-400 bg-white text-neutral-500 transition-all duration-300 ease-out hover:border-neutral-900 hover:bg-neutral-900 hover:text-white"
+                    >
+                      <Icon icon="ion:funnel-outline" className="size-4" />
+                    </button>
+
+                    {desktopSortMenuOpen ? (
+                      <div className="absolute top-full right-0 z-10 mt-2 w-40 rounded-2xl border border-neutral-200 bg-white py-2 shadow-lg">
+                        {[
+                          { value: 'price-desc', label: 'Precio: mayor a menor' },
+                          { value: 'price-asc', label: 'Precio: menor a mayor' },
+                          { value: 'oldest', label: 'Más antigua' },
+                          { value: 'newest', label: 'Más reciente' },
+                        ].map((option) => (
+                          <button
+                            key={option.value}
+                            type="button"
+                            onClick={() => handleSortSelect(option.value as SortOrder)}
+                            className={`block w-full px-4 py-2.5 text-left text-sm transition-colors hover:bg-neutral-50 ${sortOrder === option.value ? 'font-semibold text-neutral-900' : 'text-neutral-600'}`}
+                          >
+                            {option.label}
+                          </button>
+                        ))}
+                      </div>
+                    ) : null}
                   </div>
-                ) : null}
+                </div>
+
+                {isLoading ? (
+                  <p className="py-12 text-center text-sm text-neutral-400">Cargando...</p>
+                ) : isError ? (
+                  <p className="py-12 text-center text-sm text-red-600">
+                    No pudimos cargar la información. Inténtalo de nuevo.
+                  </p>
+                ) : desktopVisibleProducts.length === 0 ? (
+                  <p className="py-12 text-center text-sm text-neutral-400">{config.emptyText}</p>
+                ) : (
+                  <div className="grid auto-rows-fr grid-cols-2 gap-6 lg:grid-cols-3 xl:grid-cols-4">
+                    {desktopVisibleProducts.map(renderCard)}
+                  </div>
+                )}
               </div>
             </div>
-
-            {isLoading ? (
-              <p className="py-12 text-center text-sm text-neutral-400">Cargando...</p>
-            ) : isError ? (
-              <p className="py-12 text-center text-sm text-red-600">
-                No pudimos cargar la información. Inténtalo de nuevo.
-              </p>
-            ) : visibleProducts.length === 0 ? (
-              <p className="py-12 text-center text-sm text-neutral-400">{config.emptyText}</p>
-            ) : (
-              <div className="grid auto-rows-fr grid-cols-2 gap-6 lg:grid-cols-3 xl:grid-cols-4">
-                {visibleProducts.map(renderCard)}
-              </div>
-            )}
           </div>
         </div>
+
+        <LandingFooter isAuthenticated />
       </div>
 
       <BottomNav />

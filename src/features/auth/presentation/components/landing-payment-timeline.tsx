@@ -158,8 +158,8 @@ export function LandingPaymentTimeline() {
   return (
     <section className="py-1">
       <div className="mx-auto w-full max-w-6xl px-8">
-        <h2 className="font-editors text-center text-4xl text-neutral-900">
-          Cuándo recibo <span className="italic">mi pago</span>
+        <h2 className="font-cormorant text-center text-3xl font-semibold text-neutral-900">
+          Cuándo recibo <span className="font-normal italic">mi pago</span>
         </h2>
       </div>
 

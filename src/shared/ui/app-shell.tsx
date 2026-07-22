@@ -32,7 +32,7 @@ export function AppShell({ children, topRight }: AppShellProps) {
   return (
     <>
       <TopNav {...(topRight ? { trailing: topRight } : {})} />
-      <div className="flex min-h-full flex-1 flex-col md:pt-20">{children}</div>
+      <div className="flex min-h-full flex-1 flex-col">{children}</div>
     </>
   );
 }

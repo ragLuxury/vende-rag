@@ -38,7 +38,7 @@ export function ForgotPasswordForm() {
       </Link>
 
       <header className="mt-24 mb-10 text-center">
-        <h1 className="font-editors text-4xl text-neutral-900">Recuperar Contraseña</h1>
+        <h1 className="font-editors text-2xl text-neutral-900">Recuperar Contraseña</h1>
         <p className="mt-3 text-neutral-500">
           Ingresa el correo electrónico asociado a tu cuenta y te enviaremos las instrucciones para
           restablecer tu contraseña.

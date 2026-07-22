@@ -1,3 +1,4 @@
+import { findProductStatusByCode } from '@/src/features/product-views/domain/product-status';
 import type { ProductViewRepository } from '@/src/features/product-views/domain/product-view-repository';
 import { httpRequest } from '@/src/shared/infrastructure/http/http-client';
 import { getProductImageUrl } from '@/src/shared/infrastructure/images/product-image';
@@ -15,20 +16,6 @@ function resolveImageUrl(path: string): string {
   if (path.startsWith('http')) return path;
   return getProductImageUrl(path.replace(/^\/+/, ''));
 }
-
-const statusByState: Record<number, string> = {
-  1: 'En Revisión',
-  2: 'Negociación',
-  3: 'Preaprobada',
-  4: 'Rechazado',
-  10: 'Recibido',
-  11: 'Activa',
-  12: 'Inactivar',
-  13: 'Por Devolver',
-  14: 'Devuelto',
-  20: 'Apartado',
-  21: 'Pagado',
-};
 
 export const productViewHttpRepository = {
   async getProducts(view, clientId, query, signal) {
@@ -99,7 +86,7 @@ export const productViewHttpRepository = {
       clientId: data.client_id,
       uuid: data.uuid,
       name: data.name_product ?? data.modelo ?? '',
-      status: data.estatus || data.Estado || statusByState[data.state ?? 0] || '',
+      status: data.estatus || data.Estado || findProductStatusByCode(data.state ?? 0)?.label || '',
       state: data.state ?? 0,
       brand: data.marca ?? '',
       model: data.modelo ?? '',

@@ -4,72 +4,79 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-interface NavItem {
-  label: string;
-  href: string;
-}
-
-const ITEMS: readonly NavItem[] = [
-  { label: 'Mis Solicitudes', href: '/solicitudes' },
-  { label: 'Mis Publicaciones', href: '/publicaciones' },
-  { label: 'Mis Ventas', href: '/mis-ventas' },
-  { label: 'Mis Devoluciones', href: '/devoluciones' },
-];
+// The authenticated header also carries the landing page's anchor-link nav strip; no shared
+// abstraction exists yet for cross-feature nav content, and the anchor targets only exist on
+// `/welcome`.
+// eslint-disable-next-line boundaries/element-types
+import { NAV_LINKS } from '@/src/features/auth/presentation/components/landing-content';
 
 interface TopNavProps {
   trailing?: React.ReactNode;
 }
 
+// Mirrors `TABS` in `account-tabs.tsx` — the nav strip's anchors only resolve on `/welcome`,
+// so it must stay hidden on the dashboard's folder-tab routes.
+const DASHBOARD_TAB_PATHS: readonly string[] = [
+  '/perfil',
+  '/solicitudes',
+  '/publicaciones',
+  '/mis-ventas',
+  '/devoluciones',
+];
+
 export function TopNav({ trailing }: TopNavProps) {
   const pathname = usePathname();
+  const hideNavStrip = DASHBOARD_TAB_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`),
+  );
 
   return (
-    <header className="fixed inset-x-0 top-0 z-[110] hidden h-20 items-center justify-between border-b border-neutral-200 bg-white px-8 md:flex">
-      <Link href="/welcome" aria-label="RAG" className="shrink-0">
-        <Image
-          src="/images/headerv2.png"
-          alt="RAG"
-          width={160}
-          height={36}
-          priority
-          className="h-8 w-auto"
-        />
-      </Link>
+    <header
+      className={`relative z-[150] bg-white/90 backdrop-blur ${
+        hideNavStrip ? 'shadow-[0_6px_14px_-12px_rgba(0,0,0,0.25)]' : 'border-b border-neutral-200'
+      }`}
+    >
+      <div className="mx-auto hidden h-26 w-full items-start mt-[15px] justify-between px-4 md:flex">
+        <Image src="/images/header/isotipo.svg" alt="" width={48} height={48} className="size-10" />
 
-      <nav className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <ul className="flex items-center gap-1">
-          {ITEMS.map((item) => {
-            const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+        <Link href="/welcome" aria-label="RAG">
+          <Image
+            src="/images/header/headerv2.png"
+            alt="RAG"
+            width={245}
+            height={56}
+            priority
+            className="h-[95px] w-auto ml-[65px]"
+          />
+        </Link>
 
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={active ? 'page' : undefined}
-                  className={`block rounded-lg px-3 py-2 text-sm whitespace-nowrap transition-colors ${
-                    active
-                      ? 'bg-neutral-100 font-medium text-neutral-900'
-                      : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-
-      <div className="shrink-0">
-        {trailing ?? (
-          <Link
-            href="/vender"
-            className="bg-brand rounded-full px-5 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
-          >
-            Vender
-          </Link>
-        )}
+        <div className="flex items-center gap-5">
+          {trailing ?? (
+            <Link
+              href="/vender"
+              className="bg-brand rounded-[8px] px-5 py-1.5 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
+            >
+              Vender
+            </Link>
+          )}
+        </div>
       </div>
+
+      {!hideNavStrip ? (
+        <nav className="hidden md:block">
+          <div className="mx-auto flex h-12 w-full max-w-6xl items-center justify-center gap-8 px-8">
+            {NAV_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={`/welcome${link.href}`}
+                className="text-xs font-medium tracking-wide text-neutral-600 uppercase transition-colors hover:text-neutral-900"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </nav>
+      ) : null}
     </header>
   );
 }

@@ -149,7 +149,7 @@ function PlaceSearchInput({ value, onChange, onSelect }: PlaceSearchInputProps) 
   }, [placesLibrary]);
 
   return (
-    <div className="flex items-center gap-2 rounded-xl bg-white px-4 py-3 shadow-md">
+    <div className="flex items-center gap-2 rounded-xl bg-white px-4 py-[11px] shadow-md">
       <span className="text-neutral-400">
         <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor">
           <circle cx="11" cy="11" r="7" strokeWidth="2" />
@@ -162,7 +162,7 @@ function PlaceSearchInput({ value, onChange, onSelect }: PlaceSearchInputProps) 
         onChange={(event) => onChange(event.target.value)}
         placeholder="Busca tu dirección"
         aria-label="Buscar dirección"
-        className="w-full bg-transparent text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
+        className="w-full bg-transparent text-[13px] text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
       />
     </div>
   );

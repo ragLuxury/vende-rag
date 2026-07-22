@@ -49,7 +49,7 @@ export function SignupForm() {
       </Link>
 
       <header className="mt-8 mb-8 text-center">
-        <h1 className="font-editors text-4xl text-neutral-900">Crear cuenta</h1>
+        <h1 className="font-editors text-2xl text-neutral-900">Crear cuenta</h1>
         <p className="mt-3 text-neutral-500">Regístrate para poder empezar a vender en RAG</p>
       </header>
 

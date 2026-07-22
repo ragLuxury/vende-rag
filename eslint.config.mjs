@@ -15,6 +15,7 @@ const eslintConfig = defineConfig([
         { type: 'shared-ui', pattern: 'src/shared/ui/**/*' },
         { type: 'shared-domain', pattern: 'src/shared/domain/**/*' },
         { type: 'shared-infra', pattern: 'src/shared/infrastructure/**/*' },
+        { type: 'shared-content', pattern: 'src/shared/content/**/*' },
         { type: 'domain', pattern: 'src/features/*/domain/**/*', capture: ['feature'] },
         {
           type: 'application',
@@ -50,6 +51,7 @@ const eslintConfig = defineConfig([
                 ['domain', { feature: '${from.feature}' }],
                 'shared-ui',
                 'shared-domain',
+                'shared-content',
               ],
             },
             {
@@ -69,6 +71,7 @@ const eslintConfig = defineConfig([
             { from: 'shared-ui', allow: ['shared-ui', 'shared-domain'] },
             { from: 'shared-infra', allow: ['shared-infra', 'shared-domain'] },
             { from: 'shared-domain', allow: ['shared-domain'] },
+            { from: 'shared-content', allow: ['shared-content'] },
           ],
         },
       ],

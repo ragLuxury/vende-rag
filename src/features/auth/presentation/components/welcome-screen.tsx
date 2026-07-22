@@ -16,7 +16,7 @@ export function WelcomeScreen() {
       <main className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col px-6 py-12 md:hidden">
         <div className="flex flex-1 items-center justify-center">
           <Image
-            src="/images/headerv2.png"
+            src="/images/header/headerv2.png"
             alt="RAG"
             width={640}
             height={139}

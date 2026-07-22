@@ -19,10 +19,10 @@ interface MenuLink {
 }
 
 const MENU_LINKS: readonly MenuLink[] = [
-  { label: 'Información Personal', href: '/perfil/editar', icon: 'ion:person-outline' },
-  { label: 'Mi Dirección', href: '/perfil/direccion', icon: 'ion:navigate-outline' },
-  { label: 'Métodos De Pago', href: '/perfil/metodo-pago', icon: 'ion:card-outline' },
-  { label: 'Contrato', href: '/perfil', icon: 'ion:document-text-outline' },
+  { label: 'Mi Perfil', href: '/perfil', icon: 'ion:person-outline' },
+  { label: 'Mis Solicitudes', href: '/solicitudes', icon: 'ion:document-text-outline' },
+  { label: 'Mis Publicaciones', href: '/publicaciones', icon: 'ion:pricetag-outline' },
+  { label: 'Mis Ventas', href: '/mis-ventas', icon: 'ion:bag-handle-outline' },
 ];
 
 export function TopNavActions() {
@@ -53,7 +53,7 @@ export function TopNavActions() {
     <div className="flex items-center gap-3">
       <Link
         href="/vender"
-        className="bg-brand rounded-full px-5 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+        className="bg-brand rounded-[8px] px-5 py-1.5 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
       >
         Vender
       </Link>
@@ -64,13 +64,19 @@ export function TopNavActions() {
           onClick={() => setMenuOpen((open) => !open)}
           aria-label="Mi perfil"
           aria-expanded={menuOpen}
-          className="text-neutral-400 transition-colors hover:text-neutral-900"
+          className="relative flex items-center text-neutral-600 transition-colors hover:text-neutral-900"
         >
-          <Icon icon="ion:person-circle-outline" className="size-9" />
+          <Icon icon="ion:person-circle-outline" className="size-7 text-neutral-700" />
+          {displayName ? (
+            <span className="absolute top-full right-0 mt-3 flex items-center gap-1 text-xs font-semibold tracking-widest whitespace-nowrap uppercase">
+              {displayName}
+              <Icon icon="ion:chevron-down-outline" className="size-3.5" />
+            </span>
+          ) : null}
         </button>
 
         {menuOpen ? (
-          <div className="absolute top-full right-0 z-10 mt-2 w-64 rounded-2xl border border-neutral-200 bg-white py-4 shadow-lg">
+          <div className="absolute top-full right-0 z-50 mt-2 w-64 rounded-2xl border border-neutral-200 bg-white py-4 shadow-lg">
             <div className="px-5 pb-3">
               <p className="text-xs font-medium tracking-wide text-neutral-400 uppercase">
                 Bienvenido

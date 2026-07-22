@@ -14,7 +14,7 @@ const PRICE_DEBOUNCE_MS = 400;
 export const PRELOVED_ORIGIN = '2';
 
 const FIELD_CLASS =
-  'w-full rounded-2xl border border-neutral-300 bg-transparent px-4 py-3.5 text-base text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
+  'w-full rounded-2xl border border-neutral-300 bg-transparent px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
 
 const currencyFormatter = new Intl.NumberFormat('es-MX', {
   style: 'currency',
@@ -145,7 +145,7 @@ export function ProductDraftCard({
         <div className="border-t border-neutral-100 px-5 pt-5 pb-6">
           {canDelegate ? (
             <div className="mb-6">
-              <label className="mb-3 block text-base text-neutral-800">Cliente</label>
+              <label className="mb-3 block text-sm text-neutral-800">Cliente</label>
               <SellerSelectField
                 value={draft.sellerId}
                 onSelect={(seller) => update({ sellerId: seller.id })}
@@ -169,8 +169,8 @@ export function ProductDraftCard({
             />
           </div>
 
-          <div className="mt-6">
-            <label className="flex items-center gap-2 text-base text-neutral-800">
+          <div className="mt-6 ">
+            <label className="flex items-center justify-center text-center gap-2 text-sm text-neutral-800">
               ¿En cuanto te gustaría venderlo?
               <Icon icon="ion:information-circle-outline" className="size-5 text-neutral-400" />
             </label>
@@ -185,7 +185,7 @@ export function ProductDraftCard({
           </div>
 
           <div className="mt-6">
-            <p className="text-base text-neutral-800">Esta sería tu ganancia</p>
+            <p className="text-sm flex justify-center text-neutral-800">Esta sería tu ganancia</p>
             <input
               disabled
               aria-label="Ganancia estimada"
@@ -197,7 +197,7 @@ export function ProductDraftCard({
                     : ''
               }
               placeholder="Cálculo automático"
-              className="mt-3 w-full rounded-2xl border border-neutral-200 bg-neutral-100 px-4 py-3.5 text-base text-neutral-500 placeholder:text-neutral-400"
+              className="mt-3 w-full rounded-2xl border border-neutral-200 bg-neutral-100 px-3 py-2.5 text-sm text-neutral-500 placeholder:text-neutral-400"
             />
           </div>
 
@@ -212,7 +212,7 @@ export function ProductDraftCard({
 
           {isPreloved ? (
             <div className="mt-6">
-              <label className="text-base text-neutral-800">Nombre de la página.</label>
+              <label className="text-sm text-neutral-800">Nombre de la página.</label>
               <input
                 value={draft.pageName}
                 onChange={(event) => update({ pageName: event.target.value })}
@@ -224,7 +224,7 @@ export function ProductDraftCard({
           ) : null}
 
           <div className="mt-6">
-            <p className="text-base font-semibold text-neutral-900">Describe los Detalles</p>
+            <p className="text-sm flex justify-center text-neutral-800">Describe los Detalles</p>
             <textarea
               value={draft.details}
               onChange={(event) => update({ details: event.target.value })}

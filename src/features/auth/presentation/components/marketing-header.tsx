@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { useCurrentUser } from '../hooks/use-current-user';
+import { NAV_LINKS } from './landing-content';
 import { TopNavActions } from './top-nav-actions';
 
 export function MarketingHeader() {
@@ -14,7 +15,7 @@ export function MarketingHeader() {
       <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-6 md:px-8">
         <Link href={user ? '/vender' : '/welcome'} aria-label="RAG" className="shrink-0">
           <Image
-            src="/images/headerv2.png"
+            src="/images/header/headerv2.png"
             alt="RAG"
             width={160}
             height={36}
@@ -34,6 +35,20 @@ export function MarketingHeader() {
           </Link>
         )}
       </div>
+
+      <nav className="">
+        <div className="mx-auto flex h-12 w-full max-w-6xl items-center justify-center gap-8 px-8">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={`/welcome${link.href}`}
+              className="text-xs font-medium tracking-wide text-neutral-600 uppercase transition-colors hover:text-neutral-900"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </nav>
     </header>
   );
 }

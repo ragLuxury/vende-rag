@@ -50,7 +50,7 @@ export function ResetPasswordForm() {
       </Link>
 
       <header className="mt-24 mb-10 text-center">
-        <h1 className="font-editors text-4xl text-neutral-900">Restablecer Contraseña</h1>
+        <h1 className="font-editors text-2xl text-neutral-900">Restablecer Contraseña</h1>
         <p className="mt-3 text-neutral-500">Ingresa y confirma tu nueva contraseña.</p>
       </header>
 

@@ -6,7 +6,7 @@ import type { Seller } from '@/src/features/listings/domain/seller-repository';
 import { useSellers } from '../hooks/use-sellers';
 
 const FIELD_CLASS =
-  'w-full rounded-2xl border border-neutral-300 bg-transparent px-4 py-3.5 text-base text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
+  'w-full rounded-2xl border border-neutral-300 bg-transparent px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
 
 const MAX_RESULTS = 50;
 
@@ -80,7 +80,7 @@ export function SellerSelectField({ value, onSelect }: SellerSelectFieldProps) {
       />
 
       {showSuggestions ? (
-        <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-2xl border border-neutral-200 bg-white shadow-lg">
+        <ul className="scrollbar-hide absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-2xl border border-neutral-200 bg-white shadow-lg">
           {isPending ? (
             <li className="px-4 py-3 text-base text-neutral-400">Cargando clientes…</li>
           ) : null}

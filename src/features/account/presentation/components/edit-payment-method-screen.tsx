@@ -5,22 +5,22 @@ import { useState, type FormEvent, type ReactNode } from 'react';
 import { Icon } from '@iconify/react';
 
 import { BottomNav } from '@/src/shared/ui/bottom-nav';
-import { queueToast } from '@/src/shared/ui/toast';
 import type { ClientProfile } from '@/src/features/account/domain/account-repository';
 import { useProfile } from '../hooks/use-profile';
 import { useSavePaymentMethod } from '../hooks/use-save-payment-method';
 import { BankSelectField } from './bank-select-field';
 
 const FIELD_CLASS =
-  'w-full rounded-2xl border border-neutral-300 bg-transparent px-4 py-3.5 text-base text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
+  'w-full rounded-2xl border border-neutral-300 bg-transparent px-4 py-[11px] text-[13px] text-neutral-900 placeholder:text-neutral-400 focus:border-brand focus:outline-none';
 
 const CLABE_LENGTH = 18;
 
 interface EditPaymentMethodScreenProps {
   clientId: number;
+  onSaved?: () => void;
 }
 
-export function EditPaymentMethodScreen({ clientId }: EditPaymentMethodScreenProps) {
+export function EditPaymentMethodScreen({ clientId, onSaved }: EditPaymentMethodScreenProps) {
   const router = useRouter();
   const { data: profile, isLoading } = useProfile(clientId);
 
@@ -42,7 +42,7 @@ export function EditPaymentMethodScreen({ clientId }: EditPaymentMethodScreenPro
         {isLoading || !profile ? (
           <p className="text-base text-neutral-400">Cargando...</p>
         ) : (
-          <EditPaymentMethodForm clientId={clientId} profile={profile} />
+          <EditPaymentMethodForm clientId={clientId} profile={profile} onSaved={onSaved} />
         )}
       </div>
 
@@ -51,13 +51,13 @@ export function EditPaymentMethodScreen({ clientId }: EditPaymentMethodScreenPro
   );
 }
 
-interface EditPaymentMethodFormProps {
+export interface EditPaymentMethodFormProps {
   clientId: number;
   profile: ClientProfile;
+  onSaved?: (() => void) | undefined;
 }
 
-function EditPaymentMethodForm({ clientId, profile }: EditPaymentMethodFormProps) {
-  const router = useRouter();
+export function EditPaymentMethodForm({ clientId, profile, onSaved }: EditPaymentMethodFormProps) {
   const savePaymentMethod = useSavePaymentMethod();
   const existing = profile.paymentMethod;
 
@@ -89,8 +89,7 @@ function EditPaymentMethodForm({ clientId, profile }: EditPaymentMethodFormProps
       },
       {
         onSuccess: () => {
-          queueToast('Información actualizada correctamente');
-          router.push('/perfil');
+          onSaved?.();
         },
       },
     );
@@ -150,7 +149,7 @@ function EditPaymentMethodForm({ clientId, profile }: EditPaymentMethodFormProps
       <button
         type="submit"
         disabled={!isValid || savePaymentMethod.isPending}
-        className={`mt-2 flex h-14 w-full items-center justify-center gap-2 rounded-2xl text-base font-medium transition-colors ${
+        className={`mt-2 flex h-10 w-full items-center justify-center gap-2 rounded-[10px] text-sm font-medium transition-colors md:mx-auto md:w-auto md:px-6 ${
           isValid && !savePaymentMethod.isPending
             ? 'bg-brand hover:bg-brand/90 text-white'
             : 'cursor-not-allowed bg-neutral-200 text-neutral-400'
@@ -171,7 +170,9 @@ interface FieldProps {
 function Field({ label, children }: FieldProps) {
   return (
     <div>
-      <label className="text-base font-semibold text-neutral-900">{label}</label>
+      <label className="text-base font-semibold text-neutral-900 md:text-xs md:font-semibold md:tracking-wide md:text-neutral-500 md:uppercase">
+        {label}
+      </label>
       <div className="mt-3">{children}</div>
     </div>
   );

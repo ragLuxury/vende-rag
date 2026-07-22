@@ -1,3 +1,6 @@
+import { VALUATION_INTRO, VALUATION_ITEMS } from '@/src/shared/content/valuation-content';
+import { PROCESS_STEPS } from '@/src/shared/content/process-content';
+
 export interface NavLink {
   label: string;
   href: string;
@@ -14,32 +17,20 @@ export const NAV_LINKS: readonly NavLink[] = [
 export interface ValuationCard {
   icon: string;
   title: string;
-  description: string;
+  detailIntro?: string;
+  detailBullets?: readonly string[];
+  detailBody?: string;
 }
 
-export const VALUATION_INTRO =
-  'Los precios de los productos se establecen mediante una combinación del conocimiento de nuestros curadores y los resultados de nuestro algoritmo, que analiza precios de mercado y ventas pasadas. Nuestro esquema de comisiones nos alinea con el cliente para vender al mejor precio posible.';
+export { VALUATION_INTRO };
 
-export const VALUATION_CARDS: readonly ValuationCard[] = [
-  {
-    icon: '/images/valor-reventa-icon.png',
-    title: 'Valor de reventa',
-    description:
-      'Consideramos marca, modelo y ediciones limitadas para estimar cuánto vale realmente tu pieza en el mercado de lujo.',
-  },
-  {
-    icon: '/images/tendencia-mercado-icon.png',
-    title: 'Tendencias de mercado',
-    description:
-      'Nuestro algoritmo analiza la demanda actual para publicar tu producto al mejor precio posible.',
-  },
-  {
-    icon: '/images/condicion-producto-icon.png',
-    title: 'Condición del producto',
-    description:
-      'Las piezas nuevas o en excelente estado se venden más rápido y alcanzan un precio premium.',
-  },
-];
+export const VALUATION_CARDS: readonly ValuationCard[] = VALUATION_ITEMS.map((item) => ({
+  icon: item.icon,
+  title: item.title,
+  ...(item.bullets
+    ? { detailIntro: item.body, detailBullets: item.bullets }
+    : { detailBody: item.body }),
+}));
 
 export interface ProcessTab {
   id: string;
@@ -47,38 +38,17 @@ export interface ProcessTab {
   title: string;
   heading: string;
   body: string;
+  image: string;
 }
 
-export const PROCESS_TABS: readonly ProcessTab[] = [
-  {
-    id: 'solicitudes',
-    step: '1. Solicitudes',
-    title: 'Solicitudes',
-    heading: 'Negociación de precios',
-    body: 'Después de completar el formulario de venta, nuestro equipo te enviará una propuesta de precio en máximo 2 días hábiles. Al aceptar el precio y enviar tus productos a RAG, tus solicitudes se convertirán en publicaciones en nuestro sitio y podrás gestionarlas desde el Panel de Seller.',
-  },
-  {
-    id: 'autenticacion',
-    step: '2. Autenticación',
-    title: 'Autenticación',
-    heading: 'Nuestro equipo de autentificación',
-    body: 'Todos los productos recibidos pasan por un minucioso proceso de autenticación por medio de una revisión física y de un software de Inteligencia Artificial para asegurar que todo lo publicado en nuestro sitio sea auténtico.',
-  },
-  {
-    id: 'publicacion',
-    step: '3. Publicación',
-    title: 'Publicación',
-    heading: 'Verificamos y publicamos tu producto en RAG',
-    body: 'Una vez que los productos pasan nuestro filtro de autenticación, tomamos fotografías y creamos contenido atractivo para su publicación. Nuestras estrategias de venta y promoción, tanto en plataformas físicas como digitales, maximizan la visibilidad y aumentan las posibilidades de concretar la venta.',
-  },
-  {
-    id: 'pago',
-    step: '4. Pago',
-    title: 'Pago',
-    heading: 'Condiciones únicas de pago',
-    body: 'Los pagos a vendedores se hacen el siguiente martes tras la compra. Si el producto está apartado, recibes 30% y el 70% restante un mes después al liquidar el cliente. Somos la única plataforma que paga apartados antes de la liquidación. Si el cliente no paga, RAG cubre el monto restante.',
-  },
-];
+export const PROCESS_TABS: readonly ProcessTab[] = PROCESS_STEPS.map((step) => ({
+  id: step.id,
+  step: `${step.step}. ${step.title}`,
+  title: step.title,
+  heading: step.heading,
+  body: step.body,
+  image: step.image,
+}));
 
 export interface TimelineMilestone {
   week: string;

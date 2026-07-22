@@ -1,9 +1,17 @@
-import { Manrope } from 'next/font/google';
+import { Cormorant_Garamond, Manrope } from 'next/font/google';
 import localFont from 'next/font/local';
 
 const manrope = Manrope({
   subsets: ['latin'],
   variable: '--font-manrope',
+  display: 'swap',
+});
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '600'],
+  style: ['normal', 'italic'],
+  variable: '--font-cormorant-garamond',
   display: 'swap',
 });
 
@@ -37,4 +45,5 @@ export const fontVariables = [
   commutersSans.variable,
   editorsNote.variable,
   alfredinoSemiMono.variable,
+  cormorantGaramond.variable,
 ].join(' ');

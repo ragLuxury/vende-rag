@@ -21,7 +21,7 @@ export function LoginModal({ onClose }: LoginModalProps) {
         role="dialog"
         aria-modal="true"
         aria-label="Iniciar sesión"
-        className="relative z-10 max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-8 shadow-xl"
+        className="scrollbar-hide relative z-10 max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-8 shadow-xl"
       >
         <button
           type="button"

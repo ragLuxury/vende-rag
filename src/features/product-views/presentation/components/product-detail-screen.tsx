@@ -4,7 +4,14 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 
+import { resolvePayment } from '@/src/features/product-views/domain/payment-status';
 import type { SellerPayment } from '@/src/features/product-views/domain/product-view-repository';
+// Reused as-is below the desktop product detail (same section LandingScreen and
+// profile-screen.tsx render at the bottom of their desktop views); no shared
+// cross-feature abstraction exists yet for this read (same precedent as
+// profile-screen.tsx's own import of LandingFooter).
+// eslint-disable-next-line boundaries/element-types
+import { LandingFooter } from '@/src/features/auth/presentation/components/landing-footer';
 import { useCommission } from '../hooks/use-commission';
 import { useProductDetail } from '../hooks/use-product-detail';
 import { useRespondNegotiation } from '../hooks/use-respond-negotiation';
@@ -13,7 +20,6 @@ import { ProductGallery } from './product-gallery';
 import { getStatusStyle } from './product-status';
 
 const NEGOTIATION_STATE = 2;
-const PAID_STATE = 21;
 
 const currencyFormatter = new Intl.NumberFormat('es-MX', {
   style: 'currency',
@@ -51,11 +57,9 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 
   const earning =
     commission?.sellerNet ?? (isNegotiation ? product?.negotiationPrice : product?.earning) ?? 0;
-  const paid = (payments ?? []).reduce((total, payment) => total + payment.amount, 0);
-  const pending = Math.max(earning - paid, 0);
-  const isPaid = product?.state === PAID_STATE;
-  const saleStatus = isPaid ? 'Pagado' : 'Por Pagar';
-  const pillStatus = isSale ? saleStatus : (product?.status ?? '');
+  const itemizedPaid = (payments ?? []).reduce((total, payment) => total + payment.amount, 0);
+  const { isPaid, paid, pending } = resolvePayment(product?.status ?? '', earning, itemizedPaid);
+  const pillStatus = product?.status ?? '';
 
   function handleApprove() {
     if (!product) return;
@@ -88,7 +92,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
           className="absolute left-6 flex cursor-pointer items-center gap-1.5 text-neutral-900"
         >
           <Icon icon="ion:chevron-back-outline" className="size-7" />
-          <span className="hidden text-base font-medium md:inline">Regresar</span>
+          <span className="hidden text-sm font-medium md:inline">Regresar</span>
         </button>
         <h1 className="text-lg font-semibold text-neutral-900">Detalles de Producto</h1>
       </header>
@@ -133,7 +137,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     aria-expanded={infoOpen}
                     className="flex w-full items-center justify-between px-6 py-5"
                   >
-                    <span className="text-base font-semibold text-neutral-900">
+                    <span className="text-sm font-semibold text-neutral-900">
                       Información del Producto
                     </span>
                     <Icon
@@ -164,7 +168,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       aria-expanded={detailOpen}
                       className="flex w-full items-center justify-between px-6 py-5"
                     >
-                      <span className="text-base font-semibold text-neutral-900">
+                      <span className="text-sm font-semibold text-neutral-900">
                         Detalles del Producto
                       </span>
                       <Icon
@@ -175,13 +179,13 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       />
                     </button>
                     {detailOpen ? (
-                      <p className="px-6 pb-5 text-base text-neutral-400">{product.detail}</p>
+                      <p className="px-6 pb-5 text-sm text-neutral-400">{product.detail}</p>
                     ) : null}
                   </section>
                 ) : null}
 
                 <section className="border-t border-neutral-200 px-6 py-5">
-                  <h3 className="text-base font-semibold text-neutral-900">
+                  <h3 className="text-sm font-semibold text-neutral-900">
                     {isNegotiation ? 'Negociación' : 'Desglose de Precio'}
                   </h3>
                   <dl className="mt-4 space-y-3">
@@ -212,8 +216,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       value={`- ${currencyFormatter.format(commission?.amount ?? product.commission)}`}
                     />
                     <div className="flex items-center justify-between pt-1">
-                      <dt className="text-base font-semibold text-neutral-900">Tu Ganancia</dt>
-                      <dd className="text-base font-semibold text-neutral-900">
+                      <dt className="text-sm font-semibold text-neutral-900">Tu Ganancia</dt>
+                      <dd className="text-sm font-semibold text-neutral-900">
                         {currencyFormatter.format(earning)}
                       </dd>
                     </div>
@@ -236,7 +240,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       type="button"
                       onClick={handleReject}
                       disabled={respondNegotiation.isPending}
-                      className="flex-1 rounded-full bg-neutral-200 py-4 text-base font-medium text-neutral-900 disabled:opacity-50"
+                      className="flex-1 rounded-full bg-neutral-200 py-4 text-sm font-medium text-neutral-900 disabled:opacity-50"
                     >
                       Rechazar
                     </button>
@@ -244,7 +248,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       type="button"
                       onClick={handleApprove}
                       disabled={respondNegotiation.isPending}
-                      className="bg-brand flex-1 rounded-full py-4 text-base font-medium text-white disabled:opacity-50"
+                      className="bg-brand flex-1 rounded-full py-3 text-sm font-medium text-white disabled:opacity-50"
                     >
                       Aceptar
                     </button>
@@ -253,7 +257,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 
                 {isSale ? (
                   <section className="border-t border-neutral-200 px-6 py-5">
-                    <h3 className="text-base font-semibold text-neutral-900">Historial de Pagos</h3>
+                    <h3 className="text-sm font-semibold text-neutral-900">Historial de Pagos</h3>
                     {payments && payments.length > 0 ? (
                       <ul className="mt-4 space-y-3">
                         {payments.map((payment) => (
@@ -261,7 +265,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         ))}
                       </ul>
                     ) : (
-                      <p className="mt-4 text-base text-neutral-400">Sin pagos registrados.</p>
+                      <p className="mt-4 text-sm text-neutral-400">Sin pagos registrados.</p>
                     )}
                   </section>
                 ) : null}
@@ -296,32 +300,50 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 
                 <div className="mt-8 flex flex-col border-t border-neutral-200">
                   <section>
-                    <button
-                      type="button"
-                      onClick={() => toggleSection('info')}
-                      aria-expanded={infoOpen}
-                      className="flex w-full items-center justify-between py-5"
-                    >
-                      <span className="text-base font-semibold text-neutral-900">
-                        Información del Producto
-                      </span>
-                      <Icon
-                        icon="ion:chevron-down-outline"
-                        className={`size-5 text-neutral-500 transition-transform ${
-                          infoOpen ? 'rotate-180' : ''
-                        }`}
-                      />
-                    </button>
-                    {infoOpen ? (
-                      <div className="grid grid-cols-2 gap-x-8 gap-y-7 pb-6">
-                        <DetailField label="Marca" value={product.brand} />
-                        <DetailField label="Modelo" value={product.model} />
-                        <DetailField label="Departamento" value={product.department} />
-                        <DetailField label="Categoría" value={product.category} />
-                        <DetailField label="Subcategoría" value={product.subcategory} />
-                        <DetailField label="Color" value={product.color} />
-                      </div>
-                    ) : null}
+                    {isSale ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => toggleSection('info')}
+                          aria-expanded={infoOpen}
+                          className="flex w-full items-center justify-between py-5"
+                        >
+                          <span className="text-sm font-semibold text-neutral-900">
+                            Información del Producto
+                          </span>
+                          <Icon
+                            icon="ion:chevron-down-outline"
+                            className={`size-5 text-neutral-500 transition-transform ${
+                              infoOpen ? 'rotate-180' : ''
+                            }`}
+                          />
+                        </button>
+                        {infoOpen ? (
+                          <div className="grid grid-cols-2 gap-x-8 gap-y-7 pb-6">
+                            <DetailField label="Marca" value={product.brand} />
+                            <DetailField label="Modelo" value={product.model} />
+                            <DetailField label="Departamento" value={product.department} />
+                            <DetailField label="Categoría" value={product.category} />
+                            <DetailField label="Subcategoría" value={product.subcategory} />
+                            <DetailField label="Color" value={product.color} />
+                          </div>
+                        ) : null}
+                      </>
+                    ) : (
+                      <>
+                        <h3 className="w-full py-5 text-sm font-semibold text-neutral-900">
+                          Información del Producto
+                        </h3>
+                        <div className="grid grid-cols-2 gap-x-8 gap-y-7 pb-6">
+                          <DetailField label="Marca" value={product.brand} />
+                          <DetailField label="Modelo" value={product.model} />
+                          <DetailField label="Departamento" value={product.department} />
+                          <DetailField label="Categoría" value={product.category} />
+                          <DetailField label="Subcategoría" value={product.subcategory} />
+                          <DetailField label="Color" value={product.color} />
+                        </div>
+                      </>
+                    )}
                   </section>
 
                   {product.detail ? (
@@ -332,7 +354,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         aria-expanded={detailOpen}
                         className="flex w-full items-center justify-between py-5"
                       >
-                        <span className="text-base font-semibold text-neutral-900">
+                        <span className="text-sm font-semibold text-neutral-900">
                           Detalles del Producto
                         </span>
                         <Icon
@@ -343,14 +365,14 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         />
                       </button>
                       {detailOpen ? (
-                        <p className="pb-6 text-base text-neutral-500">{product.detail}</p>
+                        <p className="pb-6 text-sm text-neutral-500">{product.detail}</p>
                       ) : null}
                     </section>
                   ) : null}
                 </div>
 
                 <div className="border-t border-neutral-200 pt-6">
-                  <h3 className="text-base font-semibold text-neutral-900">
+                  <h3 className="text-sm font-semibold text-neutral-900">
                     {isNegotiation ? 'Negociación' : 'Desglose de Precio'}
                   </h3>
 
@@ -382,8 +404,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       value={`- ${currencyFormatter.format(commission?.amount ?? product.commission)}`}
                     />
                     <div className="flex items-center justify-between pt-1">
-                      <dt className="text-base font-semibold text-neutral-900">Tu Ganancia</dt>
-                      <dd className="text-base font-semibold text-neutral-900">
+                      <dt className="text-sm font-semibold text-neutral-900">Tu Ganancia</dt>
+                      <dd className="text-sm font-semibold text-neutral-900">
                         {currencyFormatter.format(earning)}
                       </dd>
                     </div>
@@ -404,7 +426,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         type="button"
                         onClick={handleReject}
                         disabled={respondNegotiation.isPending}
-                        className="flex-1 rounded-full bg-neutral-200 py-4 text-base font-medium text-neutral-900 disabled:opacity-50"
+                        className="flex-1 rounded-full bg-neutral-200 py-4 text-sm font-medium text-neutral-900 disabled:opacity-50"
                       >
                         Rechazar
                       </button>
@@ -412,7 +434,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         type="button"
                         onClick={handleApprove}
                         disabled={respondNegotiation.isPending}
-                        className="bg-brand flex-1 rounded-full py-4 text-base font-medium text-white disabled:opacity-50"
+                        className="bg-brand flex-1 rounded-full py-3 text-sm font-medium text-white disabled:opacity-50"
                       >
                         Aceptar
                       </button>
@@ -421,7 +443,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 
                   {isSale ? (
                     <div className="mt-6 border-t border-neutral-200 pt-6">
-                      <h3 className="text-base font-semibold text-neutral-900">
+                      <h3 className="text-sm font-semibold text-neutral-900">
                         Historial de Pagos
                       </h3>
                       {payments && payments.length > 0 ? (
@@ -431,12 +453,16 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                           ))}
                         </ul>
                       ) : (
-                        <p className="mt-4 text-base text-neutral-400">Sin pagos registrados.</p>
+                        <p className="mt-4 text-sm text-neutral-400">Sin pagos registrados.</p>
                       )}
                     </div>
                   ) : null}
                 </div>
               </div>
+            </div>
+
+            <div className="hidden md:block">
+              <LandingFooter isAuthenticated />
             </div>
           </>
         )}
@@ -453,8 +479,8 @@ interface RowProps {
 function InfoRow({ label, value }: RowProps) {
   return (
     <div className="flex items-center justify-between py-2">
-      <dt className="text-base text-neutral-700">{label}</dt>
-      <dd className="text-base text-neutral-400">{value || '—'}</dd>
+      <dt className="text-sm text-neutral-700">{label}</dt>
+      <dd className="text-sm text-neutral-400">{value || '—'}</dd>
     </div>
   );
 }
@@ -462,8 +488,8 @@ function InfoRow({ label, value }: RowProps) {
 function PriceRow({ label, value }: RowProps) {
   return (
     <div className="flex items-center justify-between">
-      <dt className="text-base text-neutral-700">{label}</dt>
-      <dd className="text-base text-neutral-400">{value}</dd>
+      <dt className="text-sm text-neutral-700">{label}</dt>
+      <dd className="text-sm text-neutral-400">{value}</dd>
     </div>
   );
 }
@@ -480,13 +506,10 @@ function DetailField({ label, value }: RowProps) {
 function PaymentRow({ payment }: { payment: SellerPayment }) {
   return (
     <li className="rounded-2xl border border-neutral-200 px-5 py-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center">
         <p className="text-2xl font-semibold text-neutral-900">
           {currencyFormatter.format(payment.amount)}
         </p>
-        <span className="shrink-0 rounded-full bg-emerald-50 px-4 py-1.5 text-sm font-medium text-emerald-700">
-          {payment.method}
-        </span>
       </div>
       <div className="mt-3 flex items-center justify-between text-sm text-neutral-400">
         <span className="flex items-center gap-1.5">
