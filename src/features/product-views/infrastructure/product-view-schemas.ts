@@ -48,6 +48,7 @@ export const productDetailResponseSchema = z.object({
     fotos: z.coerce.number().nullish(),
     video: z.coerce.number().nullish(),
     etiquetado: z.coerce.number().nullish(),
+    estimated_activation_date: z.string().nullish(),
   }),
 });
 

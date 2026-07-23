@@ -14,7 +14,7 @@ export interface ProductStatusDefinition {
 export const PRODUCT_STATUSES: readonly ProductStatusDefinition[] = [
   { code: 1, label: 'En Revisión', color: '#F2BC59' },
   { code: 2, label: 'Negociación', color: '#F3A25A' },
-  { code: 3, label: 'Preaprobada', color: '#DBE3F3' },
+  { code: 3, label: 'Preaprobado', color: '#DBE3F3' },
   { code: 4, label: 'Rechazado', color: '#EB6A6A' },
   { code: 10, label: 'Recibido', color: '#B5C7E7' },
   { code: 11, label: 'Activo', color: '#81BD53' },

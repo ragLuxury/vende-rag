@@ -23,7 +23,10 @@ import { useRespondNegotiation } from '../hooks/use-respond-negotiation';
 import { useSellerPayments } from '../hooks/use-seller-payments';
 import { ProductGallery } from './product-gallery';
 import { getStatusStyle } from './product-status';
-import { PublicationGenerationChecklist } from './publication-generation-checklist';
+// Temporarily swapped for PublicationGenerationLoaderBar below — restore this
+// import once the ring-based checklist design is brought back.
+// import { PublicationGenerationChecklist } from './publication-generation-checklist';
+import { PublicationGenerationLoaderBar } from './publication-generation-loader-bar';
 import { PublicationTimeline } from './publication-timeline';
 
 const NEGOTIATION_STATE = 2;
@@ -144,12 +147,39 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 {view === 'publicaciones' && product.statusIntern ? (
                   <div className="mt-4 px-6">
                     {isPublicationApproved(product.statusIntern) ? (
-                      <PublicationGenerationChecklist
-                        infoGenerated={isPublicationInfoGenerated(product.statusIntern)}
-                        hasVideo={product.hasVideo}
-                        hasPhotos={product.hasPhotos}
-                        hasTag={product.hasTag}
-                      />
+                      <>
+                        {/* Temporarily swapped for PublicationGenerationLoaderBar — restore this
+                            ring-based design by uncommenting it (and the import above) and
+                            removing the loader bar below.
+                        <PublicationGenerationChecklist
+                          infoGenerated={isPublicationInfoGenerated(product.statusIntern)}
+                          hasVideo={product.hasVideo}
+                          hasPhotos={product.hasPhotos}
+                          hasTag={product.hasTag}
+                        />
+                        */}
+                        <PublicationGenerationLoaderBar
+                          infoGenerated={isPublicationInfoGenerated(product.statusIntern)}
+                          hasVideo={product.hasVideo}
+                          hasPhotos={product.hasPhotos}
+                          hasTag={product.hasTag}
+                        />
+                        {product.estimatedActivationDate ? (
+                          <p className="mt-4 text-xs text-neutral-400">
+                            Fecha estimada de activación:{' '}
+                            <span className="font-medium text-neutral-600">
+                              {new Date(product.estimatedActivationDate).toLocaleDateString(
+                                'es-MX',
+                                {
+                                  day: 'numeric',
+                                  month: 'long',
+                                  year: 'numeric',
+                                },
+                              )}
+                            </span>
+                          </p>
+                        ) : null}
+                      </>
                     ) : (
                       <PublicationTimeline statusIntern={product.statusIntern} />
                     )}
@@ -303,7 +333,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 <ProductGallery images={product.images} alt={product.name} fill />
               </div>
 
-              <div className="scrollbar-hide flex min-w-0 flex-1 flex-col rounded-3xl border border-neutral-200 p-10 md:h-[40rem] md:overflow-y-auto">
+              <div className="scrollbar-hide flex min-w-0 flex-1 flex-col rounded-3xl border border-neutral-200 p-10 md:h-[40rem] md:max-w-[calc(57%-150px)] md:overflow-y-auto">
                 <div className="flex items-start justify-between gap-6">
                   <div className="min-w-0">
                     <p className="text-sm font-semibold tracking-wide text-neutral-400 uppercase">
@@ -327,12 +357,39 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 {view === 'publicaciones' && product.statusIntern ? (
                   <div className="mt-6">
                     {isPublicationApproved(product.statusIntern) ? (
-                      <PublicationGenerationChecklist
-                        infoGenerated={isPublicationInfoGenerated(product.statusIntern)}
-                        hasVideo={product.hasVideo}
-                        hasPhotos={product.hasPhotos}
-                        hasTag={product.hasTag}
-                      />
+                      <>
+                        {/* Temporarily swapped for PublicationGenerationLoaderBar — restore this
+                            ring-based design by uncommenting it (and the import above) and
+                            removing the loader bar below.
+                        <PublicationGenerationChecklist
+                          infoGenerated={isPublicationInfoGenerated(product.statusIntern)}
+                          hasVideo={product.hasVideo}
+                          hasPhotos={product.hasPhotos}
+                          hasTag={product.hasTag}
+                        />
+                        */}
+                        <PublicationGenerationLoaderBar
+                          infoGenerated={isPublicationInfoGenerated(product.statusIntern)}
+                          hasVideo={product.hasVideo}
+                          hasPhotos={product.hasPhotos}
+                          hasTag={product.hasTag}
+                        />
+                        {product.estimatedActivationDate ? (
+                          <p className="mt-4 text-xs text-neutral-400">
+                            Fecha estimada de activación:{' '}
+                            <span className="font-medium text-neutral-600">
+                              {new Date(product.estimatedActivationDate).toLocaleDateString(
+                                'es-MX',
+                                {
+                                  day: 'numeric',
+                                  month: 'long',
+                                  year: 'numeric',
+                                },
+                              )}
+                            </span>
+                          </p>
+                        ) : null}
+                      </>
                     ) : (
                       <PublicationTimeline statusIntern={product.statusIntern} />
                     )}

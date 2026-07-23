@@ -41,6 +41,13 @@ function statusIncludes(...needles: readonly string[]) {
   };
 }
 
+function statusEquals(...values: readonly string[]) {
+  return (product: Product) => {
+    const status = product.status.trim().toLowerCase();
+    return values.some((value) => status === value);
+  };
+}
+
 /** Label for a known numeric product status code, from the single source of truth. */
 function statusLabel(code: number): string {
   const status = findProductStatusByCode(code);
@@ -77,7 +84,7 @@ export const VIEW_CONFIG: Record<ProductView, ViewConfig> = {
         matches: statusIncludes('revisión'),
       },
       {
-        label: 'Rechazada',
+        label: statusLabel(4),
         icon: 'ion:close-circle-outline',
         format: 'count',
         matches: statusIncludes('rechazad'),
@@ -91,10 +98,10 @@ export const VIEW_CONFIG: Record<ProductView, ViewConfig> = {
     cardSecondary: SALE_PRICE_SECONDARY,
     summary: [
       {
-        label: 'Publicadas',
+        label: statusLabel(11),
         icon: 'ion:pricetag-outline',
         format: 'count',
-        matches: statusIncludes(normalizeStatusText(statusLabel(11))),
+        matches: statusEquals(normalizeStatusText(statusLabel(11))),
       },
       {
         label: 'Recibidas',

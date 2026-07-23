@@ -10,7 +10,7 @@ export interface PublicationTimelineStep {
  * vs "Autentificado", "Aprobado" vs "Ingresado") to read correctly to sellers.
  */
 export const PUBLICATION_TIMELINE_STEPS: readonly PublicationTimelineStep[] = [
-  { matchValue: 'preaprobada', displayLabel: 'Preaprobada' },
+  { matchValue: 'preaprobada', displayLabel: 'Preaprobado' },
   { matchValue: 'bolería p/c', displayLabel: 'Bolería P/C' },
   { matchValue: 'bolería', displayLabel: 'Bolería' },
   { matchValue: 'autentificado', displayLabel: 'Autentificación' },
@@ -31,7 +31,7 @@ export function isPublicationApproved(statusIntern: string): boolean {
 }
 
 export function resolvePublicationPillLabel(statusIntern: string): string {
-  return isPublicationApproved(statusIntern) ? 'Aprobado' : 'Preaprobada';
+  return isPublicationApproved(statusIntern) ? 'Aprobado' : 'Preaprobado';
 }
 
 /** "Información" is only fully generated once the internal status reaches "completado". */
