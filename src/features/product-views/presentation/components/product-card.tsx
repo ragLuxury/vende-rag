@@ -55,26 +55,27 @@ export function ProductCard({ product, secondary, showReceivedDisclaimer }: Prod
       </div>
 
       <div className="flex flex-1 flex-col gap-1 p-3">
-        <h3 className="truncate text-sm font-semibold text-neutral-900">{product.name}</h3>
-        <p className="text-sm text-neutral-900">
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="truncate text-xs font-semibold text-neutral-900">{product.name}</h3>
+          <span className="shrink-0 text-[10px] text-neutral-400">#{product.id}</span>
+        </div>
+        <p className="text-xs text-neutral-900">
           Tu Ganancia:{' '}
           <span className="font-semibold">{currencyFormatter.format(product.earning)}</span>
         </p>
-        <p className="text-sm text-neutral-500">
+        <p className="mb-2 text-xs text-neutral-500">
           {secondary.label}: {currencyFormatter.format(secondary.value)}
         </p>
-        <p className="mb-2 text-xs text-neutral-400">ID: {product.id}</p>
-
 
         {isPreaprobada && showReceivedDisclaimer ? (
-          <p className=" flex items-center justify-center gap-1 text-center text-[10px] text-neutral-400">
+          <p className=" flex  gap-1 text-center text-[10px] text-neutral-400">
             <Icon icon="ion:information-circle-outline" className="size-3 shrink-0" />
             Recibido en tienda
           </p>
         ) : null}
 
         <span
-          className="mt-auto w-40 self-center rounded-full py-1.5 text-center text-sm font-medium"
+          className="mt-auto w-[110px] self-center rounded-full py-1.5 text-center text-xs font-medium"
           style={getStatusStyle(pillStatus)}
         >
           {pillStatus}

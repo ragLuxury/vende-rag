@@ -17,26 +17,31 @@ export function PublicationTimeline({ statusIntern }: PublicationTimelineProps) 
       {PUBLICATION_TIMELINE_STEPS.map((step, index) => {
         const isCompleted = index < activeIndex;
         const isPastOrActive = index <= activeIndex;
+        const isFirst = index === 0;
         const isLast = index === PUBLICATION_TIMELINE_STEPS.length - 1;
+        const leftLineFilled = !isFirst && index - 1 < activeIndex;
+        const rightLineFilled = !isLast && isCompleted;
 
         return (
-          <div
-            key={step.matchValue}
-            className={`flex flex-col items-center ${isLast ? '' : 'flex-1'}`}
-          >
+          <div key={step.matchValue} className="flex flex-1 flex-col items-center">
             <div className="flex w-full items-center">
               <span
+                className={`h-0.5 flex-1 ${
+                  isFirst ? 'bg-transparent' : leftLineFilled ? 'bg-brand' : 'bg-neutral-200'
+                }`}
+              />
+              <span
                 className={`flex size-6 shrink-0 items-center justify-center rounded-full ${
-                  isPastOrActive ? 'bg-indigo-600' : 'border-2 border-neutral-300 bg-white'
+                  isPastOrActive ? 'bg-brand' : 'border-2 border-neutral-300 bg-white'
                 }`}
               >
                 {isCompleted ? <Icon icon="ion:checkmark" className="size-3.5 text-white" /> : null}
               </span>
-              {isLast ? null : (
-                <span
-                  className={`h-0.5 flex-1 ${isCompleted ? 'bg-indigo-600' : 'bg-neutral-200'}`}
-                />
-              )}
+              <span
+                className={`h-0.5 flex-1 ${
+                  isLast ? 'bg-transparent' : rightLineFilled ? 'bg-brand' : 'bg-neutral-200'
+                }`}
+              />
             </div>
             <span
               className={`mt-2 px-0.5 text-center text-[11px] leading-tight break-words ${
