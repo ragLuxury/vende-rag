@@ -41,7 +41,7 @@ export const productViewHttpRepository = {
       return {
         id: item.id,
         uuid: item.uuid,
-        name: item.nombre ?? item.modelo ?? '',
+        name: item.nombre?.trim() || `${item.marca} ${item.modelo ?? ''}`.trim() || 'Sin título',
         brand: item.marca,
         salePrice: item.original_price,
         discountAmount,

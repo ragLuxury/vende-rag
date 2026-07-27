@@ -33,7 +33,7 @@ export function ProductCard({ product, secondary, showReceivedDisclaimer }: Prod
     isReceived && product.statusIntern
       ? resolvePublicationPillLabel(product.statusIntern)
       : product.status;
-  const isPreaprobada = pillStatus.trim().toLowerCase() === 'preaprobada';
+  const isPreaprobada = pillStatus.trim().toLowerCase() === 'preaprobado';
 
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-neutral-300">
