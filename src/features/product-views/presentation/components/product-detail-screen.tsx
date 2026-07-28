@@ -144,7 +144,9 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                   ) : null}
                 </div>
 
-                {view === 'publicaciones' && product.statusIntern ? (
+                {view === 'publicaciones' &&
+                product.statusIntern &&
+                product.status.trim().toLowerCase() !== 'activo' ? (
                   <div className="mt-4 px-6">
                     {isPublicationApproved(product.statusIntern) ? (
                       <>
@@ -354,7 +356,9 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                   ) : null}
                 </div>
 
-                {view === 'publicaciones' && product.statusIntern ? (
+                {view === 'publicaciones' &&
+                product.statusIntern &&
+                product.status.trim().toLowerCase() !== 'activo' ? (
                   <div className="mt-6">
                     {isPublicationApproved(product.statusIntern) ? (
                       <>
