@@ -77,7 +77,7 @@ export function ProductCard({
 
       {showReceivedDisclaimer ? (
         <p
-          className={`mt-[5px] ml-3 flex items-center gap-1 text-[9px] leading-[1.4] text-[#8C8C8C]${isPreaprobada ? '' : ' invisible'}`}
+          className={`mt-[5px] ml-3 flex items-center gap-1 text-[9px] leading-[1.4] text-[#8C8C8C] ${isPreaprobada ? '' : 'invisible'}`}
         >
           <Icon icon="ion:information-circle-outline" className="size-3 shrink-0" />
           Recibido en tienda
