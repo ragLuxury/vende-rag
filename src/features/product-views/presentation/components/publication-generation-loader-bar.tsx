@@ -40,7 +40,7 @@ export function PublicationGenerationLoaderBar({
     <div>
       <p className="flex items-center gap-1.5 text-xs text-neutral-400">
         <Icon icon="ion:information-circle-outline" className="size-3.5 shrink-0" />
-        Estamos generando estos elementos automáticamente
+        Estamos generando estos elementos
       </p>
       <div className="mt-4 flex gap-1">
         {items.map((item, index) => (

@@ -2,6 +2,7 @@ import {
   findProductStatusByCode,
   normalizeStatusText,
 } from '@/src/features/product-views/domain/product-status';
+import { isPublicationApproved } from '@/src/features/product-views/domain/publication-status';
 import type {
   Product,
   ProductView,
@@ -57,6 +58,10 @@ function statusLabel(code: number): string {
   return status.label;
 }
 
+function isReceivedStatus(product: Product): boolean {
+  return product.status.trim().toLowerCase() === 'recibido';
+}
+
 export const VIEW_CONFIG: Record<ProductView, ViewConfig> = {
   solicitudes: {
     title: 'Solicitudes',
@@ -98,17 +103,28 @@ export const VIEW_CONFIG: Record<ProductView, ViewConfig> = {
     cardSecondary: SALE_PRICE_SECONDARY,
     summary: [
       {
+        label: 'Preaprobado',
+        icon: 'ion:time-outline',
+        format: 'count',
+        matches: (product) =>
+          isReceivedStatus(product) &&
+          !!product.statusIntern &&
+          !isPublicationApproved(product.statusIntern),
+      },
+      {
+        label: 'Aprobado',
+        icon: 'ion:checkmark-circle-outline',
+        format: 'count',
+        matches: (product) =>
+          isReceivedStatus(product) &&
+          !!product.statusIntern &&
+          isPublicationApproved(product.statusIntern),
+      },
+      {
         label: statusLabel(11),
         icon: 'ion:pricetag-outline',
         format: 'count',
         matches: statusEquals(normalizeStatusText(statusLabel(11))),
-      },
-      {
-        label: 'Recibidas',
-        icon: 'ion:cube-outline',
-        format: 'count',
-        // Partial needle: intentionally also matches gender/plural variants of "Recibido".
-        matches: statusIncludes('recibid'),
       },
     ],
   },

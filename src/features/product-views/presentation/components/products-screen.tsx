@@ -204,6 +204,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
                 }
           }
           showReceivedDisclaimer={view === 'publicaciones'}
+          heightPx={view === 'publicaciones' ? 370 : undefined}
         />
       </Link>
     );
@@ -276,7 +277,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
             ) : mobileVisibleProducts.length === 0 ? (
               <p className="py-12 text-center text-sm text-neutral-400">{config.emptyText}</p>
             ) : (
-              <div className="grid auto-rows-fr grid-cols-2 gap-4">
+              <div className="grid grid-cols-[repeat(auto-fill,192px)] justify-center gap-6">
                 {mobileVisibleProducts.map(renderCard)}
               </div>
             )}
@@ -381,7 +382,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
                 ) : desktopVisibleProducts.length === 0 ? (
                   <p className="py-12 text-center text-sm text-neutral-400">{config.emptyText}</p>
                 ) : (
-                  <div className="grid auto-rows-fr grid-cols-2 gap-6 lg:grid-cols-3 xl:grid-cols-4">
+                  <div className="grid grid-cols-[repeat(4,192px)] gap-6">
                     {desktopVisibleProducts.map(renderCard)}
                   </div>
                 )}
