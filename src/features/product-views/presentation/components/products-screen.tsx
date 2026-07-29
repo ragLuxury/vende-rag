@@ -204,7 +204,6 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
                 }
           }
           showReceivedDisclaimer={view === 'publicaciones'}
-          heightPx={view === 'publicaciones' ? 370 : undefined}
         />
       </Link>
     );

@@ -28,10 +28,10 @@ interface ProductCardProps {
 export function ProductCard({
   product,
   secondary,
-  showReceivedDisclaimer,
   heightPx = 360,
 }: ProductCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
+  const [showInfoTooltip, setShowInfoTooltip] = useState(false);
   const showImage = product.image !== '' && !imageFailed;
 
   const isReceived = product.status.trim().toLowerCase() === 'recibido';
@@ -46,7 +46,31 @@ export function ProductCard({
       className="flex w-[192px] flex-col rounded-[20px] border border-[#ececec] bg-white p-4 transition-all duration-200 ease-out hover:-translate-y-0.5"
       style={{ minHeight: `${heightPx}px` }}
     >
-      <p className="mt-[7px] mb-[10px] ml-3 text-[10px] text-[#9A9A9A]">#{product.id}</p>
+
+      <div className='mt-[7px] mb-[10px] ml-2 flex justify-between items-center'>
+        <p className=" text-[10px] text-[#9A9A9A]">#{product.id}</p>
+        {isPreaprobada ? (
+          <span className="group relative">
+            <Icon
+              icon="ion:information-circle-outline"
+              className="size-4 shrink-0 cursor-pointer hover:scale-125 transition-all"
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                setShowInfoTooltip((prev) => !prev);
+              }}
+            />
+            <span className="absolute right-0 top-full z-10 mt-1 hidden whitespace-nowrap rounded-md bg-[#1F1F1F] px-2 py-1 text-[10px] text-white md:group-hover:block">
+              Recibido en tienda
+            </span>
+            {showInfoTooltip ? (
+              <span className="absolute right-0 top-full z-10 mt-1 whitespace-nowrap rounded-md bg-[#1F1F1F] px-2 py-1 text-[10px] text-white md:hidden">
+                Recibido en tienda
+              </span>
+            ) : null}
+          </span>
+        ) : null}
+      </div>
 
       <div className="relative mx-auto aspect-square w-[160px] overflow-hidden rounded-[14px] bg-neutral-100">
         {showImage ? (
@@ -65,27 +89,18 @@ export function ProductCard({
         )}
       </div>
 
-      <h3 className="mt-[15px] ml-3 truncate text-[13px] font-light leading-[1.25] tracking-[-0.01em] text-[#1F1F1F]">
+      <h3 className="mt-[12px] ml-2 truncate text-[13px] font-light leading-[1.25] tracking-[-0.01em] text-[#1F1F1F]">
         {product.name}
       </h3>
-      <p className="mt-[12px] ml-3 text-[13px] leading-none tracking-[-0.03em] text-[#151515]">
+      <p className="mt-[12px] ml-2 text-[15px] leading-none tracking-[-0.03em] text-[#151515]">
         {currencyFormatter.format(secondary.value)}
       </p>
-      <p className="mt-[15px] ml-3 text-[12px] leading-[1.4] text-[#777777]">
+      <p className="mt-[12px] ml-2 text-[12px] leading-[1.4] text-[#777777]">
         Ganancia: {currencyFormatter.format(product.earning)}
       </p>
 
-      {showReceivedDisclaimer ? (
-        <p
-          className={`mt-[5px] ml-3 flex items-center gap-1 text-[9px] leading-[1.4] text-[#8C8C8C] ${isPreaprobada ? '' : 'invisible'}`}
-        >
-          <Icon icon="ion:information-circle-outline" className="size-3 shrink-0" />
-          Recibido en tienda
-        </p>
-      ) : null}
-
       <span
-        className="mt-[10px] w-full rounded-full py-[7px] text-center text-[12px] font-medium"
+        className="mt-[12px] w-full rounded-full py-[7px] text-center text-[12px] font-medium"
         style={getStatusStyle(pillStatus)}
       >
         {pillStatus}
