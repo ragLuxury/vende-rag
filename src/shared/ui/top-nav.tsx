@@ -36,17 +36,17 @@ export function TopNav({ trailing }: TopNavProps) {
         hideNavStrip ? 'shadow-[0_6px_14px_-12px_rgba(0,0,0,0.25)]' : 'border-b border-neutral-200'
       }`}
     >
-      <div className="mx-auto hidden h-26 w-full items-start mt-[15px] justify-between px-4 md:flex">
+      <div className="mx-auto mt-[15px] hidden h-26 w-full items-start justify-between px-4 md:flex">
         <Image src="/images/header/isotipo.svg" alt="" width={48} height={48} className="size-10" />
 
         <Link href="/welcome" aria-label="RAG">
           <Image
             src="/images/header/headerv2.png"
             alt="RAG"
-            width={245}
-            height={56}
+            width={640}
+            height={139}
             priority
-            className="h-[95px] w-auto ml-[65px]"
+            className="ml-[65px] h-[95px] w-auto"
           />
         </Link>
 

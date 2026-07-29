@@ -10,15 +10,15 @@ export function LandingHeader() {
 
   return (
     <header className="top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur">
-      <div className="mx-auto flex h-26 w-full items-start mt-[15px] justify-between px-4">
+      <div className="mx-auto mt-[15px] flex h-26 w-full items-start justify-between px-4">
         <Image src="/images/header/isotipo.svg" alt="" width={48} height={48} className="size-10" />
         <Image
           src="/images/header/headerv2.png"
           alt="RAG"
-          width={245}
-          height={56}
+          width={640}
+          height={139}
           priority
-          className="h-[95px] w-auto ml-[65px]"
+          className="ml-[65px] h-[95px] w-auto"
         />
         <div className="flex items-center gap-5">
           <button
