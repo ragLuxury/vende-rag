@@ -50,23 +50,12 @@ export function ProductCard({ product, secondary, view, heightPx = 360 }: Produc
       >
         <div className="mt-[7px] mb-[10px] ml-2 flex items-center justify-between">
           <span className="flex items-center gap-1.5">
-            {view === 'publicaciones' ? (
-              <Icon
-                icon="ion:send-outline"
-                className="size-4 shrink-0 cursor-pointer transition-all hover:scale-125"
-                onClick={(event) => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  setIsShippingModalOpen(true);
-                }}
-              />
-            ) : null}
             <p className="text-[10px] text-[#9A9A9A]">#{product.id}</p>
           </span>
           {isPreaprobada ? (
             <span className="group relative">
               <Icon
-                icon="ion:information-circle-outline"
+                icon={view === 'solicitudes' ? "ion:send-outline" : "ion:information-circle-outline"}
                 className="size-4 shrink-0 cursor-pointer transition-all hover:scale-125"
                 onClick={(event) => {
                   event.preventDefault();

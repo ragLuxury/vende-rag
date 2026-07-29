@@ -17,7 +17,10 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
       <button
         type="button"
         aria-label="Cerrar"
-        onClick={onClose}
+        onClick={(event) => {
+          event.stopPropagation();
+          onClose();
+        }}
         className="fixed inset-0 bg-neutral-900/50"
       />
 
@@ -25,13 +28,17 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
         role="dialog"
         aria-modal="true"
         aria-label="Elige cómo enviar"
-        className="mt-[50px] relative z-10 max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-8 shadow-xl"
+        onClick={(event) => event.stopPropagation()}
+        className="relative z-10 mt-[50px] max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-8 shadow-xl"
       >
         <button
           type="button"
           aria-label="Cerrar"
-          onClick={onClose}
-          className="absolute top-6 right-6 text-neutral-500 transition-colors hover:text-neutral-900"
+          onClick={(event) => {
+            event.stopPropagation();
+            onClose();
+          }}
+          className="absolute top-6 right-6 text-neutral-500 transition-colors hover:text-neutral-900 hover:cursor-pointer"
         >
           <Icon icon="ion:close-outline" className="size-6" />
         </button>
@@ -57,6 +64,7 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
               </div>
               <Link
                 href={option.href}
+                onClick={(event) => event.stopPropagation()}
                 className="bg-brand shrink-0 rounded-[10px] px-4 py-2.5 text-[10px] font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
               >
                 {option.ctaLabel}

@@ -74,6 +74,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
     isReceived && product?.statusIntern
       ? resolvePublicationPillLabel(product.statusIntern)
       : (product?.status ?? '');
+  const isPreaprobada = pillStatus.trim().toLowerCase() === 'preaprobado';
 
   function handleApprove() {
     if (!product) return;
@@ -182,7 +183,18 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         ) : null}
                       </>
                     ) : (
-                      <PublicationTimeline statusIntern={product.statusIntern} />
+                      <>
+                        <PublicationTimeline statusIntern={product.statusIntern} />
+                        {isPreaprobada ? (
+                          <p className="mt-4 flex items-center gap-1.5 text-xs text-neutral-400">
+                            <Icon
+                              icon="ion:information-circle-outline"
+                              className="size-4 shrink-0"
+                            />
+                            Recibido en tienda
+                          </p>
+                        ) : null}
+                      </>
                     )}
                   </div>
                 ) : null}
@@ -377,7 +389,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                           hasPhotos={product.hasPhotos}
                           hasTag={product.hasTag}
                         />
-                        {product.estimatedActivationDate ? (
+                        {/*product.estimatedActivationDate ? (
                           <p className="mt-4 text-xs text-neutral-400">
                             Fecha estimada de activación:{' '}
                             <span className="font-medium text-neutral-600">
@@ -390,16 +402,27 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                                 },
                               )}
                             </span>
+                          </p> 
+                        ) : null*/}
+                      </>
+                    ) : (
+                      <>
+                        <PublicationTimeline statusIntern={product.statusIntern} />
+                        {isPreaprobada ? (
+                          <p className="mt-4 flex items-center gap-1.5 text-xs text-neutral-400">
+                            <Icon
+                              icon="ion:information-circle-outline"
+                              className="size-4 shrink-0"
+                            />
+                            Recibido en tienda
                           </p>
                         ) : null}
                       </>
-                    ) : (
-                      <PublicationTimeline statusIntern={product.statusIntern} />
                     )}
                   </div>
                 ) : null}
 
-                <div className="mt-8 flex flex-col border-t border-neutral-200">
+                <div className="mt-4 flex flex-col border-t border-neutral-200">
                   <section>
                     {isSale ? (
                       <>
