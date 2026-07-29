@@ -108,7 +108,6 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
           <Icon icon="ion:chevron-back-outline" className="size-7" />
           <span className="hidden text-sm font-medium md:inline">Regresar</span>
         </button>
-        <h1 className="text-lg font-semibold text-neutral-900">Detalles de Producto</h1>
       </header>
 
       <div className="flex-1 pb-10 md:flex md:min-h-0 md:flex-col md:justify-center md:pb-0">

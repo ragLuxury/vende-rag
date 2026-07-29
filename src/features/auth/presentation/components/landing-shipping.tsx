@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { SHIPPING_OPTIONS } from './landing-content';
+import { SHIPPING_OPTIONS } from '@/src/shared/content/shipping-options';
 
 export function LandingShipping() {
   return (
