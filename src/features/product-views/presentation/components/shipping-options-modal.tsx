@@ -73,10 +73,6 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
           ))}
         </div>
 
-        <p className="mt-6 flex items-start gap-2 text-xs text-neutral-400">
-          <Icon icon="ion:information-circle-outline" className="mt-0.5 size-4 shrink-0" />
-          Puedes cambiar la opción de envío en cualquier momento.
-        </p>
       </div>
     </div>,
     document.body,

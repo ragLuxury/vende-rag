@@ -11,9 +11,8 @@ export interface PublicationTimelineStep {
  */
 export const PUBLICATION_TIMELINE_STEPS: readonly PublicationTimelineStep[] = [
   { matchValue: 'preaprobada', displayLabel: 'Preaprobado' },
-  { matchValue: 'bolería p/c', displayLabel: 'Bolería P/C' },
-  { matchValue: 'bolería', displayLabel: 'Bolería' },
   { matchValue: 'autentificado', displayLabel: 'Autentificación' },
+  { matchValue: 'bolería', displayLabel: 'Bolería' },
   { matchValue: 'ingresado', displayLabel: 'Aprobado' },
 ];
 

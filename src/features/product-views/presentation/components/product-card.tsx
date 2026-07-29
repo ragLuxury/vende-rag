@@ -31,7 +31,6 @@ interface ProductCardProps {
 
 export function ProductCard({ product, secondary, view, heightPx = 360 }: ProductCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
-  const [showInfoTooltip, setShowInfoTooltip] = useState(false);
   const [isShippingModalOpen, setIsShippingModalOpen] = useState(false);
   const showImage = product.image !== '' && !imageFailed;
 
@@ -40,45 +39,28 @@ export function ProductCard({ product, secondary, view, heightPx = 360 }: Produc
     isReceived && product.statusIntern
       ? resolvePublicationPillLabel(product.statusIntern)
       : product.status;
-  const isPreaprobada = pillStatus.trim().toLowerCase() === 'preaprobado';
 
   return (
     <>
       <article
-        className="flex w-[192px] flex-col rounded-[20px] border border-[#ececec] bg-white p-4 transition-all duration-200 ease-out hover:-translate-y-0.5"
+        className="flex w-[192px] flex-col rounded-[20px] border border-[#ececec] bg-white p-4 "
         style={{ minHeight: `${heightPx}px` }}
       >
         <div className="mt-[7px] mb-[10px] ml-2 flex items-center justify-between">
           <span className="flex items-center gap-1.5">
             <p className="text-[10px] text-[#9A9A9A]">#{product.id}</p>
           </span>
-          {isPreaprobada ? (
+          {view === 'solicitudes' ? (
             <span className="group relative">
               <Icon
-                icon={view === 'solicitudes' ? "ion:send-outline" : "ion:information-circle-outline"}
+                icon="ion:send-outline"
                 className="size-4 shrink-0 cursor-pointer transition-all hover:scale-125"
                 onClick={(event) => {
                   event.preventDefault();
                   event.stopPropagation();
-                  if (view === 'publicaciones') {
-                    setShowInfoTooltip((prev) => !prev);
-                  } else {
                     setIsShippingModalOpen(true);
-                  }
                 }}
               />
-              {view === 'publicaciones' ? (
-                <>
-                  <span className="absolute top-full right-0 z-10 mt-1 hidden rounded-md bg-[#1F1F1F] px-2 py-1 text-[10px] whitespace-nowrap text-white md:group-hover:block">
-                    Recibido en tienda
-                  </span>
-                  {showInfoTooltip ? (
-                    <span className="absolute top-full right-0 z-10 mt-1 rounded-md bg-[#1F1F1F] px-2 py-1 text-[10px] whitespace-nowrap text-white md:hidden">
-                      Recibido en tienda
-                    </span>
-                  ) : null}
-                </>
-              ) : null}
             </span>
           ) : null}
         </div>
@@ -104,9 +86,9 @@ export function ProductCard({ product, secondary, view, heightPx = 360 }: Produc
           {product.name}
         </h3>
         <p className="mt-[12px] ml-2 text-[15px] leading-none tracking-[-0.03em] text-[#151515]">
-          {currencyFormatter.format(secondary.value)}
+          Precio: {currencyFormatter.format(secondary.value)}
         </p>
-        <p className="mt-[12px] ml-2 text-[12px] leading-[1.4] text-[#777777]">
+        <p className="mt-[12px] ml-2 text-[13px] leading-[1.4] text-[#777777]">
           Ganancia: {currencyFormatter.format(product.earning)}
         </p>
 

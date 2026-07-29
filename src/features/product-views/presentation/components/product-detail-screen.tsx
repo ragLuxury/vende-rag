@@ -104,7 +104,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
         <button
           type="button"
           onClick={() => router.back()}
-          className="absolute left-6 flex cursor-pointer items-center gap-1.5 text-neutral-900"
+          className="absolute left-6 flex cursor-pointer items-center gap-1.5 text-neutral-900 mb-[25px]"
         >
           <Icon icon="ion:chevron-back-outline" className="size-7" />
           <span className="hidden text-sm font-medium md:inline">Regresar</span>
@@ -187,10 +187,6 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         <PublicationTimeline statusIntern={product.statusIntern} />
                         {isPreaprobada ? (
                           <p className="mt-4 flex items-center gap-1.5 text-xs text-neutral-400">
-                            <Icon
-                              icon="ion:information-circle-outline"
-                              className="size-4 shrink-0"
-                            />
                             Recibido en tienda
                           </p>
                         ) : null}
@@ -411,7 +407,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         {isPreaprobada ? (
                           <p className="mt-4 flex items-center gap-1.5 text-xs text-neutral-400">
                             <Icon
-                              icon="ion:information-circle-outline"
+                              icon="mdi:truck-outline"
                               className="size-4 shrink-0"
                             />
                             Recibido en tienda
