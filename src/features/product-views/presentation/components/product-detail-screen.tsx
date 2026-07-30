@@ -268,17 +268,19 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     />
                     {discountAmount > 0 ? (
                       <PriceRow
+                        negative
                         label={
                           product.discountPercent > 0
                             ? `Descuento (${product.discountPercent}%)`
                             : 'Descuento'
                         }
-                        value={`- ${currencyFormatter.format(discountAmount)}`}
+                        value={currencyFormatter.format(discountAmount)}
                       />
                     ) : null}
                     <PriceRow
+                      negative
                       label="Comisión RAG"
-                      value={`- ${currencyFormatter.format(commission?.amount ?? product.commission)}`}
+                      value={currencyFormatter.format(commission?.amount ?? product.commission)}
                     />
                     <div className="flex items-center justify-between pt-1">
                       <dt className="text-sm font-semibold text-neutral-900">Tu Ganancia</dt>
@@ -337,12 +339,12 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
               </div>
             </div>
 
-            <div className="hidden items-stretch gap-8 px-8 pb-8 md:flex">
+            <div className="hidden items-stretch justify-center gap-8 px-8 pb-8 md:flex">
               <div className="w-2/5 shrink-0 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100">
                 <ProductGallery images={product.images} alt={product.name} fill />
               </div>
 
-              <div className="scrollbar-hide flex min-w-0 flex-1 flex-col rounded-3xl border border-neutral-200 p-5 md:max-w-[calc(57%-150px)]">
+              <div className="scrollbar-hide flex min-w-0 flex-1 flex-col rounded-3xl border border-neutral-200 p-5 md:max-w-[calc(57%-250px)]">
                 <div className="items-start gap-6">
                   <div className="min-w-0">
                     <div className="flex w-[100%] items-center justify-between">
@@ -441,13 +443,18 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                           />
                         </button>
                         {infoOpen ? (
-                          <div className="grid grid-cols-2 gap-x-8 gap-y-7 pb-6">
-                            <DetailField label="Marca" value={product.brand} />
-                            <DetailField label="Modelo" value={product.model} />
-                            <DetailField label="Departamento" value={product.department} />
-                            <DetailField label="Categoría" value={product.category} />
-                            <DetailField label="Subcategoría" value={product.subcategory} />
-                            <DetailField label="Color" value={product.color} />
+                          <div className="mb-5 flex justify-evenly">
+                            <div className="text-center">
+                              <DetailField label="Marca" value={product.brand} />
+                              <DetailField label="Modelo" value={product.model} />
+                              <DetailField label="Departamento" value={product.department} />
+                            </div>
+
+                            <div className="text-center">
+                              <DetailField label="Categoría" value={product.category} />
+                              <DetailField label="Subcategoría" value={product.subcategory} />
+                              <DetailField label="Color" value={product.color} />
+                            </div>
                           </div>
                         ) : null}
                       </>
@@ -456,13 +463,19 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         <h3 className="w-full py-5 text-[14px] font-semibold text-neutral-900">
                           Información del Producto
                         </h3>
-                        <div className="grid grid-cols-2 gap-x-8 gap-y-7 pb-6">
-                          <DetailField label="Marca" value={product.brand} />
-                          <DetailField label="Modelo" value={product.model} />
-                          <DetailField label="Departamento" value={product.department} />
-                          <DetailField label="Categoría" value={product.category} />
-                          <DetailField label="Subcategoría" value={product.subcategory} />
-                          <DetailField label="Color" value={product.color} />
+                        <div className="mb-5 flex justify-between">
+                          <div className="text-left">
+                            <DetailField label="Marca" value={product.brand} />
+                            <DetailField label="Modelo" value={product.model} />
+                            <DetailField label="Departamento" value={product.department} />
+                          </div>
+
+                          <div className="text-left">
+                            <DetailField label="Categoría" value={product.category} />
+                            <DetailField label="Subcategoría" value={product.subcategory} />
+                            <DetailField label="Color" value={product.color} />
+                          </div>
+                          <div></div>
                         </div>
                       </>
                     )}
@@ -500,6 +513,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 
                   <dl className="mt-4 space-y-3">
                     <PriceRow
+                      columns
                       label={
                         isNegotiation
                           ? 'Precio de Negociación'
@@ -513,30 +527,36 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     />
                     {discountAmount > 0 ? (
                       <PriceRow
+                        columns
+                        negative
                         label={
                           product.discountPercent > 0
                             ? `Descuento (${product.discountPercent}%)`
                             : 'Descuento'
                         }
-                        value={`- ${currencyFormatter.format(discountAmount)}`}
+                        value={currencyFormatter.format(discountAmount)}
                       />
                     ) : null}
                     <PriceRow
+                      columns
+                      negative
                       label="Comisión RAG"
-                      value={`- ${currencyFormatter.format(commission?.amount ?? product.commission)}`}
+                      value={currencyFormatter.format(commission?.amount ?? product.commission)}
                     />
-                    <div className="flex items-center justify-between pt-1">
-                      <dt className="text-sm font-semibold text-neutral-900">Tu Ganancia</dt>
-                      <dd className="text-sm font-semibold text-neutral-900">
+                    <div className="grid grid-cols-2">
+                      <dt className="text-left text-sm font-semibold text-neutral-900">
+                        Tu Ganancia
+                      </dt>
+                      <dd className="text-left text-sm font-semibold text-neutral-900">
                         {currencyFormatter.format(earning)}
                       </dd>
                     </div>
                   </dl>
 
                   {isSale ? (
-                    <div className="mt-4 flex items-center justify-between text-sm">
+                    <div className="mt-4 grid grid-cols-[2fr_1fr] items-center gap-x-8 text-sm">
                       <span className="text-neutral-500">{isPaid ? 'Pagado' : 'Por pagar'}</span>
-                      <span className="text-neutral-400">
+                      <span className="text-right text-neutral-400">
                         {currencyFormatter.format(isPaid ? paid : pending)}
                       </span>
                     </div>
@@ -605,18 +625,37 @@ function InfoRow({ label, value }: RowProps) {
   );
 }
 
-function PriceRow({ label, value }: RowProps) {
+function PriceRow({
+  label,
+  value,
+  negative = false,
+  columns = false,
+}: RowProps & { negative?: boolean; columns?: boolean }) {
+  const valueNode = (
+    <span className="relative">
+      {negative ? <span className="absolute -left-3">-</span> : null}
+      {value}
+    </span>
+  );
+  if (columns) {
+    return (
+      <div className="grid grid-cols-2">
+        <dt className="text-left text-[12px] text-neutral-700">{label}</dt>
+        <dd className="text-left text-[12px] text-neutral-400">{valueNode}</dd>
+      </div>
+    );
+  }
   return (
     <div className="flex items-center justify-between">
       <dt className="text-[12px] text-neutral-700">{label}</dt>
-      <dd className="text-[12px] text-neutral-400">{value}</dd>
+      <dd className="text-[12px] text-neutral-400">{valueNode}</dd>
     </div>
   );
 }
 
 function DetailField({ label, value }: RowProps) {
   return (
-    <div>
+    <div className="mb-2">
       <p className="text-[10px] font-semibold tracking-wide text-neutral-900 uppercase">{label}</p>
       <p className="mt-1 text-[10px] text-neutral-500">{value || '—'}</p>
     </div>
