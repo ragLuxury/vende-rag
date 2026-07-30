@@ -31,7 +31,7 @@ export function PublicationTimeline({ statusIntern }: PublicationTimelineProps) 
                 }`}
               />
               <span
-                className={`flex size-6 shrink-0 items-center justify-center rounded-full ${
+                className={`flex size-3 shrink-0 items-center justify-center rounded-full ${
                   isPastOrActive ? 'bg-brand' : 'border-2 border-neutral-300 bg-white'
                 }`}
               >
@@ -44,7 +44,7 @@ export function PublicationTimeline({ statusIntern }: PublicationTimelineProps) 
               />
             </div>
             <span
-              className={`mt-2 px-0.5 text-center text-[11px] leading-tight break-words ${
+              className={`mt-2 px-0.5 text-center text-[10px] leading-tight break-words ${
                 isPastOrActive ? 'font-semibold text-neutral-900' : 'text-neutral-400'
               }`}
             >

@@ -104,7 +104,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
         <button
           type="button"
           onClick={() => router.back()}
-          className="absolute left-6 flex cursor-pointer items-center gap-1.5 text-neutral-900 mb-[25px]"
+          className="absolute left-6 mb-[25px] flex cursor-pointer items-center gap-1.5 text-neutral-900"
         >
           <Icon icon="ion:chevron-back-outline" className="size-7" />
           <span className="hidden text-sm font-medium md:inline">Regresar</span>
@@ -337,30 +337,35 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
               </div>
             </div>
 
-            <div className="hidden items-start gap-8 px-8 pb-8 md:flex">
-              <div className="w-2/5 shrink-0 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100 md:h-[40rem]">
+            <div className="hidden items-stretch gap-8 px-8 pb-8 md:flex">
+              <div className="w-2/5 shrink-0 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100">
                 <ProductGallery images={product.images} alt={product.name} fill />
               </div>
 
-              <div className="scrollbar-hide flex min-w-0 flex-1 flex-col rounded-3xl border border-neutral-200 p-10 md:h-[40rem] md:max-w-[calc(57%-150px)] md:overflow-y-auto">
-                <div className="flex items-start justify-between gap-6">
+              <div className="scrollbar-hide flex min-w-0 flex-1 flex-col rounded-3xl border border-neutral-200 p-5 md:max-w-[calc(57%-150px)]">
+                <div className="items-start gap-6">
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold tracking-wide text-neutral-400 uppercase">
-                      #{product.id}
-                    </p>
-                    <h2 className="mt-2 text-2xl font-semibold text-neutral-900">{product.name}</h2>
+                    <div className="flex w-[100%] items-center justify-between">
+                      <p className="text-sm font-semibold tracking-wide text-neutral-400 uppercase">
+                        #{product.id}
+                      </p>
+                      {pillStatus ? (
+                        <span
+                          className="shrink-0 rounded-full px-5 py-2 text-sm font-medium"
+                          style={getStatusStyle(pillStatus)}
+                        >
+                          {pillStatus}
+                        </span>
+                      ) : null}
+                    </div>
+
+                    <h2 className="mt-2 text-[18px] font-semibold text-neutral-900">
+                      {product.name}
+                    </h2>
                     {isSale && product.soldDate ? (
                       <p className="text-xs text-neutral-400">Fecha de venta: {product.soldDate}</p>
                     ) : null}
                   </div>
-                  {pillStatus ? (
-                    <span
-                      className="shrink-0 rounded-full px-5 py-2 text-sm font-medium"
-                      style={getStatusStyle(pillStatus)}
-                    >
-                      {pillStatus}
-                    </span>
-                  ) : null}
                 </div>
 
                 {view === 'publicaciones' &&
@@ -406,10 +411,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         <PublicationTimeline statusIntern={product.statusIntern} />
                         {isPreaprobada ? (
                           <p className="mt-4 flex items-center gap-1.5 text-xs text-neutral-400">
-                            <Icon
-                              icon="mdi:truck-outline"
-                              className="size-4 shrink-0"
-                            />
+                            <Icon icon="mdi:truck-outline" className="size-4 shrink-0" />
                             Recibido en tienda
                           </p>
                         ) : null}
@@ -428,7 +430,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                           aria-expanded={infoOpen}
                           className="flex w-full items-center justify-between py-5"
                         >
-                          <span className="text-sm font-semibold text-neutral-900">
+                          <span className="text-xs font-semibold text-neutral-900">
                             Información del Producto
                           </span>
                           <Icon
@@ -451,7 +453,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       </>
                     ) : (
                       <>
-                        <h3 className="w-full py-5 text-sm font-semibold text-neutral-900">
+                        <h3 className="w-full py-5 text-[14px] font-semibold text-neutral-900">
                           Información del Producto
                         </h3>
                         <div className="grid grid-cols-2 gap-x-8 gap-y-7 pb-6">
@@ -474,7 +476,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         aria-expanded={detailOpen}
                         className="flex w-full items-center justify-between py-5"
                       >
-                        <span className="text-sm font-semibold text-neutral-900">
+                        <span className="text-[14px] font-semibold text-neutral-900">
                           Detalles del Producto
                         </span>
                         <Icon
@@ -485,14 +487,14 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         />
                       </button>
                       {detailOpen ? (
-                        <p className="pb-6 text-sm text-neutral-500">{product.detail}</p>
+                        <p className="pb-6 text-[12px] text-neutral-500">{product.detail}</p>
                       ) : null}
                     </section>
                   ) : null}
                 </div>
 
                 <div className="border-t border-neutral-200 pt-6">
-                  <h3 className="text-sm font-semibold text-neutral-900">
+                  <h3 className="text-[14px] font-semibold text-neutral-900">
                     {isNegotiation ? 'Negociación' : 'Desglose de Precio'}
                   </h3>
 
@@ -606,8 +608,8 @@ function InfoRow({ label, value }: RowProps) {
 function PriceRow({ label, value }: RowProps) {
   return (
     <div className="flex items-center justify-between">
-      <dt className="text-sm text-neutral-700">{label}</dt>
-      <dd className="text-sm text-neutral-400">{value}</dd>
+      <dt className="text-[12px] text-neutral-700">{label}</dt>
+      <dd className="text-[12px] text-neutral-400">{value}</dd>
     </div>
   );
 }
@@ -615,8 +617,8 @@ function PriceRow({ label, value }: RowProps) {
 function DetailField({ label, value }: RowProps) {
   return (
     <div>
-      <p className="text-xs font-semibold tracking-wide text-neutral-900 uppercase">{label}</p>
-      <p className="mt-1 text-sm text-neutral-500">{value || '—'}</p>
+      <p className="text-[10px] font-semibold tracking-wide text-neutral-900 uppercase">{label}</p>
+      <p className="mt-1 text-[10px] text-neutral-500">{value || '—'}</p>
     </div>
   );
 }
