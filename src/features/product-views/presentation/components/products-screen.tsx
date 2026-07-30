@@ -300,7 +300,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
               <AccountTabs />
             </div>
 
-            <div className="mt-8 flex flex-1 gap-10">
+            <div className="mt-8 flex flex-1">
               <aside className="w-56 shrink-0">
                 <h2 className="font-editors text-2xl text-neutral-900">Mis {config.title}</h2>
 
@@ -338,7 +338,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
               </aside>
 
               <div className="min-w-0 flex-1">
-                <div className="mb-4 flex justify-end">
+                <div className="w-[90%] mb-4 flex justify-end">
                   <div ref={desktopSortMenuRef} className="relative shrink-0">
                     <button
                       type="button"
