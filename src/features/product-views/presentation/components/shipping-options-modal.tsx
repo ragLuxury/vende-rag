@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { createPortal } from 'react-dom';
 import { Icon } from '@iconify/react';
 import { SHIPPING_OPTIONS } from '@/src/shared/content/shipping-options';
@@ -38,7 +37,7 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
             event.stopPropagation();
             onClose();
           }}
-          className="absolute top-6 right-6 text-neutral-500 transition-colors hover:text-neutral-900 hover:cursor-pointer"
+          className="absolute top-6 right-6 text-neutral-500 transition-colors hover:cursor-pointer hover:text-neutral-900"
         >
           <Icon icon="ion:close-outline" className="size-6" />
         </button>
@@ -47,7 +46,7 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
           Elige cómo <span className="font-normal italic">enviar</span>
         </h2>
 
-        <div className="mt-8 flex flex-col gap-4">
+        <div className="mt-4 flex flex-col gap-4">
           {SHIPPING_OPTIONS.map((option) => (
             <div
               key={option.title}
@@ -62,17 +61,21 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
                   {option.description}
                 </p>
               </div>
-              <Link
-                href={option.href}
-                onClick={(event) => event.stopPropagation()}
-                className="bg-brand shrink-0 rounded-[10px] px-4 py-2.5 text-[10px] font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
-              >
-                {option.ctaLabel}
-              </Link>
             </div>
           ))}
         </div>
 
+
+
+        <div className='flex justify-center'>
+          <button
+            type="button"
+            className="bg-brand mt-6 w-[150px] rounded-[10px] py-3 text-xs font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
+          >
+            Contactar
+          </button>
+        </div>
+        
       </div>
     </div>,
     document.body,
