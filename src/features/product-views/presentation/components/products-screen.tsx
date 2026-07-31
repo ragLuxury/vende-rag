@@ -28,6 +28,7 @@ import { usePaidByProduct } from '../hooks/use-paid-by-product';
 import { VIEW_CONFIG, type CurrencyAmount } from '../view-config';
 import { ProductCard } from './product-card';
 import { ProductSummary, type SummaryItem } from './product-summary';
+import { ShippingOptionsModal } from './shipping-options-modal';
 
 type SortOrder = 'price-desc' | 'price-asc' | 'oldest' | 'newest';
 
@@ -84,6 +85,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
   const [checkedStatuses, setCheckedStatuses] = useState<ReadonlySet<number>>(new Set());
   const [mobileSortMenuOpen, setMobileSortMenuOpen] = useState(false);
   const [desktopSortMenuOpen, setDesktopSortMenuOpen] = useState(false);
+  const [isShippingModalOpen, setIsShippingModalOpen] = useState(false);
   const mobileSortMenuRef = useRef<HTMLDivElement>(null);
   const desktopSortMenuRef = useRef<HTMLDivElement>(null);
 
@@ -115,6 +117,25 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
   }
 
   const { data: products, isLoading, isError } = useProducts(view, clientId, '');
+
+  useEffect(() => {
+    if (view !== 'solicitudes') return;
+    if (!products || products.length === 0) return;
+
+    const isPreaprobado = config.summary.find((item) => item.label === 'Preaprobado')?.matches;
+    if (!isPreaprobado || !products.some(isPreaprobado)) return;
+
+    const STORAGE_KEY = 'rag_shipping_modal_last_shown';
+    const today = new Date().toDateString();
+    if (localStorage.getItem(STORAGE_KEY) === today) return;
+
+    localStorage.setItem(STORAGE_KEY, today);
+    // One-time notification gated by localStorage + early returns above; this
+    // effect's own deps (view, products, config) never change as a result of
+    // this state update, so there's no cascading-render risk here.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsShippingModalOpen(true);
+  }, [view, products, config]);
 
   const productIds = useMemo(() => (products ?? []).map((product) => product.id), [products]);
   const needsPayments = view === 'ventas';
@@ -203,7 +224,6 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
                   value: amountFor(product, config.cardSecondary.amount, paidById),
                 }
           }
-          view={view}
         />
       </Link>
     );
@@ -338,7 +358,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
               </aside>
 
               <div className="min-w-0 flex-1">
-                <div className="w-[90%] mb-4 flex justify-end">
+                <div className="mb-4 flex w-[90%] justify-end">
                   <div ref={desktopSortMenuRef} className="relative shrink-0">
                     <button
                       type="button"
@@ -394,6 +414,9 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
       </div>
 
       <BottomNav />
+      {isShippingModalOpen ? (
+        <ShippingOptionsModal onClose={() => setIsShippingModalOpen(false)} />
+      ) : null}
     </div>
   );
 }

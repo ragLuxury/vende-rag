@@ -3,13 +3,9 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
-import type {
-  Product,
-  ProductView,
-} from '@/src/features/product-views/domain/product-view-repository';
+import type { Product } from '@/src/features/product-views/domain/product-view-repository';
 import { resolvePublicationPillLabel } from '@/src/features/product-views/domain/publication-status';
 import { getStatusStyle } from './product-status';
-import { ShippingOptionsModal } from './shipping-options-modal';
 
 const currencyFormatter = new Intl.NumberFormat('es-MX', {
   style: 'currency',
@@ -25,13 +21,11 @@ interface CardSecondary {
 interface ProductCardProps {
   product: Product;
   secondary: CardSecondary;
-  view: ProductView;
   heightPx?: number | undefined;
 }
 
-export function ProductCard({ product, secondary, view, heightPx = 360 }: ProductCardProps) {
+export function ProductCard({ product, secondary, heightPx = 360 }: ProductCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
-  const [isShippingModalOpen, setIsShippingModalOpen] = useState(false);
   const showImage = product.image !== '' && !imageFailed;
 
   const isReceived = product.status.trim().toLowerCase() === 'recibido';
@@ -41,67 +35,49 @@ export function ProductCard({ product, secondary, view, heightPx = 360 }: Produc
       : product.status;
 
   return (
-    <>
-      <article
-        className="flex w-[192px] flex-col rounded-[20px] border border-[#ececec] bg-white p-4 "
-        style={{ minHeight: `${heightPx}px` }}
-      >
-        <div className="mt-[7px] mb-[10px] ml-2 flex items-center justify-between">
-          <span className="flex items-center gap-1.5">
-            <p className="text-[10px] text-[#9A9A9A]">#{product.id}</p>
-          </span>
-          {view === 'solicitudes' ? (
-            <span className="group relative">
-              <Icon
-                icon="ion:send-outline"
-                className="size-4 shrink-0 cursor-pointer transition-all hover:scale-125"
-                onClick={(event) => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                    setIsShippingModalOpen(true);
-                }}
-              />
-            </span>
-          ) : null}
-        </div>
-
-        <div className="relative mx-auto aspect-square w-[160px] overflow-hidden rounded-[14px] bg-neutral-100">
-          {showImage ? (
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              sizes="200px"
-              className="object-cover"
-              onError={() => setImageFailed(true)}
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center text-neutral-300">
-              <Icon icon="ion:image-outline" className="size-10" />
-            </div>
-          )}
-        </div>
-
-        <h3 className="mt-[12px] ml-2 truncate text-[13px] leading-[1.25] font-light tracking-[-0.01em] text-[#1F1F1F]">
-          {product.name}
-        </h3>
-        <p className="mt-[12px] ml-2 text-[15px] leading-none tracking-[-0.03em] text-[#151515]">
-          Precio: {currencyFormatter.format(secondary.value)}
-        </p>
-        <p className="mt-[12px] ml-2 text-[13px] leading-[1.4] text-[#777777]">
-          Ganancia: {currencyFormatter.format(product.earning)}
-        </p>
-
-        <span
-          className="mt-[12px] w-full rounded-full py-[7px] text-center text-[12px] font-medium"
-          style={getStatusStyle(pillStatus)}
-        >
-          {pillStatus}
+    <article
+      className="flex w-[192px] flex-col rounded-[20px] border border-[#ececec] bg-white p-4"
+      style={{ minHeight: `${heightPx}px` }}
+    >
+      <div className="mt-[7px] mb-[10px] ml-2 flex items-center justify-between">
+        <span className="flex items-center gap-1.5">
+          <p className="text-[10px] text-[#9A9A9A]">#{product.id}</p>
         </span>
-      </article>
-      {isShippingModalOpen ? (
-        <ShippingOptionsModal onClose={() => setIsShippingModalOpen(false)} />
-      ) : null}
-    </>
+      </div>
+
+      <div className="relative mx-auto aspect-square w-[160px] overflow-hidden rounded-[14px] bg-neutral-100">
+        {showImage ? (
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="200px"
+            className="object-cover"
+            onError={() => setImageFailed(true)}
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center text-neutral-300">
+            <Icon icon="ion:image-outline" className="size-10" />
+          </div>
+        )}
+      </div>
+
+      <h3 className="mt-[12px] ml-2 truncate text-[13px] leading-[1.25] font-light tracking-[-0.01em] text-[#1F1F1F]">
+        {product.name}
+      </h3>
+      <p className="mt-[12px] ml-2 text-[15px] leading-none tracking-[-0.03em] text-[#151515]">
+        Precio: {currencyFormatter.format(secondary.value)}
+      </p>
+      <p className="mt-[12px] ml-2 text-[13px] leading-[1.4] text-[#777777]">
+        Ganancia: {currencyFormatter.format(product.earning)}
+      </p>
+
+      <span
+        className="mt-[12px] w-full rounded-full py-[7px] text-center text-[12px] font-medium"
+        style={getStatusStyle(pillStatus)}
+      >
+        {pillStatus}
+      </span>
+    </article>
   );
 }

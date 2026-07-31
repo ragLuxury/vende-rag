@@ -75,7 +75,7 @@ export function LandingFooter({ isAuthenticated }: LandingFooterProps) {
                 <p className="text-center text-xs font-semibold tracking-[0.2em] text-neutral-900 uppercase">
                   {column.title}
                 </p>
-                <ul className="mt-4 flex flex-col items-center gap-1">
+                <ul className="mt-4 flex flex-col items-center gap-1 mb-4">
                   {column.links.map((link) => (
                     <li key={link.href + link.label}>
                       <Link
