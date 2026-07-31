@@ -37,6 +37,12 @@ const currencyFormatter = new Intl.NumberFormat('es-MX', {
   maximumFractionDigits: 0,
 });
 
+const dateFormatter = new Intl.DateTimeFormat('es-MX', {
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric',
+});
+
 interface ProductDetailScreenProps {
   productId: number;
   view?: string;
@@ -187,7 +193,9 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         <PublicationTimeline statusIntern={product.statusIntern} />
                         {isPreaprobada ? (
                           <p className="mt-4 flex items-center gap-1.5 text-xs text-neutral-400">
-                            Recibido en tienda
+                            {product.receivedDate
+                              ? `Recibido el ${dateFormatter.format(new Date(product.receivedDate))}`
+                              : 'Recibido en tienda'}
                           </p>
                         ) : null}
                       </>
@@ -414,7 +422,9 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         {isPreaprobada ? (
                           <p className="mt-4 flex items-center gap-1.5 text-xs text-neutral-400">
                             <Icon icon="mdi:truck-outline" className="size-4 shrink-0" />
-                            Recibido en tienda
+                            {product.receivedDate
+                              ? `Recibido el ${dateFormatter.format(new Date(product.receivedDate))}`
+                              : 'Recibido en tienda'}
                           </p>
                         ) : null}
                       </>

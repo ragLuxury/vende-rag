@@ -108,6 +108,7 @@ export const productViewHttpRepository = {
       hasVideo: Boolean(data.video),
       hasTag: Boolean(data.etiquetado),
       estimatedActivationDate: data.estimated_activation_date ?? null,
+      receivedDate: data.preaprobado_date ?? null,
     };
   },
 

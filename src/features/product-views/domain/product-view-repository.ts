@@ -58,6 +58,7 @@ export interface ProductDetail {
   hasVideo: boolean;
   hasTag: boolean;
   estimatedActivationDate: string | null;
+  receivedDate: string | null;
 }
 
 export type NegotiationDecision =
