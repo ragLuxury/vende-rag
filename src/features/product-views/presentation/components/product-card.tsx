@@ -24,7 +24,7 @@ interface ProductCardProps {
   heightPx?: number | undefined;
 }
 
-export function ProductCard({ product, secondary, heightPx = 360 }: ProductCardProps) {
+export function ProductCard({ product, secondary, heightPx = 350 }: ProductCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
   const showImage = product.image !== '' && !imageFailed;
 
@@ -36,16 +36,16 @@ export function ProductCard({ product, secondary, heightPx = 360 }: ProductCardP
 
   return (
     <article
-      className="flex w-[192px] flex-col rounded-[20px] border border-[#ececec] bg-white p-4"
+      className="flex w-48 flex-col rounded-[20px] border border-[#ececec] bg-white p-4"
       style={{ minHeight: `${heightPx}px` }}
     >
-      <div className="mt-[7px] mb-[10px] ml-2 flex items-center justify-between">
+      <div className=" mb-2.5  flex items-center justify-between">
         <span className="flex items-center gap-1.5">
           <p className="text-[10px] text-[#9A9A9A]">#{product.id}</p>
         </span>
       </div>
 
-      <div className="relative mx-auto aspect-square w-[160px] overflow-hidden rounded-[14px] bg-neutral-100">
+      <div className="relative mx-auto aspect-square w-40 overflow-hidden rounded-[14px] bg-neutral-100">
         {showImage ? (
           <Image
             src={product.image}
@@ -62,7 +62,7 @@ export function ProductCard({ product, secondary, heightPx = 360 }: ProductCardP
         )}
       </div>
 
-      <h3 className="mt-[12px] ml-2 truncate text-[13px] leading-[1.25] font-light tracking-[-0.01em] text-[#1F1F1F]">
+      <h3 className="mt-3 ml-2 truncate text-[13px] leading-tight font-light tracking-[-0.01em] text-[#1F1F1F]">
         {product.name}
       </h3>
       <p className="mt-[12px] ml-2 text-[15px] leading-none tracking-[-0.03em] text-[#151515]">

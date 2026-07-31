@@ -57,6 +57,7 @@ export interface ProductDetail {
   hasPhotos: boolean;
   hasVideo: boolean;
   hasTag: boolean;
+  isAuthenticated: boolean;
   estimatedActivationDate: string | null;
   receivedDate: string | null;
 }

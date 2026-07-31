@@ -7,9 +7,13 @@ import {
 
 interface PublicationTimelineProps {
   statusIntern: string;
+  isAuthenticated: boolean;
 }
 
-export function PublicationTimeline({ statusIntern }: PublicationTimelineProps) {
+export function PublicationTimeline({
+  statusIntern,
+  isAuthenticated: _isAuthenticated,
+}: PublicationTimelineProps) {
   const activeIndex = resolvePublicationStepIndex(statusIntern);
 
   return (

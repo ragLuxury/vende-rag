@@ -190,7 +190,10 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       </>
                     ) : (
                       <>
-                        <PublicationTimeline statusIntern={product.statusIntern} />
+                        <PublicationTimeline
+                          statusIntern={product.statusIntern}
+                          isAuthenticated={product.isAuthenticated}
+                        />
                         {isPreaprobada ? (
                           <p className="mt-4 flex items-center gap-1.5 text-xs text-neutral-400">
                             {product.receivedDate
@@ -418,7 +421,10 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       </>
                     ) : (
                       <>
-                        <PublicationTimeline statusIntern={product.statusIntern} />
+                        <PublicationTimeline
+                          statusIntern={product.statusIntern}
+                          isAuthenticated={product.isAuthenticated}
+                        />
                         {isPreaprobada ? (
                           <p className="mt-4 flex items-center gap-1.5 text-xs text-neutral-400">
                             <Icon icon="mdi:truck-outline" className="size-4 shrink-0" />

@@ -107,6 +107,7 @@ export const productViewHttpRepository = {
       hasPhotos: Boolean(data.fotos),
       hasVideo: Boolean(data.video),
       hasTag: Boolean(data.etiquetado),
+      isAuthenticated: Boolean(data.autenticado),
       estimatedActivationDate: data.estimated_activation_date ?? null,
       receivedDate: data.preaprobado_date ?? null,
     };
