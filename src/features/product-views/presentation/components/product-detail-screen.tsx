@@ -8,7 +8,6 @@ import { resolvePayment } from '@/src/features/product-views/domain/payment-stat
 import type { SellerPayment } from '@/src/features/product-views/domain/product-view-repository';
 import {
   isPublicationApproved,
-  isPublicationInfoGenerated,
   resolvePublicationPillLabel,
 } from '@/src/features/product-views/domain/publication-status';
 // Reused as-is below the desktop product detail (same section LandingScreen and
@@ -26,7 +25,9 @@ import { getStatusStyle } from './product-status';
 // Temporarily swapped for PublicationGenerationLoaderBar below — restore this
 // import once the ring-based checklist design is brought back.
 // import { PublicationGenerationChecklist } from './publication-generation-checklist';
-import { PublicationGenerationLoaderBar } from './publication-generation-loader-bar';
+// Temporarily hidden per user request — uncomment to bring the progress
+// bars back.
+// import { PublicationGenerationLoaderBar } from './publication-generation-loader-bar';
 import { PublicationTimeline } from './publication-timeline';
 
 const NEGOTIATION_STATE = 2;
@@ -166,12 +167,15 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                           hasTag={product.hasTag}
                         />
                         */}
+                        {/* Temporarily hidden per user request — uncomment to bring the progress
+                            bars back.
                         <PublicationGenerationLoaderBar
                           infoGenerated={isPublicationInfoGenerated(product.statusIntern)}
                           hasVideo={product.hasVideo}
                           hasPhotos={product.hasPhotos}
                           hasTag={product.hasTag}
                         />
+                        */}
                         {product.estimatedActivationDate ? (
                           <p className="mt-4 text-xs text-neutral-400">
                             Fecha estimada de activación:{' '}
@@ -397,12 +401,15 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                           hasTag={product.hasTag}
                         />
                         */}
+                        {/* Temporarily hidden per user request — uncomment to bring the progress
+                            bars back.
                         <PublicationGenerationLoaderBar
                           infoGenerated={isPublicationInfoGenerated(product.statusIntern)}
                           hasVideo={product.hasVideo}
                           hasPhotos={product.hasPhotos}
                           hasTag={product.hasTag}
                         />
+                        */}
                         {/*product.estimatedActivationDate ? (
                           <p className="mt-4 text-xs text-neutral-400">
                             Fecha estimada de activación:{' '}

@@ -28,13 +28,12 @@ export function PublicationGenerationLoaderBar({
     { label: 'Etiqueta', isDone: hasTag },
   ];
 
-  const doneCount = items.filter((item) => item.isDone).length;
-  const [filledCount, setFilledCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
-    const frame = requestAnimationFrame(() => setFilledCount(doneCount));
+    const frame = requestAnimationFrame(() => setHasAnimated(true));
     return () => cancelAnimationFrame(frame);
-  }, [doneCount]);
+  }, []);
 
   return (
     <div>
@@ -43,11 +42,11 @@ export function PublicationGenerationLoaderBar({
         Estamos generando estos elementos
       </p>
       <div className="mt-4 flex gap-1">
-        {items.map((item, index) => (
+        {items.map((item) => (
           <div key={item.label} className="h-2 flex-1 overflow-hidden rounded-full bg-neutral-200">
             <div
               className={`bg-brand h-full rounded-full transition-all duration-700 ease-out ${
-                index < filledCount ? 'w-full' : 'w-0'
+                hasAnimated && item.isDone ? 'w-full' : 'w-0'
               }`}
             />
           </div>
