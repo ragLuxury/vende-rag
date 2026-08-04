@@ -119,22 +119,21 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
   const { data: products, isLoading, isError } = useProducts(view, clientId, '');
 
   useEffect(() => {
-    if (view !== 'solicitudes') return;
-    if (!products || products.length === 0) return;
-
-    const isPreaprobado = config.summary.find((item) => item.label === 'Preaprobado')?.matches;
-    if (!isPreaprobado || !products.some(isPreaprobado)) return;
-
-    const STORAGE_KEY = 'rag_shipping_modal_last_shown';
-    const today = new Date().toDateString();
-    if (localStorage.getItem(STORAGE_KEY) === today) return;
-
-    localStorage.setItem(STORAGE_KEY, today);
-    // One-time notification gated by localStorage + early returns above; this
-    // effect's own deps (view, products, config) never change as a result of
-    // this state update, so there's no cascading-render risk here.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsShippingModalOpen(true);
+    // Temporarily disabled per user request — the auto-popup should not
+    // show for anyone right now. Uncomment the block below to re-enable it.
+    // if (view !== 'solicitudes') return;
+    // if (!products || products.length === 0) return;
+    //
+    // const isPreaprobado = config.summary.find((item) => item.label === 'Preaprobado')?.matches;
+    // if (!isPreaprobado || !products.some(isPreaprobado)) return;
+    //
+    // const STORAGE_KEY = 'rag_shipping_modal_last_shown';
+    // const today = new Date().toDateString();
+    // if (localStorage.getItem(STORAGE_KEY) === today) return;
+    //
+    // localStorage.setItem(STORAGE_KEY, today);
+    // // eslint-disable-next-line react-hooks/set-state-in-effect
+    // setIsShippingModalOpen(true);
   }, [view, products, config]);
 
   const productIds = useMemo(() => (products ?? []).map((product) => product.id), [products]);
