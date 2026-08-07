@@ -309,13 +309,13 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     {isSale && product.initialStatus === 'Apartado' && !isPaid ? (
                       <>
                         <div className="flex items-center justify-between">
-                          <dt className="text-sm text-neutral-500">Adelanto</dt>
+                          <dt className="text-sm text-neutral-500">Anticipo (30%)</dt>
                           <dd className="text-sm text-neutral-400">
                             {currencyFormatter.format(pending * 0.3)}
                           </dd>
                         </div>
                         <div className="flex items-center justify-between">
-                          <dt className="text-sm text-neutral-500">Liquidación</dt>
+                          <dt className="text-sm text-neutral-500">Liquidación (70%)</dt>
                           <dd className="text-sm text-neutral-400">
                             {currencyFormatter.format(pending * 0.7)}
                           </dd>
