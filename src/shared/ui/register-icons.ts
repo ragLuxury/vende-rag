@@ -32,6 +32,8 @@ const USED_ICONS: readonly string[] = [
   'search-outline',
   'funnel-outline',
   'image-outline',
+  'close-outline',
+  'create-outline',
 ];
 
 let registered = false;

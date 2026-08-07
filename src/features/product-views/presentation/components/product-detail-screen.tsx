@@ -136,7 +136,10 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 <div className="flex items-start justify-between gap-4 px-6 pt-6">
                   <div>
                     <h2 className="text-2xl font-semibold text-neutral-900">{product.name}</h2>
-                    <p className="text-sm text-neutral-400">#{product.id}</p>
+                    <p className="text-sm text-neutral-400">
+                      #{product.id}
+                      {product.initialStatus ? ` / ${product.initialStatus}` : ''}
+                    </p>
                     {isSale && product.soldDate ? (
                       <p className="text-xs text-neutral-400">Fecha de venta: {product.soldDate}</p>
                     ) : null}
@@ -303,7 +306,22 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         {currencyFormatter.format(earning)}
                       </dd>
                     </div>
-                    {isSale ? (
+                    {isSale && product.initialStatus === 'Apartado' && !isPaid ? (
+                      <>
+                        <div className="flex items-center justify-between">
+                          <dt className="text-sm text-neutral-500">Adelanto</dt>
+                          <dd className="text-sm text-neutral-400">
+                            {currencyFormatter.format(pending * 0.3)}
+                          </dd>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <dt className="text-sm text-neutral-500">Liquidación</dt>
+                          <dd className="text-sm text-neutral-400">
+                            {currencyFormatter.format(pending * 0.7)}
+                          </dd>
+                        </div>
+                      </>
+                    ) : isSale ? (
                       <div className="flex items-center justify-between">
                         <dt className="text-sm text-neutral-500">
                           {isPaid ? 'Pagado' : 'Por pagar'}
@@ -365,6 +383,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     <div className="flex w-[100%] items-center justify-between">
                       <p className="text-sm font-semibold tracking-wide text-neutral-400 uppercase">
                         #{product.id}
+                        {product.initialStatus ? ` / ${product.initialStatus}` : ''}
                       </p>
                       {pillStatus ? (
                         <span
@@ -576,7 +595,22 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     </div>
                   </dl>
 
-                  {isSale ? (
+                  {isSale && product.initialStatus === 'Apartado' && !isPaid ? (
+                    <>
+                      <div className="mt-4 grid grid-cols-[2fr_1fr] items-center gap-x-8 text-sm">
+                        <span className="text-neutral-500">Adelanto</span>
+                        <span className="text-right text-neutral-400">
+                          {currencyFormatter.format(pending * 0.3)}
+                        </span>
+                      </div>
+                      <div className="mt-2 grid grid-cols-[2fr_1fr] items-center gap-x-8 text-sm">
+                        <span className="text-neutral-500">Liquidación</span>
+                        <span className="text-right text-neutral-400">
+                          {currencyFormatter.format(pending * 0.7)}
+                        </span>
+                      </div>
+                    </>
+                  ) : isSale ? (
                     <div className="mt-4 grid grid-cols-[2fr_1fr] items-center gap-x-8 text-sm">
                       <span className="text-neutral-500">{isPaid ? 'Pagado' : 'Por pagar'}</span>
                       <span className="text-right text-neutral-400">

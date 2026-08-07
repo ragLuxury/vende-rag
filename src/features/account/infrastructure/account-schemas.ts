@@ -63,3 +63,12 @@ export const banksResponseSchema = z.object({
     }),
   ),
 });
+
+export const contractUploadResponseSchema = z.object({
+  status: z.string(),
+  key: z.string().nullable(),
+  nameFile: z.string().nullable(),
+  msg: z.string().nullable(),
+});
+
+export const signContractResponseSchema = z.unknown();

@@ -1,8 +1,10 @@
 'use client';
 
 import { Icon } from '@iconify/react';
+import { useState } from 'react';
 
 import { useProfile } from '../hooks/use-profile';
+import { ContractGenerator } from './contract/contract-generator';
 import { ProfileAccordion } from './profile-accordion';
 
 interface ContractSectionProps {
@@ -30,6 +32,7 @@ export interface ContractContentProps {
 
 export function ContractContent({ clientId }: ContractContentProps) {
   const { data: profile, isLoading, isError } = useProfile(clientId);
+  const [generatorOpen, setGeneratorOpen] = useState(false);
 
   return (
     <>
@@ -41,9 +44,7 @@ export function ContractContent({ clientId }: ContractContentProps) {
         <p className="mt-5 text-base text-neutral-400">Cargando...</p>
       ) : isError ? (
         <p className="mt-5 text-base text-red-600">No pudimos cargar tu contrato.</p>
-      ) : !profile?.contract ? (
-        <p className="mt-5 text-base text-neutral-400">Aún no tienes un contrato firmado.</p>
-      ) : (
+      ) : profile?.contractSigned && profile.contract ? (
         <a
           href={profile.contract}
           target="_blank"
@@ -53,7 +54,20 @@ export function ContractContent({ clientId }: ContractContentProps) {
           <Icon icon="ion:document-outline" className="size-5" />
           Ver Contrato
         </a>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setGeneratorOpen(true)}
+          className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-neutral-300 text-base font-medium text-neutral-700"
+        >
+          <Icon icon="ion:create-outline" className="size-5" />
+          Generar Contrato
+        </button>
       )}
+
+      {generatorOpen ? (
+        <ContractGenerator clientId={clientId} onClose={() => setGeneratorOpen(false)} />
+      ) : null}
     </>
   );
 }

@@ -48,6 +48,7 @@ export const productViewHttpRepository = {
         earning: item.precio,
         status: item.Estado,
         statusIntern: item.status_intern ?? '',
+        initialStatus: item.initial_status ?? '',
         image: item.galeria?.[0] ?? '',
       };
     });
@@ -88,6 +89,7 @@ export const productViewHttpRepository = {
       name: data.name_product ?? data.modelo ?? '',
       status: data.estatus || data.Estado || findProductStatusByCode(data.state ?? 0)?.label || '',
       statusIntern: data.status_intern ?? '',
+      initialStatus: data.initial_status ?? '',
       state: data.state ?? 0,
       brand: data.marca ?? '',
       model: data.modelo ?? '',

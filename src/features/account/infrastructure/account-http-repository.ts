@@ -3,6 +3,7 @@ import type {
   AddressInput,
   PaymentMethodInput,
 } from '@/src/features/account/domain/account-repository';
+import { env } from '@/src/shared/infrastructure/env/env';
 import { httpRequest } from '@/src/shared/infrastructure/http/http-client';
 import { getContractUrl } from '@/src/shared/infrastructure/images/contract-document';
 import {
@@ -10,7 +11,9 @@ import {
   banksResponseSchema,
   clientProfileResponseSchema,
   clientProfileSummaryResponseSchema,
+  contractUploadResponseSchema,
   deleteAccountResponseSchema,
+  signContractResponseSchema,
   updateProfileResponseSchema,
 } from './account-schemas';
 
@@ -57,6 +60,7 @@ export const accountHttpRepository = {
       lastName: profile.lastname,
       phone: response.data.phone,
       contract: response.data.contrato ? getContractUrl(response.data.contrato) : null,
+      contractSigned: response.data.contrato !== null && response.data.contrato !== undefined,
       address: address
         ? {
             id: address.id,
@@ -177,5 +181,41 @@ export const accountHttpRepository = {
     });
 
     return response.data;
+  },
+
+  async uploadAndSignContract(clientId, pdfBlob, fileName, signal) {
+    // The contract file itself is hosted by front-rag, not api_rga, so this one
+    // call bypasses httpRequest (which always sends JSON) for a raw multipart upload.
+    const uploadOrigin = new URL(env.NEXT_PUBLIC_CONTRACT_BASE_URL).origin;
+    const formData = new FormData();
+    formData.append('file', pdfBlob, fileName);
+
+    const uploadResponse = await fetch(
+      `${uploadOrigin}/api/filepond-mode-server/process/contract`,
+      {
+        method: 'POST',
+        body: formData,
+        ...(signal ? { signal } : {}),
+      },
+    );
+
+    if (!uploadResponse.ok) {
+      throw new Error('Error al subir el contrato');
+    }
+
+    const uploadJson: unknown = await uploadResponse.json();
+    const uploadResult = contractUploadResponseSchema.parse(uploadJson);
+    const uploadedFileName = uploadResult.nameFile ?? uploadResult.key;
+
+    if (!uploadedFileName) {
+      throw new Error('Error al subir el contrato');
+    }
+
+    await httpRequest('/web/client/contrato', {
+      method: 'PATCH',
+      body: { contrato: uploadedFileName },
+      schema: signContractResponseSchema,
+      ...(signal ? { signal } : {}),
+    });
   },
 } satisfies AccountRepository;

@@ -10,6 +10,7 @@ export interface Product {
   earning: number;
   status: string;
   statusIntern: string;
+  initialStatus: string;
   image: string;
 }
 
@@ -38,6 +39,7 @@ export interface ProductDetail {
   name: string;
   status: string;
   statusIntern: string;
+  initialStatus: string;
   state: number;
   brand: string;
   model: string;

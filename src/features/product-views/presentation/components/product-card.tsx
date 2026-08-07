@@ -41,7 +41,10 @@ export function ProductCard({ product, secondary, heightPx = 350 }: ProductCardP
     >
       <div className=" mb-2.5  flex items-center justify-between">
         <span className="flex items-center gap-1.5">
-          <p className="text-[10px] text-[#9A9A9A]">#{product.id}</p>
+          <p className="text-[10px] text-[#9A9A9A]">
+            #{product.id}
+            {product.initialStatus ? ` / ${product.initialStatus}` : ''}
+          </p>
         </span>
       </div>
 

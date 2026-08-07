@@ -52,6 +52,7 @@ export interface ClientProfile {
   lastName: string;
   phone: string;
   contract: string | null;
+  contractSigned: boolean;
   address: ClientAddress | null;
   paymentMethod: ClientPaymentMethod | null;
 }
@@ -93,4 +94,10 @@ export interface AccountRepository {
   ): Promise<void>;
   deletePaymentMethod(clientId: number, signal?: AbortSignal): Promise<void>;
   getBanks(signal?: AbortSignal): Promise<readonly Bank[]>;
+  uploadAndSignContract(
+    clientId: number,
+    pdfBlob: Blob,
+    fileName: string,
+    signal?: AbortSignal,
+  ): Promise<void>;
 }
