@@ -383,7 +383,11 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     <div className="flex w-[100%] items-center justify-between">
                       <p className="text-sm font-semibold tracking-wide text-neutral-400 uppercase">
                         #{product.id}
-                        {product.initialStatus ? ` / ${product.initialStatus}` : ''}
+                        {product.initialStatus ? (
+                          <span className="normal-case"> / {product.initialStatus}</span>
+                        ) : (
+                          ''
+                        )}
                       </p>
                       {pillStatus ? (
                         <span
