@@ -1,16 +1,11 @@
 'use client';
 
-import { useMemo } from 'react';
-
 import { useDesigners } from '../hooks/use-designers';
 
 export function DesignersScreen() {
   const { data, isPending, isError, refetch } = useDesigners();
 
-  const designers = useMemo(
-    () => (data ? [...data].sort((a, b) => a.name.localeCompare(b.name)) : []),
-    [data],
-  );
+  const designers = data ?? [];
 
   return (
     <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-16 md:px-8 md:py-20">
