@@ -598,13 +598,13 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                   {isSale && product.initialStatus === 'Apartado' && !isPaid ? (
                     <>
                       <div className="mt-4 grid grid-cols-[2fr_1fr] items-center gap-x-8 text-sm">
-                        <span className="text-neutral-500">Adelanto</span>
+                        <span className="text-neutral-500">Anticipo (30%)</span>
                         <span className="text-right text-neutral-400">
                           {currencyFormatter.format(pending * 0.3)}
                         </span>
                       </div>
                       <div className="mt-2 grid grid-cols-[2fr_1fr] items-center gap-x-8 text-sm">
-                        <span className="text-neutral-500">Liquidación</span>
+                        <span className="text-neutral-500">Liquidación (70%)</span>
                         <span className="text-right text-neutral-400">
                           {currencyFormatter.format(pending * 0.7)}
                         </span>
