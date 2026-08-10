@@ -189,7 +189,7 @@ export function ProfileScreen({
                       key={section.id}
                       type="button"
                       onClick={() => setDesktopSection(section.id)}
-                      className={`text-left text-base transition-colors ${
+                      className={`cursor-pointer text-left text-base transition-colors ${
                         desktopSection === section.id
                           ? 'text-brand font-semibold'
                           : 'text-neutral-600 hover:text-neutral-900'

@@ -58,7 +58,7 @@ export function ContractContent({ clientId }: ContractContentProps) {
         <button
           type="button"
           onClick={() => setGeneratorOpen(true)}
-          className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-neutral-300 text-base font-medium text-neutral-700"
+          className="mt-5 flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-neutral-300 text-base font-medium text-neutral-700"
         >
           <Icon icon="ion:create-outline" className="size-5" />
           Generar Contrato

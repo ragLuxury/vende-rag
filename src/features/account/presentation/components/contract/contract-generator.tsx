@@ -73,7 +73,7 @@ export function ContractGenerator({ clientId, onClose }: ContractGeneratorProps)
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-white">
+    <div className="fixed inset-0 z-[200] flex flex-col bg-white">
       <div className="flex shrink-0 items-center justify-between border-b border-neutral-200 px-4 py-3">
         <div className="flex items-center gap-3">
           <button
