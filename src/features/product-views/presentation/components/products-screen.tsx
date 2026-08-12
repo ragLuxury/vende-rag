@@ -12,6 +12,7 @@ import type {
 } from '@/src/features/product-views/domain/product-view-repository';
 import { AccountTabs } from '@/src/shared/ui/account-tabs';
 import { BottomNav } from '@/src/shared/ui/bottom-nav';
+import { SHIPPING_MODAL_DISMISSED_KEY } from '@/src/shared/content/shipping-options';
 // The desktop welcome heading needs the account profile's trimmed display name;
 // no shared cross-feature abstraction exists yet for this read (same precedent
 // as top-nav-actions.tsx, which reads this same hook for its own display name).
@@ -119,21 +120,24 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
   const { data: products, isLoading, isError } = useProducts(view, clientId, '');
 
   useEffect(() => {
-    // Temporarily disabled per user request — the auto-popup should not
-    // show for anyone right now. Uncomment the block below to re-enable it.
-    // if (view !== 'solicitudes') return;
-    // if (!products || products.length === 0) return;
-    //
-    // const isPreaprobado = config.summary.find((item) => item.label === 'Preaprobado')?.matches;
-    // if (!isPreaprobado || !products.some(isPreaprobado)) return;
-    //
-    // const STORAGE_KEY = 'rag_shipping_modal_last_shown';
-    // const today = new Date().toDateString();
-    // if (localStorage.getItem(STORAGE_KEY) === today) return;
-    //
-    // localStorage.setItem(STORAGE_KEY, today);
-    // // eslint-disable-next-line react-hooks/set-state-in-effect
-    // setIsShippingModalOpen(true);
+    if (localStorage.getItem(SHIPPING_MODAL_DISMISSED_KEY) === 'true') return;
+    if (view !== 'solicitudes') return;
+    if (!products) return;
+
+    const isPreaprobado = config.summary.find((item) => item.label === 'Preaprobado')?.matches;
+    if (!isPreaprobado) return;
+
+    const preaprobadoIds = products.filter(isPreaprobado).map((product) => product.id);
+    if (preaprobadoIds.length === 0) return;
+
+    const STORAGE_KEY = 'rag_shipping_modal_seen_ids';
+    const seenIds: number[] = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
+    const hasNewPreaprobado = preaprobadoIds.some((id) => !seenIds.includes(id));
+    if (!hasNewPreaprobado) return;
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...new Set([...seenIds, ...preaprobadoIds])]));
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsShippingModalOpen(true);
   }, [view, products, config]);
 
   const productIds = useMemo(() => (products ?? []).map((product) => product.id), [products]);
