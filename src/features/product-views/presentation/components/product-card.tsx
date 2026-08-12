@@ -21,10 +21,11 @@ interface CardSecondary {
 interface ProductCardProps {
   product: Product;
   secondary: CardSecondary;
+  isSale: boolean;
   heightPx?: number | undefined;
 }
 
-export function ProductCard({ product, secondary, heightPx = 350 }: ProductCardProps) {
+export function ProductCard({ product, secondary, isSale, heightPx = 350 }: ProductCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
   const showImage = product.image !== '' && !imageFailed;
 
@@ -43,7 +44,7 @@ export function ProductCard({ product, secondary, heightPx = 350 }: ProductCardP
         <span className="flex items-center gap-1.5">
           <p className="text-[10px] text-[#9A9A9A]">
             #{product.id}
-            {product.initialStatus ? ` / ${product.initialStatus}` : ''}
+            {isSale && product.initialStatus ? ` / ${product.initialStatus}` : ''}
           </p>
         </span>
       </div>

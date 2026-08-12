@@ -215,6 +215,7 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
       >
         <ProductCard
           product={product}
+          isSale={view === 'ventas'}
           secondary={
             view === 'ventas'
               ? ventasSecondary(product, paidById)
