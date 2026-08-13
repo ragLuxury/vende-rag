@@ -4,9 +4,10 @@ export interface ShippingOption {
   description: string;
   ctaLabel: string;
   href: string;
+  badge?: string;
+  weekdayHours?: string;
+  saturdayHours?: string;
 }
-
-export const SHIPPING_MODAL_DISMISSED_KEY = 'rag_shipping_modal_dismissed';
 
 export const SHIPPING_OPTIONS: readonly [ShippingOption, ShippingOption, ShippingOption] = [
   {
@@ -17,15 +18,18 @@ export const SHIPPING_OPTIONS: readonly [ShippingOption, ShippingOption, Shippin
     href: '/contacto',
   },
   {
-    icon: 'ion:storefront-outline',
-    title: 'Drop off en Guadalajara',
+    icon: 'ion:location-outline',
+    title: 'Drop Off en Guadalajara',
     description:
-      'TORRE HEREDIT\nJosé María Escrivá #, PB, 44660, Guadalajara, Jal.\nLunes a Viernes de 10:00 a 7:00\nSábados de 10:00 a 2:00',
+      'Colinas de San Javier 2030-Local LC-1, Colinas de San Javier, 44660 Guadalajara, Jal.',
     ctaLabel: 'Saber más',
     href: '/contacto',
+    badge: 'TORRE HEREDIT',
+    weekdayHours: 'Lunes a Viernes de 10:00 a 7:00',
+    saturdayHours: 'Sábados de 10:00 a 2:00',
   },
   {
-    icon: 'ion:send-outline',
+    icon: 'ion:cube-outline',
     title: 'Envío por paquetería',
     description: 'Cotiza tu guía',
     ctaLabel: 'Quiero enviar',

@@ -12,7 +12,6 @@ import type {
 } from '@/src/features/product-views/domain/product-view-repository';
 import { AccountTabs } from '@/src/shared/ui/account-tabs';
 import { BottomNav } from '@/src/shared/ui/bottom-nav';
-import { SHIPPING_MODAL_DISMISSED_KEY } from '@/src/shared/content/shipping-options';
 // The desktop welcome heading needs the account profile's trimmed display name;
 // no shared cross-feature abstraction exists yet for this read (same precedent
 // as top-nav-actions.tsx, which reads this same hook for its own display name).
@@ -120,7 +119,6 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
   const { data: products, isLoading, isError } = useProducts(view, clientId, '');
 
   useEffect(() => {
-    if (localStorage.getItem(SHIPPING_MODAL_DISMISSED_KEY) === 'true') return;
     if (view !== 'solicitudes') return;
     if (!products) return;
 
