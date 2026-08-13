@@ -58,21 +58,21 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
         <div className="mt-6 text-center">
           <h3 className="text-base font-semibold text-neutral-900">{dropOff.title}</h3>
           {dropOff.badge ? (
-            <p className="mt-1 text-sm text-neutral-500">{dropOff.badge}</p>
+            <p className="mt-1 text-xs text-neutral-500">{dropOff.badge}</p>
           ) : null}
           <a
             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(dropOff.description)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 block text-sm leading-relaxed text-neutral-700 underline underline-offset-2"
+            className="mt-2 block text-xs leading-relaxed text-neutral-700 underline underline-offset-2"
           >
             {dropOff.description}
           </a>
           {dropOff.weekdayHours ? (
-            <p className="mt-1 text-sm text-neutral-500">{dropOff.weekdayHours}</p>
+            <p className="mt-1 text-xs text-neutral-500">{dropOff.weekdayHours}</p>
           ) : null}
           {dropOff.saturdayHours ? (
-            <p className="text-sm text-neutral-500">{dropOff.saturdayHours}</p>
+            <p className="text-xs text-neutral-500">{dropOff.saturdayHours}</p>
           ) : null}
         </div>
 
@@ -81,7 +81,7 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
           <Link
             href={shipping.href}
             onClick={onClose}
-            className="mt-2 inline-block text-sm text-neutral-700 underline underline-offset-2"
+            className="mt-2 inline-block text-xs text-neutral-700 underline underline-offset-2"
           >
             {shipping.description}
           </Link>
