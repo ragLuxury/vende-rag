@@ -25,8 +25,8 @@ export const SHIPPING_OPTIONS: readonly [ShippingOption, ShippingOption, Shippin
     ctaLabel: 'Saber más',
     href: '/contacto',
     badge: 'TORRE HEREDIT',
-    weekdayHours: 'Lunes a Viernes de 10:00 a 7:00',
-    saturdayHours: 'Sábados de 10:00 a 2:00',
+    weekdayHours: 'Lunes a Viernes de 10:00 am a 7:00 pm',
+    saturdayHours: 'Sábados de 10:00 am a 2:00 pm',
   },
   {
     icon: 'ion:cube-outline',
