@@ -2,7 +2,6 @@
 
 import { createPortal } from 'react-dom';
 import { Icon } from '@iconify/react';
-import Link from 'next/link';
 import { SHIPPING_OPTIONS } from '@/src/shared/content/shipping-options';
 
 interface ShippingOptionsModalProps {
@@ -78,13 +77,14 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
 
         <div className="mt-4 text-center">
           <h3 className="text-base font-semibold text-neutral-900">{shipping.title}</h3>
-          <Link
+          <a
             href={shipping.href}
-            onClick={onClose}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-2 inline-block text-xs text-neutral-700 underline underline-offset-2"
           >
             {shipping.description}
-          </Link>
+          </a>
         </div>
       </div>
     </div>,

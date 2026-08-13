@@ -33,6 +33,6 @@ export const SHIPPING_OPTIONS: readonly [ShippingOption, ShippingOption, Shippin
     title: 'Envío por paquetería',
     description: 'Cotiza tu guía',
     ctaLabel: 'Quiero enviar',
-    href: '/contacto',
+    href: `https://wa.me/523328071856?text=${encodeURIComponent('Hola! Quiero cotizar una guía para enviar mi producto')}`,
   },
 ];
