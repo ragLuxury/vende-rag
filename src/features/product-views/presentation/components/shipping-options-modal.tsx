@@ -45,17 +45,17 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
           <Icon icon="ion:close-outline" className="size-6" />
         </button>
 
-        <h2 className="font-cormorant text-center text-2xl font-semibold text-neutral-900">
+        <h2 className="font-cormorant text-center text-3xl font-semibold text-neutral-900">
           ¿Qué sigue?
         </h2>
 
-        <p className="mt-4 text-center text-sm leading-relaxed text-neutral-500">
+        <p className="mt-4 text-center text-xs leading-relaxed text-neutral-500">
           {intro.title}
           <br />
           {intro.description}
         </p>
 
-        <div className="mt-8 text-center">
+        <div className="mt-6 text-center">
           <h3 className="text-base font-semibold text-neutral-900">{dropOff.title}</h3>
           {dropOff.badge ? (
             <p className="mt-1 text-sm text-neutral-500">{dropOff.badge}</p>
@@ -76,7 +76,7 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
           ) : null}
         </div>
 
-        <div className="mt-8 text-center">
+        <div className="mt-4 text-center">
           <h3 className="text-base font-semibold text-neutral-900">{shipping.title}</h3>
           <Link
             href={shipping.href}
