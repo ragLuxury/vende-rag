@@ -12,7 +12,7 @@ export interface ShippingOption {
 export const SHIPPING_OPTIONS: readonly [ShippingOption, ShippingOption, ShippingOption] = [
   {
     icon: 'ion:cube-outline',
-    title: '¡Tienes productos pre aprobados!',
+    title: '¡Tienes productos Pre Aprobados!',
     description: 'Hazlos llegar para empezar su proceso',
     ctaLabel: 'Agendar aquí',
     href: '/contacto',
