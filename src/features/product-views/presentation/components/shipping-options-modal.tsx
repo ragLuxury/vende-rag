@@ -60,7 +60,7 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
           </div>
 
           {dropOff.badge ? (
-            <p className="mt-1 text-xs text-neutral-500">{dropOff.badge}</p>
+            <p className="mt-1 ml-10 text-xs text-neutral-500">{dropOff.badge}</p>
           ) : null}
 
           <div className="mt-2 flex items-center gap-2">
