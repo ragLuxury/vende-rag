@@ -699,7 +699,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 open={discountModalOpen}
                 productId={product.id}
                 currentPrice={product.salePrice}
-                commissionAmount={product.commission}
+                commissionAmount={commission?.amount ?? product.commission}
                 onClose={() => setDiscountModalOpen(false)}
               />
             ) : null}
