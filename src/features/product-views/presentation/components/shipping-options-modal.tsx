@@ -44,62 +44,69 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
           <Icon icon="ion:close-outline" className="size-5" />
         </button>
 
-        <div className="mt-2 text-center">
-          <h2 className="text-[20px] font-bold text-neutral-900">{intro.title}</h2>
-          <p className="font-semibold mt-1 text-lg text-neutral-900 italic">¿Qué sigue?</p>
-          <p className="mt-2 text-xs text-neutral-500">{intro.description}</p>
-        </div>
+        <h2 className="text-2xl font-bold text-neutral-900">¿Qué sigue?</h2>
+        <p className="mt-2 text-center text-xs leading-relaxed text-neutral-500">
+          {intro.title}
+          <br />
+          {intro.description}
+        </p>
 
-        <hr className="mt-6 border-t border-neutral-200" />
+        <div className="mt-6 rounded-2xl bg-violet-50 p-4 text-left">
+          <div className="flex items-center gap-2">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-violet-100 text-base leading-none">
+              📍
+            </span>
+            <h3 className="text-sm font-bold text-neutral-900">{dropOff.title}</h3>
+          </div>
 
-        <div className="mt-6 text-center">
-          <h3 className="text-sm font-bold text-neutral-900">{dropOff.title}</h3>
           {dropOff.badge ? (
             <p className="mt-1 text-xs text-neutral-500">{dropOff.badge}</p>
           ) : null}
-          <div className="mt-2 flex w-full justify-center">
-            <p className="w-70 text-center text-xs leading-relaxed text-neutral-900">
-              {dropOff.description}
-            </p>
-          </div>
 
-          {dropOff.weekdayHours ? (
-            <p className="mt-2 text-xs text-neutral-500">{dropOff.weekdayHours}</p>
-          ) : null}
-          {dropOff.saturdayHours ? (
-            <p className="text-xs text-neutral-500">{dropOff.saturdayHours}</p>
-          ) : null}
-          <div className="mt-3 flex items-center justify-center gap-3">
+          <div className="mt-2 flex items-center gap-2">
+            <span className="shrink-0 leading-none">📌</span>
             <a
               href="https://www.google.com/maps/place/RAG+LUXURY+RESALE/@20.7057945,-103.4039105,17.22z/data=!4m6!3m5!1s0x8428afd7379f72b1:0x7e079f278e05ec38!8m2!3d20.7057903!4d-103.4026447!16s%2Fg%2F11ymb4fg2n?entry=ttu&g_ep=EgoyMDI2MDgxMS4wIKXMDSoASAFQAw%3D%3D"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Ver ubicación en Google Maps"
-              className="inline-flex size-8 items-center justify-center rounded-full bg-emerald-500 text-white"
+              className="text-xs leading-relaxed text-neutral-900 underline underline-offset-2"
             >
-              <Icon icon="simple-icons:googlemaps" className="size-4" />
-            </a>
-            <a
-              href="https://waze.com/ul?ll=20.7057903,-103.4026447&navigate=yes"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Ver ubicación en Waze"
-              className="inline-flex size-8 items-center justify-center rounded-full bg-sky-500 text-white"
-            >
-              <Icon icon="simple-icons:waze" className="size-4" />
+              {dropOff.description}
             </a>
           </div>
+
+          {dropOff.weekdayHours || dropOff.saturdayHours ? (
+            <div className="mt-2 flex items-center gap-2 text-xs text-neutral-500">
+              <span className="shrink-0 leading-none">📅</span>
+              <div>
+                {dropOff.weekdayHours ? <p>{dropOff.weekdayHours}</p> : null}
+                {dropOff.saturdayHours ? <p>{dropOff.saturdayHours}</p> : null}
+              </div>
+            </div>
+          ) : null}
         </div>
 
-        <div className="mt-6 text-center">
-          <h3 className="text-sm font-bold text-neutral-900">{shipping.title}</h3>
+        <div className="relative my-4 flex items-center justify-center">
+          <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-neutral-200" />
+          <span className="relative bg-white px-2 text-xs text-neutral-400">ó</span>
+        </div>
+
+        <div className="flex items-center justify-between rounded-2xl bg-emerald-50 p-4">
+          <div className="flex items-center gap-2">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-base leading-none">
+              📦
+            </span>
+            <h3 className="text-sm font-bold text-neutral-900">{shipping.title}</h3>
+          </div>
           <a
             href={shipping.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-brand hover:bg-brand/90 mt-3 inline-block rounded-full px-5 py-2 text-sm font-medium text-white transition-colors"
+            className="flex shrink-0 items-center gap-1 text-xs font-medium text-emerald-700 underline underline-offset-2"
           >
             {shipping.description}
+            <Icon icon="ion:arrow-forward-outline" className="size-3.5" />
           </a>
         </div>
       </div>

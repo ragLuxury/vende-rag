@@ -90,8 +90,17 @@ export function ApplyDiscountModal({
 
   return (
     <Modal open={open} label="Agregar descuento" onClose={resetAndClose}>
-      <h2 className="text-xl font-semibold text-neutral-900">Agregar descuento</h2>
-      <p className="mt-1 text-sm text-neutral-500">
+      <button
+        type="button"
+        aria-label="Cerrar"
+        onClick={resetAndClose}
+        className="absolute top-6 right-6 flex size-8 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 transition-colors hover:cursor-pointer hover:text-neutral-900"
+      >
+        <Icon icon="ion:close-outline" className="size-5" />
+      </button>
+
+      <h2 className="text-center text-xl font-semibold text-neutral-900">Agregar descuento</h2>
+      <p className="mt-2 text-sm text-neutral-500">
         Precio actual: {currencyFormatter.format(currentPrice)}
       </p>
 
@@ -151,20 +160,12 @@ export function ApplyDiscountModal({
         </div>
       </div>
 
-      <div className="mt-6 flex gap-4">
-        <button
-          type="button"
-          onClick={resetAndClose}
-          disabled={applyDiscount.isPending}
-          className="flex-1 rounded-full bg-neutral-200 py-3 text-sm font-medium text-neutral-900 disabled:opacity-50"
-        >
-          Cancelar
-        </button>
+      <div className="mt-6 flex justify-center">
         <button
           type="button"
           onClick={handleSave}
           disabled={!hasValidValue || applyDiscount.isPending}
-          className="bg-brand flex flex-1 items-center justify-center gap-2 rounded-full py-3 text-sm font-medium text-white disabled:opacity-50"
+          className="bg-brand flex items-center justify-center gap-2 rounded-full px-10 py-3 text-sm font-medium text-white disabled:opacity-50"
         >
           {applyDiscount.isPending ? (
             <Icon icon="ion:sync-outline" className="size-4 animate-spin" />
