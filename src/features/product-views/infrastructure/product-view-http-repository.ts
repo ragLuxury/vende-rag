@@ -4,6 +4,7 @@ import { httpRequest } from '@/src/shared/infrastructure/http/http-client';
 import { getProductImageUrl } from '@/src/shared/infrastructure/images/product-image';
 import { getReceiptUrl } from '@/src/shared/infrastructure/images/receipt-document';
 import {
+  applyDiscountResponseSchema,
   commissionResponseSchema,
   negotiationResponseSchema,
   productDetailResponseSchema,
@@ -155,5 +156,19 @@ export const productViewHttpRepository = {
       schema: negotiationResponseSchema,
       ...(signal ? { signal } : {}),
     });
+  },
+
+  async applyDiscount(productId, type, value, signal) {
+    const response = await httpRequest(`/web/products/${productId}/discount`, {
+      method: 'PATCH',
+      body: { type, value },
+      schema: applyDiscountResponseSchema,
+      ...(signal ? { signal } : {}),
+    });
+
+    return {
+      discountedPrice: response.data.discounted_price,
+      costoSeller: response.data.costo_seller,
+    };
   },
 } satisfies ProductViewRepository;

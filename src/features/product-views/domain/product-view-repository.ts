@@ -68,6 +68,13 @@ export type NegotiationDecision =
   | { action: 'aprobar'; approvePrice: number; comment: string }
   | { action: 'rechazar'; comment: string };
 
+export type DiscountType = 'fixed' | 'percentage';
+
+export interface ApplyDiscountResult {
+  discountedPrice: number;
+  costoSeller: number;
+}
+
 export interface ProductViewRepository {
   getProducts(
     view: ProductView,
@@ -84,4 +91,10 @@ export interface ProductViewRepository {
     decision: NegotiationDecision,
     signal?: AbortSignal,
   ): Promise<void>;
+  applyDiscount(
+    productId: number,
+    type: DiscountType,
+    value: number,
+    signal?: AbortSignal,
+  ): Promise<ApplyDiscountResult>;
 }

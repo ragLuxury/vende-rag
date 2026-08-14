@@ -20,6 +20,7 @@ import { useCommission } from '../hooks/use-commission';
 import { useProductDetail } from '../hooks/use-product-detail';
 import { useRespondNegotiation } from '../hooks/use-respond-negotiation';
 import { useSellerPayments } from '../hooks/use-seller-payments';
+import { ApplyDiscountModal } from './apply-discount-modal';
 import { ProductGallery } from './product-gallery';
 import { getStatusStyle } from './product-status';
 // Temporarily swapped for PublicationGenerationLoaderBar below — restore this
@@ -55,6 +56,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
   const [openSection, setOpenSection] = useState<'info' | 'detail' | null>(null);
   const infoOpen = openSection === 'info';
   const detailOpen = openSection === 'detail';
+  const [discountModalOpen, setDiscountModalOpen] = useState(false);
 
   function toggleSection(section: 'info' | 'detail') {
     setOpenSection((current) => (current === section ? null : section));
@@ -82,6 +84,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
       ? resolvePublicationPillLabel(product.statusIntern)
       : (product?.status ?? '');
   const isPreaprobada = pillStatus.trim().toLowerCase() === 'preaprobado';
+  const showDiscountButton =
+    view === 'publicaciones' && product?.status.trim().toLowerCase() === 'activo';
 
   function handleApprove() {
     if (!product) return;
@@ -268,9 +272,21 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 ) : null}
 
                 <section className="border-t border-neutral-200 px-6 py-5">
-                  <h3 className="text-sm font-semibold text-neutral-900">
-                    {isNegotiation ? 'Negociación' : 'Desglose de Precio'}
-                  </h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-semibold text-neutral-900">
+                      {isNegotiation ? 'Negociación' : 'Desglose de Precio'}
+                    </h3>
+                    {showDiscountButton ? (
+                      <button
+                        type="button"
+                        onClick={() => setDiscountModalOpen(true)}
+                        className="text-brand flex items-center gap-1 text-xs font-medium"
+                      >
+                        <Icon icon="ion:pricetag-outline" className="size-4" />
+                        Agregar descuento
+                      </button>
+                    ) : null}
+                  </div>
                   <dl className="mt-4 space-y-3">
                     <PriceRow
                       label={
@@ -553,9 +569,21 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 </div>
 
                 <div className="border-t border-neutral-200 pt-6">
-                  <h3 className="text-[14px] font-semibold text-neutral-900">
-                    {isNegotiation ? 'Negociación' : 'Desglose de Precio'}
-                  </h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-[14px] font-semibold text-neutral-900">
+                      {isNegotiation ? 'Negociación' : 'Desglose de Precio'}
+                    </h3>
+                    {showDiscountButton ? (
+                      <button
+                        type="button"
+                        onClick={() => setDiscountModalOpen(true)}
+                        className="text-brand flex items-center gap-1 text-xs font-medium"
+                      >
+                        <Icon icon="ion:pricetag-outline" className="size-4" />
+                        Agregar descuento
+                      </button>
+                    ) : null}
+                  </div>
 
                   <dl className="mt-4 space-y-3">
                     <PriceRow
@@ -665,6 +693,16 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
             <div className="hidden md:block">
               <LandingFooter isAuthenticated />
             </div>
+
+            {showDiscountButton ? (
+              <ApplyDiscountModal
+                open={discountModalOpen}
+                productId={product.id}
+                currentPrice={product.salePrice}
+                commissionAmount={product.commission}
+                onClose={() => setDiscountModalOpen(false)}
+              />
+            ) : null}
           </>
         )}
       </div>

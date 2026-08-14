@@ -60,6 +60,19 @@ export const negotiationResponseSchema = z.object({
   success: z.boolean(),
 });
 
+export const applyDiscountResponseSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
+  data: z.object({
+    product_id: z.number(),
+    price: z.number(),
+    discounted_price: z.number(),
+    costo_seller: z.number(),
+    discount_type: z.enum(['fixed', 'percentage']),
+    discount_value: z.number(),
+  }),
+});
+
 export const productIdByUuidResponseSchema = z.object({
   success: z.boolean(),
   data: z.object({
