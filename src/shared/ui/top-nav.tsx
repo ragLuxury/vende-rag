@@ -37,7 +37,9 @@ export function TopNav({ trailing }: TopNavProps) {
       }`}
     >
       <div className="mx-auto mt-[15px] hidden h-26 w-full items-start justify-between px-4 md:flex">
-        <Image src="/images/header/isotipo.svg" alt="" width={48} height={48} className="size-10" />
+        <Link href="/welcome" aria-label="RAG">
+          <Image src="/images/header/isotipo.svg" alt="" width={48} height={48} className="size-10" />
+        </Link>
 
         <Link href="/welcome" aria-label="RAG">
           <Image

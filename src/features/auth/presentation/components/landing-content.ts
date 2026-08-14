@@ -229,7 +229,7 @@ export const FOOTER_COLUMNS_GUEST: readonly FooterLinkColumn[] = [
     title: 'Vender',
     links: [
       { label: '¿Cómo Vender?', href: '/vender' },
-      { label: 'Directoria de Diseñadores', href: '/disenadores' },
+      { label: 'Directorio de Diseñadores', href: '/disenadores' },
       { label: 'Términos de Consignación', href: '/terminos' },
     ],
   },
@@ -255,7 +255,7 @@ export const FOOTER_COLUMNS_AUTH: readonly FooterLinkColumn[] = [
     title: 'Vender',
     links: [
       { label: '¿Cómo Vender?', href: '/vender' },
-      { label: 'Directoria de Diseñadores', href: '/disenadores' },
+      { label: 'Directorio de Diseñadores', href: '/disenadores' },
       { label: 'Términos de Consignación', href: '/terminos' },
     ],
   },
