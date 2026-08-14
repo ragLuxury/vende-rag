@@ -14,6 +14,8 @@ import { LandingHeader } from '@/src/features/auth/presentation/components/landi
 import { LandingNewProducts } from '@/src/features/auth/presentation/components/landing-new-products';
 // eslint-disable-next-line boundaries/element-types
 import { LandingFooter } from '@/src/features/auth/presentation/components/landing-footer';
+// eslint-disable-next-line boundaries/element-types
+import { LoginModalProvider } from '@/src/features/auth/presentation/login-modal-context';
 import { useDesigners } from '../hooks/use-designers';
 
 export function DesignersScreen() {
@@ -23,51 +25,53 @@ export function DesignersScreen() {
   const designers = data ?? [];
 
   return (
-    <div className="flex min-h-full flex-col bg-white">
-      {user ? <TopNav trailing={<TopNavActions />} /> : <LandingHeader />}
+    <LoginModalProvider>
+      <div className="flex min-h-full flex-col bg-white">
+        {user ? <TopNav trailing={<TopNavActions />} /> : <LandingHeader />}
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-16 md:px-8 md:py-20">
-        <h1 className="font-editors text-center text-2xl text-neutral-900 md:text-5xl">
-          Directorio de Diseñadores
-        </h1>
+        <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-16 md:px-8 md:py-20">
+          <h1 className="font-editors text-center text-2xl text-neutral-900 md:text-5xl">
+            Directorio de Diseñadores
+          </h1>
 
-        <div className="mt-12 md:mt-16">
-          {isPending ? (
-            <p className="text-center text-sm text-neutral-400">Cargando diseñadores…</p>
-          ) : isError ? (
-            <div className="flex flex-col items-center gap-3">
-              <p className="text-center text-sm text-neutral-500">
-                No pudimos cargar el catálogo de diseñadores.
-              </p>
-              <button
-                type="button"
-                onClick={() => refetch()}
-                className="text-brand text-sm font-medium underline"
-              >
-                Reintentar
-              </button>
-            </div>
-          ) : designers.length === 0 ? (
-            <p className="text-center text-sm text-neutral-500">
-              Aún no hay diseñadores disponibles.
-            </p>
-          ) : (
-            <ul className="columns-1 gap-8 sm:columns-2 lg:columns-3">
-              {designers.map((designer) => (
-                <li
-                  key={designer.id}
-                  className="break-inside-avoid py-3 text-center text-neutral-700"
+          <div className="mt-12 md:mt-16">
+            {isPending ? (
+              <p className="text-center text-sm text-neutral-400">Cargando diseñadores…</p>
+            ) : isError ? (
+              <div className="flex flex-col items-center gap-3">
+                <p className="text-center text-sm text-neutral-500">
+                  No pudimos cargar el catálogo de diseñadores.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => refetch()}
+                  className="text-brand text-sm font-medium underline"
                 >
-                  {designer.name}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </main>
+                  Reintentar
+                </button>
+              </div>
+            ) : designers.length === 0 ? (
+              <p className="text-center text-sm text-neutral-500">
+                Aún no hay diseñadores disponibles.
+              </p>
+            ) : (
+              <ul className="columns-1 gap-8 sm:columns-2 lg:columns-3">
+                {designers.map((designer) => (
+                  <li
+                    key={designer.id}
+                    className="break-inside-avoid py-3 text-center text-neutral-700"
+                  >
+                    {designer.name}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </main>
 
-      <LandingNewProducts />
-      <LandingFooter isAuthenticated={Boolean(user)} />
-    </div>
+        <LandingNewProducts />
+        <LandingFooter isAuthenticated={Boolean(user)} />
+      </div>
+    </LoginModalProvider>
   );
 }
