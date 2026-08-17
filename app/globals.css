@@ -24,6 +24,14 @@ body {
   font-family: var(--font-sans);
 }
 
+button:not(:disabled) {
+  cursor: pointer !important;
+}
+
+button:disabled {
+  cursor: not-allowed !important;
+}
+
 html,
 body {
   -ms-overflow-style: none;
