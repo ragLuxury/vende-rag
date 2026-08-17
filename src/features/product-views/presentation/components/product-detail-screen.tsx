@@ -533,7 +533,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         <h3 className="w-full py-5 text-[14px] font-semibold text-neutral-900">
                           Información del Producto
                         </h3>
-                        <div className="mx-5 mb-5 flex justify-evenly">
+                        <div className="mr-5 mb-5 flex justify-evenly">
                           <div className="grid w-full max-w-[574px] grid-cols-[4fr_3fr] gap-x-8">
                             <div className="text-left">
                               <DetailField label="Marca" value={product.brand} />
@@ -582,7 +582,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     {isNegotiation ? 'Negociación' : 'Desglose de Precio'}
                   </h3>
 
-                  <div className="mx-5 mt-4 flex justify-evenly">
+                  <div className="mr-5 mt-4 flex justify-evenly">
                     <div className="relative grid w-full max-w-[574px] grid-cols-[4fr_3fr] gap-x-8">
                       {showDiscountButton ? (
                         <button
