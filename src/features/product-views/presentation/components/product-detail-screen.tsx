@@ -142,7 +142,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     <h2 className="text-2xl font-semibold text-neutral-900">{product.name}</h2>
                     <p className="text-sm text-neutral-400">
                       #{product.id}
-                      {product.initialStatus ? ` / ${product.initialStatus}` : ''}
+                      {isSale && product.initialStatus ? ` / ${product.initialStatus}` : ''}
                     </p>
                     {isSale && product.soldDate ? (
                       <p className="text-xs text-neutral-400">Fecha de venta: {product.soldDate}</p>
@@ -399,7 +399,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     <div className="flex w-[100%] items-center justify-between">
                       <p className="text-sm font-semibold tracking-wide text-neutral-400 uppercase">
                         #{product.id}
-                        {product.initialStatus ? (
+                        {isSale && product.initialStatus ? (
                           <span className="normal-case"> / {product.initialStatus}</span>
                         ) : (
                           ''
