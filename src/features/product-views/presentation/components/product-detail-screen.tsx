@@ -150,8 +150,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                   </div>
                   {pillStatus ? (
                     <span
-                      className="shrink-0 rounded-full px-5 py-2 text-sm font-medium"
-                      style={getStatusStyle(pillStatus)}
+                      className="shrink-0 rounded-full px-5 text-sm font-medium"
+                      style={{ ...getStatusStyle(pillStatus), paddingTop: '2.5px', paddingBottom: '2.5px' }}
                     >
                       {pillStatus}
                     </span>
@@ -316,7 +316,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       label="Comisión RAG"
                       value={currencyFormatter.format(commission?.amount ?? product.commission)}
                     />
-                    <div className="flex items-center justify-between pt-1">
+                    <div className="grid grid-cols-[4fr_3fr] items-center gap-x-8 pt-1">
                       <dt className="text-sm font-semibold text-neutral-900">Tu Ganancia</dt>
                       <dd className="text-sm font-semibold text-neutral-900">
                         {currencyFormatter.format(earning)}
@@ -324,13 +324,13 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     </div>
                     {isSale && product.initialStatus === 'Apartado' && !isPaid ? (
                       <>
-                        <div className="flex items-center justify-between">
+                        <div className="grid grid-cols-[4fr_3fr] items-center gap-x-8">
                           <dt className="text-sm text-neutral-500">Anticipo (30%)</dt>
                           <dd className="text-sm text-neutral-400">
                             {currencyFormatter.format(pending * 0.3)}
                           </dd>
                         </div>
-                        <div className="flex items-center justify-between">
+                        <div className="grid grid-cols-[4fr_3fr] items-center gap-x-8">
                           <dt className="text-sm text-neutral-500">Liquidación (70%)</dt>
                           <dd className="text-sm text-neutral-400">
                             {currencyFormatter.format(pending * 0.7)}
@@ -338,7 +338,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         </div>
                       </>
                     ) : isSale ? (
-                      <div className="flex items-center justify-between">
+                      <div className="grid grid-cols-[4fr_3fr] items-center gap-x-8">
                         <dt className="text-sm text-neutral-500">
                           {isPaid ? 'Pagado' : 'Por pagar'}
                         </dt>
@@ -407,8 +407,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       </p>
                       {pillStatus ? (
                         <span
-                          className="shrink-0 rounded-full px-5 py-2 text-sm font-medium"
-                          style={getStatusStyle(pillStatus)}
+                          className="shrink-0 rounded-full px-5 text-sm font-medium"
+                          style={{ ...getStatusStyle(pillStatus), paddingTop: '2.5px', paddingBottom: '2.5px' }}
                         >
                           {pillStatus}
                         </span>
@@ -525,19 +525,20 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         <h3 className="w-full py-5 text-[14px] font-semibold text-neutral-900">
                           Información del Producto
                         </h3>
-                        <div className="mb-5 flex justify-between">
-                          <div className="text-left">
-                            <DetailField label="Marca" value={product.brand} />
-                            <DetailField label="Modelo" value={product.model} />
-                            <DetailField label="Departamento" value={product.department} />
-                          </div>
+                        <div className="mb-5 flex justify-evenly mx-5">
+                          <div className="grid w-full max-w-[574px] grid-cols-[4fr_3fr] gap-x-8">
+                            <div className="text-left">
+                              <DetailField label="Marca" value={product.brand} />
+                              <DetailField label="Modelo" value={product.model} />
+                              <DetailField label="Departamento" value={product.department} />
+                            </div>
 
-                          <div className="text-left">
-                            <DetailField label="Categoría" value={product.category} />
-                            <DetailField label="Subcategoría" value={product.subcategory} />
-                            <DetailField label="Color" value={product.color} />
+                            <div className="text-left">
+                              <DetailField label="Categoría" value={product.category} />
+                              <DetailField label="Subcategoría" value={product.subcategory} />
+                              <DetailField label="Color" value={product.color} />
+                            </div>
                           </div>
-                          <div></div>
                         </div>
                       </>
                     )}
@@ -585,47 +586,44 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     ) : null}
                   </div>
 
-                  <dl className="mt-4 space-y-3">
-                    <PriceRow
-                      columns
-                      label={
-                        isNegotiation
-                          ? 'Precio de Negociación'
-                          : isSale
-                            ? 'Precio de venta'
-                            : 'Precio de producto'
-                      }
-                      value={currencyFormatter.format(
-                        isNegotiation ? product.negotiationPrice : product.salePrice,
-                      )}
-                    />
-                    {discountAmount > 0 ? (
+                  <div className="mt-4 flex justify-evenly mx-5">
+                    <dl className="w-full max-w-[574px] space-y-3">
                       <PriceRow
-                        columns
-                        negative
                         label={
-                          product.discountPercent > 0
-                            ? `Descuento (${product.discountPercent}%)`
-                            : 'Descuento'
+                          isNegotiation
+                            ? 'Precio de Negociación'
+                            : isSale
+                              ? 'Precio de venta'
+                              : 'Precio de producto'
                         }
-                        value={currencyFormatter.format(discountAmount)}
+                        value={currencyFormatter.format(
+                          isNegotiation ? product.negotiationPrice : product.salePrice,
+                        )}
                       />
-                    ) : null}
-                    <PriceRow
-                      columns
-                      negative
-                      label="Comisión RAG"
-                      value={currencyFormatter.format(commission?.amount ?? product.commission)}
-                    />
-                    <div className="grid grid-cols-2">
-                      <dt className="text-left text-sm font-semibold text-neutral-900">
-                        Tu Ganancia
-                      </dt>
-                      <dd className="text-left text-sm font-semibold text-neutral-900">
-                        {currencyFormatter.format(earning)}
-                      </dd>
-                    </div>
-                  </dl>
+                      {discountAmount > 0 ? (
+                        <PriceRow
+                          negative
+                          label={
+                            product.discountPercent > 0
+                              ? `Descuento (${product.discountPercent}%)`
+                              : 'Descuento'
+                          }
+                          value={currencyFormatter.format(discountAmount)}
+                        />
+                      ) : null}
+                      <PriceRow
+                        negative
+                        label="Comisión RAG"
+                        value={currencyFormatter.format(commission?.amount ?? product.commission)}
+                      />
+                      <div className="grid grid-cols-[4fr_3fr] items-center gap-x-8">
+                        <dt className="text-sm font-semibold text-neutral-900">Tu Ganancia</dt>
+                        <dd className="text-sm font-semibold text-neutral-900">
+                          {currencyFormatter.format(earning)}
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
 
                   {isSale && product.initialStatus === 'Apartado' && !isPaid ? (
                     <>
@@ -718,36 +716,23 @@ interface RowProps {
 function InfoRow({ label, value }: RowProps) {
   return (
     <div className="flex items-center justify-between py-2">
-      <dt className="text-sm text-neutral-700">{label}</dt>
-      <dd className="text-sm text-neutral-400">{value || '—'}</dd>
+      <dt className="text-xs font-medium text-neutral-700">{label}</dt>
+      <dd className="text-xs text-neutral-400">{value || '—'}</dd>
     </div>
   );
 }
 
-function PriceRow({
-  label,
-  value,
-  negative = false,
-  columns = false,
-}: RowProps & { negative?: boolean; columns?: boolean }) {
+function PriceRow({ label, value, negative = false }: RowProps & { negative?: boolean }) {
   const valueNode = (
     <span className="relative">
       {negative ? <span className="absolute -left-3">-</span> : null}
       {value}
     </span>
   );
-  if (columns) {
-    return (
-      <div className="grid grid-cols-2">
-        <dt className="text-left text-[12px] text-neutral-700">{label}</dt>
-        <dd className="text-left text-[12px] text-neutral-400">{valueNode}</dd>
-      </div>
-    );
-  }
   return (
-    <div className="flex items-center justify-between">
-      <dt className="text-[12px] text-neutral-700">{label}</dt>
-      <dd className="text-[12px] text-neutral-400">{valueNode}</dd>
+    <div className="grid grid-cols-[4fr_3fr] items-center gap-x-8">
+      <dt className="text-xs font-medium text-neutral-700">{label}</dt>
+      <dd className="text-xs text-neutral-400">{valueNode}</dd>
     </div>
   );
 }
@@ -755,8 +740,8 @@ function PriceRow({
 function DetailField({ label, value }: RowProps) {
   return (
     <div className="mb-2">
-      <p className="text-[10px] font-semibold tracking-wide text-neutral-900 uppercase">{label}</p>
-      <p className="mt-1 text-[10px] text-neutral-500">{value || '—'}</p>
+      <p className="text-xs font-medium text-neutral-700">{label}</p>
+      <p className="mt-1 text-xs text-neutral-400">{value || '—'}</p>
     </div>
   );
 }
