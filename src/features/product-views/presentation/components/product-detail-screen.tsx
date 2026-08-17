@@ -151,7 +151,11 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                   {pillStatus ? (
                     <span
                       className="shrink-0 rounded-full px-5 text-sm font-medium"
-                      style={{ ...getStatusStyle(pillStatus), paddingTop: '2.5px', paddingBottom: '2.5px' }}
+                      style={{
+                        ...getStatusStyle(pillStatus),
+                        paddingTop: '2.5px',
+                        paddingBottom: '2.5px',
+                      }}
                     >
                       {pillStatus}
                     </span>
@@ -280,7 +284,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       <button
                         type="button"
                         onClick={() => setDiscountModalOpen(true)}
-                        className="text-brand flex items-center gap-1 text-xs font-medium cursor-pointer"
+                        className="text-brand flex cursor-pointer items-center gap-1 text-xs font-medium"
                       >
                         <Icon icon="ion:pricetag-outline" className="size-4" />
                         Agregar descuento
@@ -408,7 +412,11 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       {pillStatus ? (
                         <span
                           className="shrink-0 rounded-full px-5 text-sm font-medium"
-                          style={{ ...getStatusStyle(pillStatus), paddingTop: '2.5px', paddingBottom: '2.5px' }}
+                          style={{
+                            ...getStatusStyle(pillStatus),
+                            paddingTop: '2.5px',
+                            paddingBottom: '2.5px',
+                          }}
                         >
                           {pillStatus}
                         </span>
@@ -525,7 +533,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         <h3 className="w-full py-5 text-[14px] font-semibold text-neutral-900">
                           Información del Producto
                         </h3>
-                        <div className="mb-5 flex justify-evenly mx-5">
+                        <div className="mx-5 mb-5 flex justify-evenly">
                           <div className="grid w-full max-w-[574px] grid-cols-[4fr_3fr] gap-x-8">
                             <div className="text-left">
                               <DetailField label="Marca" value={product.brand} />
@@ -570,59 +578,62 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 </div>
 
                 <div className="border-t border-neutral-200 pt-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-[14px] font-semibold text-neutral-900">
-                      {isNegotiation ? 'Negociación' : 'Desglose de Precio'}
-                    </h3>
-                    {showDiscountButton ? (
-                      <button
-                        type="button"
-                        onClick={() => setDiscountModalOpen(true)}
-                        className="text-brand flex items-center gap-1 text-xs font-medium cursor-pointer"
-                      >
-                        <Icon icon="ion:pricetag-outline" className="size-4" />
-                        Agregar descuento
-                      </button>
-                    ) : null}
-                  </div>
+                  <h3 className="text-[14px] font-semibold text-neutral-900">
+                    {isNegotiation ? 'Negociación' : 'Desglose de Precio'}
+                  </h3>
 
-                  <div className="mt-4 flex justify-evenly mx-5">
-                    <dl className="w-full max-w-[574px] space-y-3">
-                      <PriceRow
-                        label={
-                          isNegotiation
-                            ? 'Precio de Negociación'
-                            : isSale
-                              ? 'Precio de venta'
-                              : 'Precio de producto'
-                        }
-                        value={currencyFormatter.format(
-                          isNegotiation ? product.negotiationPrice : product.salePrice,
-                        )}
-                      />
-                      {discountAmount > 0 ? (
+                  <div className="mx-5 mt-4 flex justify-evenly">
+                    <div className="relative grid w-full max-w-[574px] grid-cols-[4fr_3fr] gap-x-8">
+                      {showDiscountButton ? (
+                        <button
+                          type="button"
+                          onClick={() => setDiscountModalOpen(true)}
+                          className="text-brand absolute -top-9 left-0 col-start-2 cursor-pointer text-xs font-medium"
+                        >
+                          <Icon
+                            icon="ion:pricetag-outline"
+                            className="absolute top-1/2 -left-5 size-4 -translate-y-1/2"
+                          />
+                          Agregar descuento
+                        </button>
+                      ) : null}
+                      <dl className="col-span-2 space-y-3">
+                        <PriceRow
+                          label={
+                            isNegotiation
+                              ? 'Precio de Negociación'
+                              : isSale
+                                ? 'Precio de venta'
+                                : 'Precio de producto'
+                          }
+                          value={currencyFormatter.format(
+                            isNegotiation ? product.negotiationPrice : product.salePrice,
+                          )}
+                        />
+                        {discountAmount > 0 ? (
+                          <PriceRow
+                            negative
+                            label={
+                              product.discountPercent > 0
+                                ? `Descuento (${product.discountPercent}%)`
+                                : 'Descuento'
+                            }
+                            value={currencyFormatter.format(discountAmount)}
+                          />
+                        ) : null}
                         <PriceRow
                           negative
-                          label={
-                            product.discountPercent > 0
-                              ? `Descuento (${product.discountPercent}%)`
-                              : 'Descuento'
-                          }
-                          value={currencyFormatter.format(discountAmount)}
+                          label="Comisión RAG"
+                          value={currencyFormatter.format(commission?.amount ?? product.commission)}
                         />
-                      ) : null}
-                      <PriceRow
-                        negative
-                        label="Comisión RAG"
-                        value={currencyFormatter.format(commission?.amount ?? product.commission)}
-                      />
-                      <div className="grid grid-cols-[4fr_3fr] items-center gap-x-8">
-                        <dt className="text-sm font-semibold text-neutral-900">Tu Ganancia</dt>
-                        <dd className="text-sm font-semibold text-neutral-900">
-                          {currencyFormatter.format(earning)}
-                        </dd>
-                      </div>
-                    </dl>
+                        <div className="grid grid-cols-[4fr_3fr] items-center gap-x-8">
+                          <dt className="text-sm font-semibold text-neutral-900">Tu Ganancia</dt>
+                          <dd className="text-sm font-semibold text-neutral-900">
+                            {currencyFormatter.format(earning)}
+                          </dd>
+                        </div>
+                      </dl>
+                    </div>
                   </div>
 
                   {isSale && product.initialStatus === 'Apartado' && !isPaid ? (
