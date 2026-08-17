@@ -24,7 +24,7 @@ export const SHIPPING_OPTIONS: readonly [ShippingOption, ShippingOption, Shippin
       'Colinas de San Javier 2030-Local LC-1, Colinas de San Javier, 44660 Guadalajara, Jal.',
     ctaLabel: 'Saber más',
     href: '/contacto',
-    badge: 'TORRE HEREDIT',
+    badge: 'Torre Heredit',
     weekdayHours: 'Lunes a Viernes de 10:00 am a 7:00 pm',
     saturdayHours: 'Sábados de 10:00 am a 2:00 pm',
   },

@@ -75,7 +75,7 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Ver ubicación en Google Maps"
-              className="text-xs leading-relaxed text-neutral-900 underline underline-offset-2"
+              className="text-xs leading-relaxed text-neutral-500 underline underline-offset-2"
             >
               {dropOff.description}
             </a>
@@ -108,7 +108,7 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
             href={shipping.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex shrink-0 items-center gap-1 text-xs font-medium text-black underline underline-offset-2"
+            className="flex shrink-0 items-center gap-1 text-xs font-medium text-neutral-500 underline underline-offset-2"
           >
             {shipping.description}
             <Icon icon="ion:arrow-forward-outline" className="size-3.5" />
