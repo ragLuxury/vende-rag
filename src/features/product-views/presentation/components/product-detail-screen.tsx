@@ -280,7 +280,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       <button
                         type="button"
                         onClick={() => setDiscountModalOpen(true)}
-                        className="text-brand flex items-center gap-1 text-xs font-medium"
+                        className="text-brand flex items-center gap-1 text-xs font-medium cursor-pointer"
                       >
                         <Icon icon="ion:pricetag-outline" className="size-4" />
                         Agregar descuento
@@ -577,7 +577,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       <button
                         type="button"
                         onClick={() => setDiscountModalOpen(true)}
-                        className="text-brand flex items-center gap-1 text-xs font-medium"
+                        className="text-brand flex items-center gap-1 text-xs font-medium cursor-pointer"
                       >
                         <Icon icon="ion:pricetag-outline" className="size-4" />
                         Agregar descuento
