@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { useLoginModal } from '@/src/features/auth/presentation/login-modal-context';
 import { NAV_LINKS } from './landing-content';
@@ -11,15 +12,19 @@ export function LandingHeader() {
   return (
     <header className="top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur">
       <div className="mx-auto mt-[15px] flex h-26 w-full items-start justify-between px-4">
-        <Image src="/images/header/isotipo.svg" alt="" width={48} height={48} className="size-10" />
-        <Image
-          src="/images/header/headerv2.png"
-          alt="RAG"
-          width={640}
-          height={139}
-          priority
-          className="ml-[65px] h-[95px] w-auto"
-        />
+        <Link href="/welcome" aria-label="RAG">
+          <Image src="/images/header/isotipo.svg" alt="" width={48} height={48} className="size-10" />
+        </Link>
+        <Link href="/welcome" aria-label="RAG">
+          <Image
+            src="/images/header/headerv2.png"
+            alt="RAG"
+            width={640}
+            height={139}
+            priority
+            className="ml-[65px] h-[95px] w-auto"
+          />
+        </Link>
         <div className="flex items-center gap-5">
           <button
             type="button"

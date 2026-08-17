@@ -60,10 +60,15 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
           </div>
 
           {dropOff.badge ? (
-            <p className="mt-1 ml-10 text-xs text-neutral-500">{dropOff.badge}</p>
+            <div className="mt-1 flex items-center gap-2">
+              <span className="shrink-0 opacity-0" aria-hidden="true">
+                📌
+              </span>
+              <p className="text-xs font-semibold text-neutral-500">{dropOff.badge}</p>
+            </div>
           ) : null}
 
-          <div className="mt-2 flex items-center gap-2">
+          <div className="mt-1 flex items-center gap-2">
             <span className="shrink-0 leading-none">📌</span>
             <a
               href="https://www.google.com/maps/place/RAG+LUXURY+RESALE/@20.7057945,-103.4039105,17.22z/data=!4m6!3m5!1s0x8428afd7379f72b1:0x7e079f278e05ec38!8m2!3d20.7057903!4d-103.4026447!16s%2Fg%2F11ymb4fg2n?entry=ttu&g_ep=EgoyMDI2MDgxMS4wIKXMDSoASAFQAw%3D%3D"
@@ -103,7 +108,7 @@ export function ShippingOptionsModal({ onClose }: ShippingOptionsModalProps) {
             href={shipping.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex shrink-0 items-center gap-1 text-xs font-medium text-emerald-700 underline underline-offset-2"
+            className="flex shrink-0 items-center gap-1 text-xs font-medium text-black underline underline-offset-2"
           >
             {shipping.description}
             <Icon icon="ion:arrow-forward-outline" className="size-3.5" />
