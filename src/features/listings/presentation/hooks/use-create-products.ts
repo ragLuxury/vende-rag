@@ -24,24 +24,28 @@ export function useCreateProducts() {
 
   return useMutation({
     mutationFn: async (inputs: readonly CreateProductInput[]) => {
-      const products: NewProduct[] = await Promise.all(
-        inputs.map(async (input) => {
-          const urls = await uploadImagesUseCase(imageRepository, input.photos);
+      const products: NewProduct[] = inputs.map((input) => ({
+        brandId: input.brandId,
+        origen: input.origen,
+        model: input.model,
+        price: input.price,
+        detail: input.detail,
+        linkProducto: input.linkProducto,
+        clientId: input.clientId,
+      }));
 
-          return {
-            brandId: input.brandId,
-            origen: input.origen,
-            model: input.model,
-            price: input.price,
-            detail: input.detail,
-            linkProducto: input.linkProducto,
-            clientId: input.clientId,
-            gallery: urls.map((url) => ({ img: url })),
-          };
+      const result = await createProductsUseCase(productRepository, products);
+
+      await Promise.all(
+        result.products.map(async (created, i) => {
+          const input = inputs[i];
+          if (input?.photos && input.photos.length > 0) {
+            await uploadImagesUseCase(imageRepository, input.photos, created.id);
+          }
         }),
       );
 
-      return createProductsUseCase(productRepository, products);
+      return result;
     },
   });
 }

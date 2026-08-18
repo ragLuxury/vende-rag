@@ -10,13 +10,19 @@ export interface NewProduct {
   detail: string;
   linkProducto: string;
   clientId: number;
-  gallery: readonly NewProductImage[];
+  gallery?: readonly NewProductImage[];
+}
+
+export interface CreatedProductRef {
+  id: number;
+  uuid: string;
 }
 
 export interface CreateProductsResult {
   inserted: number;
   skipped: number;
   message: string;
+  products: readonly CreatedProductRef[];
 }
 
 export interface ProductRepository {

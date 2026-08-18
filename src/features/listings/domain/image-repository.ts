@@ -1,3 +1,3 @@
 export interface ImageRepository {
-  uploadImages(files: readonly File[], signal?: AbortSignal): Promise<readonly string[]>;
+  uploadImages(files: readonly File[], productId: number, signal?: AbortSignal): Promise<readonly string[]>;
 }
