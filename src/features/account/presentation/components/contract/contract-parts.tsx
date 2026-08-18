@@ -1,7 +1,6 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import Image from 'next/image';
 import type {
   MouseEvent as ReactMouseEvent,
   RefObject,
@@ -49,7 +48,7 @@ export function SellerSignature({
 }: SellerSignatureProps) {
   return (
     <div className="flex flex-col items-center">
-      <div className="relative mb-4 h-[120px] w-full overflow-hidden border-b border-gray-100/50">
+      <div className="relative mb-4 h-[120px] w-full overflow-hidden">
         <canvas
           ref={canvasRef}
           className="absolute inset-0 m-0 h-full w-full cursor-crosshair touch-none p-0"
@@ -94,17 +93,14 @@ export function SellerSignature({
 export function AnaPaulaSignature() {
   return (
     <div className="flex flex-col items-center">
-      <div className="relative mb-4 flex h-[120px] w-full items-center justify-center">
-        <div className="pointer-events-none relative flex h-[130px] w-[280px] items-center justify-center select-none">
-          <Image
-            src="/ceo-signature.png"
-            alt="Firma Ana Paula Godoy"
-            width={280}
-            height={130}
-            priority
-            style={{ objectFit: 'contain', width: '100%', height: '100%' }}
-          />
-        </div>
+      <div className="relative mb-3 flex h-[100px] w-full items-end justify-center overflow-hidden">
+        {/* html2canvas captures a native image more reliably than next/image here. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/ceo-signature.png"
+          alt="Firma Ana Paula Godoy"
+          className="pointer-events-none h-auto w-[300px] max-w-full select-none"
+        />
       </div>
 
       <div className="relative flex w-full flex-col items-center">

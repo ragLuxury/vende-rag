@@ -3,6 +3,7 @@
 import { Icon } from '@iconify/react';
 import { useEffect, useRef } from 'react';
 
+import { HttpError } from '@/src/shared/domain/errors';
 import { useToast } from '@/src/shared/ui/toast';
 
 import { useProfile } from '../../hooks/use-profile';
@@ -57,7 +58,10 @@ export function ContractGenerator({ clientId, onClose }: ContractGeneratorProps)
       showToast('Por favor firma el contrato antes de guardar');
       return;
     }
-    if (!page1Ref.current || !page2Ref.current) return;
+    if (!page1Ref.current || !page2Ref.current) {
+      showToast('No se pudo preparar el contrato para guardar');
+      return;
+    }
 
     try {
       const pdfBlob = await generateContractPdf({
@@ -66,9 +70,10 @@ export function ContractGenerator({ clientId, onClose }: ContractGeneratorProps)
       });
       const fileName = `${sanitizeForFileName(profile.firstName)}_${sanitizeForFileName(profile.lastName)}_Contrato.pdf`;
       await signContract({ clientId, pdfBlob, fileName });
+      showToast('Contrato guardado correctamente');
       onClose();
-    } catch {
-      showToast('Error al generar el contrato');
+    } catch (err) {
+      showToast(resolveErrorMessage(err));
     }
   };
 
@@ -176,5 +181,22 @@ export function ContractGenerator({ clientId, onClose }: ContractGeneratorProps)
         </div>
       </div>
     </div>
+  );
+}
+
+function resolveErrorMessage(error: unknown): string {
+  if (error instanceof HttpError && isMessageBody(error.body)) {
+    return error.body.message;
+  }
+  if (error instanceof Error) return error.message;
+  return 'Error desconocido';
+}
+
+function isMessageBody(body: unknown): body is { message: string } {
+  return (
+    typeof body === 'object' &&
+    body !== null &&
+    'message' in body &&
+    typeof (body as { message: unknown }).message === 'string'
   );
 }

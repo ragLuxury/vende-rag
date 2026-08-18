@@ -5,15 +5,15 @@ import type {
 } from '@/src/features/account/domain/account-repository';
 import { env } from '@/src/shared/infrastructure/env/env';
 import { httpRequest } from '@/src/shared/infrastructure/http/http-client';
+import { tokenStorage } from '@/src/shared/infrastructure/http/token-storage';
 import { getContractUrl } from '@/src/shared/infrastructure/images/contract-document';
 import {
   accountMutationResponseSchema,
   banksResponseSchema,
   clientProfileResponseSchema,
   clientProfileSummaryResponseSchema,
-  contractUploadResponseSchema,
   deleteAccountResponseSchema,
-  signContractResponseSchema,
+  r2UploadResponseSchema,
   updateProfileResponseSchema,
 } from './account-schemas';
 
@@ -59,8 +59,14 @@ export const accountHttpRepository = {
       firstName: profile.name,
       lastName: profile.lastname,
       phone: response.data.phone,
-      contract: response.data.contrato ? getContractUrl(response.data.contrato) : null,
-      contractSigned: response.data.contrato !== null && response.data.contrato !== undefined,
+      contract:
+        response.data.contrato && response.data.contrato.trim() !== ''
+          ? getContractUrl(response.data.contrato)
+          : null,
+      contractSigned:
+        response.data.contrato !== null &&
+        response.data.contrato !== undefined &&
+        response.data.contrato.trim() !== '',
       address: address
         ? {
             id: address.id,
@@ -184,38 +190,39 @@ export const accountHttpRepository = {
   },
 
   async uploadAndSignContract(clientId, pdfBlob, fileName, signal) {
-    // The contract file itself is hosted by front-rag, not api_rga, so this one
-    // call bypasses httpRequest (which always sends JSON) for a raw multipart upload.
-    const uploadOrigin = new URL(env.NEXT_PUBLIC_CONTRACT_BASE_URL).origin;
+    const token = tokenStorage.get();
     const formData = new FormData();
     formData.append('file', pdfBlob, fileName);
 
-    const uploadResponse = await fetch(
-      `${uploadOrigin}/api/filepond-mode-server/process/contract`,
-      {
-        method: 'POST',
-        body: formData,
-        ...(signal ? { signal } : {}),
-      },
-    );
-
-    if (!uploadResponse.ok) {
-      throw new Error('Error al subir el contrato');
-    }
-
-    const uploadJson: unknown = await uploadResponse.json();
-    const uploadResult = contractUploadResponseSchema.parse(uploadJson);
-    const uploadedFileName = uploadResult.nameFile ?? uploadResult.key;
-
-    if (!uploadedFileName) {
-      throw new Error('Error al subir el contrato');
-    }
-
-    await httpRequest('/web/client/contrato', {
-      method: 'PATCH',
-      body: { contrato: uploadedFileName },
-      schema: signContractResponseSchema,
+    const uploadResponse = await fetch(`${env.NEXT_PUBLIC_BACKEND_URL}/web/client/contrato`, {
+      method: 'POST',
+      body: formData,
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
       ...(signal ? { signal } : {}),
     });
+
+    const uploadJson: unknown = await uploadResponse.json().catch(() => null);
+
+    if (!uploadResponse.ok) {
+      throw new Error(readMessage(uploadJson) ?? 'Error al subir el contrato');
+    }
+
+    const uploadResult = r2UploadResponseSchema.parse(uploadJson);
+
+    if (!uploadResult.url) {
+      throw new Error('Error al subir el contrato');
+    }
   },
 } satisfies AccountRepository;
+
+function readMessage(body: unknown): string | null {
+  if (
+    typeof body === 'object' &&
+    body !== null &&
+    'message' in body &&
+    typeof (body as { message: unknown }).message === 'string'
+  ) {
+    return (body as { message: string }).message;
+  }
+  return null;
+}
