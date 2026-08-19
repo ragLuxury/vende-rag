@@ -48,7 +48,7 @@ export function SellerSignature({
 }: SellerSignatureProps) {
   return (
     <div className="flex flex-col items-center">
-      <div className="relative mb-4 h-[120px] w-full overflow-hidden border-b border-gray-100/50">
+      <div className="relative mb-4 h-[120px] w-full overflow-hidden">
         <canvas
           ref={canvasRef}
           className="absolute inset-0 m-0 h-full w-full cursor-crosshair touch-none p-0"
