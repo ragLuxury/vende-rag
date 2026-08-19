@@ -1,12 +1,17 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { buttonStyles } from '@/src/shared/ui/button';
 import { Divider } from '@/src/shared/ui/divider';
+import { useGoogleLoginTrigger } from '@/src/features/auth/presentation/hooks/use-google-login';
 import { LandingScreen } from './landing-screen';
 import { GoogleIcon } from './social-icons';
 
 export function WelcomeScreen() {
+  const { trigger, isPending } = useGoogleLoginTrigger();
+
   return (
     <>
       <div className="hidden md:block">
@@ -37,19 +42,15 @@ export function WelcomeScreen() {
             <Divider label="Continuar con" />
           </div>
 
-          <button type="button" className={buttonStyles('secondary')}>
+          <button
+            type="button"
+            className={`${buttonStyles('secondary')} disabled:opacity-50`}
+            disabled={isPending}
+            onClick={() => trigger()}
+          >
             <GoogleIcon />
             Continuar con Google
           </button>
-        </div>
-
-        <div className="mt-8 text-center">
-          <Link
-            href="/disenadores"
-            className="text-sm font-medium text-neutral-600 underline transition-colors hover:text-neutral-900"
-          >
-            Ver catálogo de diseñadores
-          </Link>
         </div>
       </main>
     </>

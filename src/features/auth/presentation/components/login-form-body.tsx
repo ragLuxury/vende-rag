@@ -5,11 +5,9 @@ import { useState, type FormEvent } from 'react';
 
 import { UnauthorizedError } from '@/src/shared/domain/errors';
 import { buttonStyles } from '@/src/shared/ui/button';
-import { Divider } from '@/src/shared/ui/divider';
 import { PasswordField } from '@/src/shared/ui/password-field';
 import { TextField } from '@/src/shared/ui/text-field';
 import { useLogin } from '@/src/features/auth/presentation/hooks/use-login';
-import { SocialAuthButtons } from './social-auth-buttons';
 
 function resolveErrorMessage(error: unknown): string {
   if (error instanceof UnauthorizedError) {
@@ -72,18 +70,6 @@ export function LoginFormBody() {
         className="text-brand mt-4 block text-center text-sm font-medium"
       >
         Olvidé mi contraseña
-      </Link>
-
-      <div className="mt-4">
-        <SocialAuthButtons />
-      </div>
-
-      <div className="mt-4">
-        <Divider label="O también" />
-      </div>
-
-      <Link href="/signup" className={`${buttonStyles('secondary')} mt-6`}>
-        Crear cuenta
       </Link>
     </>
   );

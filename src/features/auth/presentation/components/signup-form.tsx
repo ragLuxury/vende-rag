@@ -139,10 +139,6 @@ export function SignupForm() {
       <div className="mt-8">
         <SocialAuthButtons />
       </div>
-
-      <Link href="/login" className={`${buttonStyles('secondary')} mt-6`}>
-        Iniciar Sesión
-      </Link>
     </main>
   );
 }
