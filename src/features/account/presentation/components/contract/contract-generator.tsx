@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useToast } from '@/src/shared/ui/toast';
 
@@ -30,6 +30,7 @@ export function ContractGenerator({ clientId, onClose }: ContractGeneratorProps)
   const { data: profile } = useProfile(clientId);
   const { mutateAsync: signContract, isPending: isSaving } = useSignContract();
   const { showToast } = useToast();
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const page1Ref = useRef<HTMLDivElement>(null);
   const page2Ref = useRef<HTMLDivElement>(null);
@@ -59,6 +60,7 @@ export function ContractGenerator({ clientId, onClose }: ContractGeneratorProps)
     }
     if (!page1Ref.current || !page2Ref.current) return;
 
+    setIsGenerating(true);
     try {
       const pdfBlob = await generateContractPdf({
         page1Element: page1Ref.current,
@@ -67,10 +69,15 @@ export function ContractGenerator({ clientId, onClose }: ContractGeneratorProps)
       const fileName = `${sanitizeForFileName(profile.firstName)}_${sanitizeForFileName(profile.lastName)}_Contrato.pdf`;
       await signContract({ clientId, pdfBlob, fileName });
       onClose();
-    } catch {
-      showToast('Error al generar el contrato');
+    } catch (error) {
+      console.error('[ContractGenerator] Error al guardar contrato:', error);
+      showToast('Error al guardar el contrato');
+    } finally {
+      setIsGenerating(false);
     }
   };
+
+  const isBusy = isSaving || isGenerating;
 
   return (
     <div className="fixed inset-0 z-[200] flex flex-col bg-white">
@@ -79,7 +86,7 @@ export function ContractGenerator({ clientId, onClose }: ContractGeneratorProps)
           <button
             type="button"
             onClick={onClose}
-            disabled={isSaving}
+            disabled={isBusy}
             aria-label="Cerrar"
             className="flex size-9 items-center justify-center rounded-full hover:bg-neutral-100 disabled:opacity-50"
           >
@@ -91,10 +98,10 @@ export function ContractGenerator({ clientId, onClose }: ContractGeneratorProps)
         <button
           type="button"
           onClick={handleSave}
-          disabled={isSaving || !hasSignature}
+          disabled={isBusy || !hasSignature}
           className="bg-brand hover:bg-brand/90 flex min-w-[90px] items-center justify-center gap-2 rounded-xl px-5 py-2 text-sm font-medium text-white disabled:opacity-50"
         >
-          {isSaving ? <Icon icon="ion:sync-outline" className="size-4 animate-spin" /> : 'Guardar'}
+          {isBusy ? <Icon icon="ion:sync-outline" className="size-4 animate-spin" /> : 'Guardar'}
         </button>
       </div>
 
@@ -164,7 +171,7 @@ export function ContractGenerator({ clientId, onClose }: ContractGeneratorProps)
                 canvasRef={canvasRef}
                 clientName={clientName}
                 hasSignature={hasSignature}
-                isSaving={isSaving}
+                isSaving={isBusy}
                 onStartDrawing={startDrawing}
                 onDraw={draw}
                 onStopDrawing={stopDrawing}

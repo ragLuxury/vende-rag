@@ -51,7 +51,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       {message ? (
         <div
           role="status"
-          className="pointer-events-none fixed inset-x-0 bottom-[calc(80px+env(safe-area-inset-bottom))] z-[120] mx-auto w-full max-w-md px-4"
+          className="pointer-events-none fixed inset-x-0 bottom-[calc(80px+env(safe-area-inset-bottom))] z-[300] mx-auto w-full max-w-md px-4"
         >
           <div className="rounded-xl bg-green-600 px-4 py-3 text-sm font-medium text-white shadow-lg">
             {message}
