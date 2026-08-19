@@ -58,7 +58,7 @@ export async function generateContractPdf({
   page2Element,
 }: GeneratePdfOptions): Promise<Blob> {
   const captureOptions = {
-    scale: 3,
+    scale: 4,
     useCORS: true,
     backgroundColor: '#ffffff',
     logging: false,
@@ -70,13 +70,13 @@ export async function generateContractPdf({
   const pdfHeight = pdf.internal.pageSize.getHeight();
 
   const canvas1 = await captureContractPage(page1Element, captureOptions);
-  const imgData1 = canvas1.toDataURL('image/jpeg', 1.0);
-  pdf.addImage(imgData1, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+  const imgData1 = canvas1.toDataURL('image/png');
+  pdf.addImage(imgData1, 'PNG', 0, 0, pdfWidth, pdfHeight, undefined, 'NONE');
 
   pdf.addPage();
   const canvas2 = await captureContractPage(page2Element, captureOptions);
-  const imgData2 = canvas2.toDataURL('image/jpeg', 1.0);
-  pdf.addImage(imgData2, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+  const imgData2 = canvas2.toDataURL('image/png');
+  pdf.addImage(imgData2, 'PNG', 0, 0, pdfWidth, pdfHeight, undefined, 'NONE');
 
   return pdf.output('blob');
 }

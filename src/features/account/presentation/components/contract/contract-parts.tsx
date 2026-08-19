@@ -1,7 +1,6 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import Image from 'next/image';
 import type {
   MouseEvent as ReactMouseEvent,
   RefObject,
@@ -95,14 +94,14 @@ export function AnaPaulaSignature() {
   return (
     <div className="flex flex-col items-center">
       <div className="relative mb-4 flex h-[120px] w-full items-center justify-center">
-        <div className="pointer-events-none relative flex h-[130px] w-[280px] items-center justify-center select-none">
-          <Image
+        <div className="pointer-events-none flex h-[118px] w-[300px] items-center justify-center overflow-visible select-none">
+          <img
             src="/ceo-signature.png"
             alt="Firma Ana Paula Godoy"
-            width={280}
-            height={130}
-            priority
-            style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+            width={547}
+            height={224}
+            className="block h-full w-full object-contain"
+            draggable={false}
           />
         </div>
       </div>
