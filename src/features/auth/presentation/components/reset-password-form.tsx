@@ -10,6 +10,9 @@ import { PasswordField } from '@/src/shared/ui/password-field';
 import { useToast } from '@/src/shared/ui/toast';
 import { useResetPassword } from '@/src/features/auth/presentation/hooks/use-reset-password';
 import { useValidateResetToken } from '@/src/features/auth/presentation/hooks/use-validate-reset-token';
+import { LoginModalProvider } from '../login-modal-context';
+import { LandingHeader } from './landing-header';
+import { LandingFooter } from './landing-footer';
 
 const MIN_PASSWORD_LENGTH = 5;
 
@@ -44,72 +47,78 @@ export function ResetPasswordForm() {
   }
 
   return (
-    <main className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col px-6 py-8">
-      <Link href="/login" aria-label="Regresar" className="text-neutral-900">
-        <Icon icon="ion:chevron-back-outline" className="size-7" />
-      </Link>
+    <LoginModalProvider>
+      <div className="hidden md:block">
+        <LandingHeader />
+      </div>
 
-      <header className="mt-24 mb-10 text-center">
-        <h1 className="font-editors text-2xl text-neutral-900">Restablecer Contraseña</h1>
-        <p className="mt-3 text-neutral-500">Ingresa y confirma tu nueva contraseña.</p>
-      </header>
+      <main className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col px-6 py-8">
+        <Link href="/login" aria-label="Regresar" className="text-neutral-900">
+          <Icon icon="ion:chevron-back-outline" className="size-7" />
+        </Link>
 
-      {validation.isLoading ? (
-        <p className="text-center text-neutral-500">Validando enlace…</p>
-      ) : validation.isError || emailToken === null ? (
-        <div className="text-center">
-          <p className="text-neutral-700">
-            Este enlace no es válido o ha expirado. Solicita uno nuevo.
-          </p>
-          <Link
-            href="/forgot-password"
-            className="text-brand mt-6 inline-block text-sm font-medium underline"
-          >
-            Recuperar contraseña
-          </Link>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-          <PasswordField
-            label="Nueva contraseña"
-            autoComplete="new-password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-          <PasswordField
-            label="Confirmar contraseña"
-            autoComplete="new-password"
-            value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
-          />
+        <header className="mt-24 mb-10 text-center">
+          <h1 className="font-editors text-2xl text-neutral-900">Restablecer Contraseña</h1>
+          <p className="mt-3 text-neutral-500">Ingresa y confirma tu nueva contraseña.</p>
+        </header>
 
-          <ul className="flex flex-col gap-3 text-sm text-neutral-600">
-            <li className="flex items-center gap-2">
-              <StatusIcon valid={passwordLongEnough} />
-              Mínimo {MIN_PASSWORD_LENGTH} caracteres
-            </li>
-            <li className="flex items-center gap-2">
-              <StatusIcon valid={passwordsMatch} />
-              Las contraseñas coinciden
-            </li>
-          </ul>
-
-          {resetPassword.isError ? (
-            <p role="alert" className="text-sm text-red-600">
-              No pudimos restablecer tu contraseña. El enlace pudo haber expirado.
+        {validation.isLoading ? (
+          <p className="text-center text-neutral-500">Validando enlace…</p>
+        ) : validation.isError || emailToken === null ? (
+          <div className="text-center">
+            <p className="text-neutral-700">
+              Este enlace no es válido o ha expirado. Solicita uno nuevo.
             </p>
-          ) : null}
+            <Link
+              href="/forgot-password"
+              className="text-brand mt-6 inline-block text-sm font-medium underline"
+            >
+              Recuperar contraseña
+            </Link>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <PasswordField
+              label="Nueva contraseña"
+              autoComplete="new-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+            <PasswordField
+              label="Confirmar contraseña"
+              autoComplete="new-password"
+              value={confirmPassword}
+              onChange={(event) => setConfirmPassword(event.target.value)}
+            />
 
-          <button
-            type="submit"
-            disabled={!canSubmit || resetPassword.isPending}
-            className={`${buttonStyles('primary')} mt-2 disabled:opacity-50`}
-          >
-            {resetPassword.isPending ? 'Restableciendo...' : 'Restablecer contraseña'}
-          </button>
-        </form>
-      )}
-    </main>
+            <ul className="flex flex-col gap-3 text-sm text-neutral-600">
+              <li className="flex items-center gap-2">
+                <StatusIcon valid={passwordLongEnough} />
+                Mínimo {MIN_PASSWORD_LENGTH} caracteres
+              </li>
+              <li className="flex items-center gap-2">
+                <StatusIcon valid={passwordsMatch} />
+                Las contraseñas coinciden
+              </li>
+            </ul>
+
+            {resetPassword.isError ? (
+              <p role="alert" className="text-sm text-red-600">
+                No pudimos restablecer tu contraseña. El enlace pudo haber expirado.
+              </p>
+            ) : null}
+
+            <button type="submit" className={`${buttonStyles('primary')} mt-2`}>
+              {resetPassword.isPending ? 'Restableciendo...' : 'Restablecer contraseña'}
+            </button>
+          </form>
+        )}
+      </main>
+
+      <div className="hidden md:block">
+        <LandingFooter isAuthenticated={false} />
+      </div>
+    </LoginModalProvider>
   );
 }
 
