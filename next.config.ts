@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         hostname: 'images.ragdev.com.mx',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.rag.mx',
+        pathname: '/**',
+      },
     ],
   },
 
