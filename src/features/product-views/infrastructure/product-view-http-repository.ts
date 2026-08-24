@@ -14,7 +14,7 @@ import {
 } from './product-view-schemas';
 
 function resolveImageUrl(path: string): string {
-  if (path.startsWith('http')) return path;
+  if (path.startsWith('http')) return path.replace(/([^:])\/\/+/g, '$1/');
   return getProductImageUrl(path.replace(/^\/+/, ''));
 }
 
@@ -50,7 +50,7 @@ export const productViewHttpRepository = {
         status: item.Estado,
         statusIntern: item.status_intern ?? '',
         initialStatus: item.initial_status ?? '',
-        image: item.galeria?.[0] ?? '',
+        image: item.galeria?.[0] ? resolveImageUrl(item.galeria[0]) : '',
       };
     });
   },
