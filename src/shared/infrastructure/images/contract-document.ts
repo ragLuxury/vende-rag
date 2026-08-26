@@ -1,6 +1,8 @@
 import { env } from '@/src/shared/infrastructure/env/env';
 
 export function getContractUrl(filename: string): string {
-  if (/^https?:\/\//i.test(filename)) return filename;
-  return `${env.NEXT_PUBLIC_CONTRACT_BASE_URL}/${filename}`;
+  const value = filename.trim();
+  if (!value) return '';
+  if (/^https?:\/\//i.test(value)) return value;
+  return `${env.NEXT_PUBLIC_CONTRACT_BASE_URL.replace(/\/+$/, '')}/${value.replace(/^\/+/, '')}`;
 }
