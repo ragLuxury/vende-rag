@@ -13,7 +13,7 @@ export const productHttpRepository = {
         detail: product.detail,
         origen2: product.linkProducto,
         id_cliente: product.clientId,
-        others: { galeria: product.gallery.map((image) => ({ img: image.img })) },
+        others: { galeria: (product.gallery ?? []).map((image) => ({ img: image.img })) },
       })),
     };
 
@@ -28,6 +28,7 @@ export const productHttpRepository = {
       inserted: response.inserted,
       skipped: response.skipped,
       message: response.message,
+      products: response.data.products.map((p) => ({ id: p.id, uuid: p.uuid })),
     };
   },
 } satisfies ProductRepository;

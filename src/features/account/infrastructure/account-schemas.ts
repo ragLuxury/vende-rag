@@ -71,4 +71,10 @@ export const contractUploadResponseSchema = z.object({
   msg: z.string().nullable(),
 });
 
+export const r2UploadResponseSchema = z.object({
+  success: z.boolean(),
+  key: z.string(),
+  url: z.string(),
+});
+
 export const signContractResponseSchema = z.unknown();

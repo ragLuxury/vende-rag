@@ -6,17 +6,22 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'admin.ragdev.com.mx',
-        pathname: '/views_yea/uploads/products/**',
+        pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'admin.rag.mx',
-        pathname: '/views_yea/uploads/products/**',
+        pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'admin.rag.mx',
-        pathname: '/uploads/products/**',
+        hostname: 'images.ragdev.com.mx',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.rag.mx',
+        pathname: '/**',
       },
     ],
   },

@@ -1,17 +1,24 @@
 import type { ImageRepository } from '@/src/features/listings/domain/image-repository';
 import { HttpError, ValidationError } from '@/src/shared/domain/errors';
+import { tokenStorage } from '@/src/shared/infrastructure/http/token-storage';
 import { uploadImagesResponseSchema } from './image-schemas';
 
 export const imageHttpRepository = {
-  async uploadImages(files, signal) {
+  async uploadImages(files, productId, signal) {
     const formData = new FormData();
     for (const file of files) {
       formData.append('files', file);
     }
+    formData.append('productId', String(productId));
+
+    const token = tokenStorage.get();
+    const headers: Record<string, string> = {};
+    if (token) headers.Authorization = `Bearer ${token}`;
 
     const response = await fetch('/api/upload', {
       method: 'POST',
       body: formData,
+      headers,
       ...(signal ? { signal } : {}),
     });
 
