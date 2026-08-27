@@ -67,8 +67,8 @@ export function ContactScreen() {
   const user = useCurrentUser();
 
   return (
-    <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col md:max-w-none">
-      <div className="flex-1 pb-10 md:hidden">
+    <div className="flex min-h-full w-full flex-1 flex-col">
+      <div className="mx-auto w-full max-w-md flex-1 pb-10 md:hidden">
         <div className="relative">
           <Image
             src="/images/hero/header-contacto.jpg"

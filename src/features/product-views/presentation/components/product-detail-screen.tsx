@@ -110,8 +110,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
   }
 
   return (
-    <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col md:max-w-7xl">
-      <header className="relative flex items-center justify-center px-6 py-4 md:pt-10">
+    <div className="mx-auto flex min-h-full w-full max-w-md flex-1 flex-col md:max-w-none">
+      <header className="relative flex w-full items-center justify-center px-6 py-4 md:mx-auto md:max-w-7xl md:pt-10">
         <button
           type="button"
           onClick={() => router.back()}
@@ -392,7 +392,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
               </div>
             </div>
 
-            <div className="hidden items-stretch justify-center gap-8 px-8 pb-8 md:flex">
+            <div className="hidden w-full items-stretch justify-center gap-8 px-8 pb-8 md:mx-auto md:flex md:max-w-7xl">
               <div className="w-2/5 shrink-0 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100">
                 <ProductGallery images={product.images} alt={product.name} fill />
               </div>
