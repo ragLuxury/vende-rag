@@ -102,6 +102,7 @@ export const sellerPaymentsResponseSchema = z.object({
       payment_date: z.string(),
       payment_method: z.string(),
       receipt_path: z.string().nullish(),
+      receipt_url: z.string().nullish(),
     }),
   ),
 });

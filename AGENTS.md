@@ -123,6 +123,11 @@ Baseline: **[Google TypeScript Style Guide](https://google.github.io/styleguide/
 - JSDoc only on exported public APIs (`/** ... */`) — focus on contract and constraints, not restating the signature.
 - No `// TODO` without an owner + issue link. No `// removed:` trailing notes.
 
+### Tests
+
+- Tests live under `test/`, mirroring the `src/` tree (`test/shared/infrastructure/images/...`). Never colocate a spec inside the layer it exercises — Vitest only picks up `test/**`, so a colocated file silently stops running.
+- Import the subject through the `@/` alias, not a relative path, so a moved file fails loudly instead of resolving to the wrong layer.
+
 ### Project-specific
 
 - No premature abstraction. Three similar lines beats a wrong abstraction.

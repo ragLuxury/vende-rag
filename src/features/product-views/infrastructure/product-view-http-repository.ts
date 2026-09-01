@@ -2,7 +2,7 @@ import { findProductStatusByCode } from '@/src/features/product-views/domain/pro
 import type { ProductViewRepository } from '@/src/features/product-views/domain/product-view-repository';
 import { httpRequest } from '@/src/shared/infrastructure/http/http-client';
 import { getProductImageUrl } from '@/src/shared/infrastructure/images/product-image';
-import { getReceiptUrl } from '@/src/shared/infrastructure/images/receipt-document';
+import { resolveReceiptUrl } from '@/src/shared/infrastructure/images/receipt-document';
 import {
   applyDiscountResponseSchema,
   commissionResponseSchema,
@@ -66,7 +66,7 @@ export const productViewHttpRepository = {
       amount: payment.amount,
       date: payment.payment_date,
       method: payment.payment_method,
-      receiptUrl: payment.receipt_path ? getReceiptUrl(payment.receipt_path) : null,
+      receiptUrl: resolveReceiptUrl(payment),
     }));
   },
 
