@@ -13,13 +13,15 @@ export default function EditarDireccionPage() {
 
   return (
     <AuthGuard mode="require-auth">
-      <EditAddressScreen
-        clientId={user?.id ?? 0}
-        onSaved={() => {
-          queueToast('Información actualizada correctamente');
-          router.push('/perfil');
-        }}
-      />
+      {user ? (
+        <EditAddressScreen
+          clientId={user.id}
+          onSaved={() => {
+            queueToast('Información actualizada correctamente');
+            router.push('/perfil');
+          }}
+        />
+      ) : null}
     </AuthGuard>
   );
 }

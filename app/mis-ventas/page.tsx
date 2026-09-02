@@ -9,7 +9,7 @@ export default function MisVentasPage() {
 
   return (
     <AuthGuard mode="require-auth">
-      <ProductsScreen view="ventas" clientId={user?.id ?? null} />
+      {user ? <ProductsScreen view="ventas" clientId={user.id} /> : null}
     </AuthGuard>
   );
 }

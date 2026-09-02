@@ -13,13 +13,15 @@ export default function EditarMetodoPagoPage() {
 
   return (
     <AuthGuard mode="require-auth">
-      <EditPaymentMethodScreen
-        clientId={user?.id ?? 0}
-        onSaved={() => {
-          queueToast('Información actualizada correctamente');
-          router.push('/perfil');
-        }}
-      />
+      {user ? (
+        <EditPaymentMethodScreen
+          clientId={user.id}
+          onSaved={() => {
+            queueToast('Información actualizada correctamente');
+            router.push('/perfil');
+          }}
+        />
+      ) : null}
     </AuthGuard>
   );
 }

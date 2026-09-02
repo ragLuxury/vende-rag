@@ -18,6 +18,8 @@ const SUPPLEMENTARY_STATUS_COLORS: Record<string, string> = {
   aprobado: '#d6e5fb',
   activa: '#81BD53',
   bolería: '#B693B1',
+  'bolería p/c': '#C7A9C3',
+  etiquetado: '#9EC5D8',
   inactiva: '#E6E7E7',
   inactivar: '#E6E7E7',
   completado: '#E3EFD9',

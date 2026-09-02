@@ -13,13 +13,15 @@ export default function PerfilPage() {
 
   return (
     <AuthGuard mode="require-auth">
-      <ProfileScreen
-        name={user?.name ?? ''}
-        clientId={user?.id ?? 0}
-        onLogout={logout}
-        onDeleted={logout}
-        onProfileSaved={(fullName) => updateCurrentUser({ name: fullName })}
-      />
+      {user ? (
+        <ProfileScreen
+          name={user.name}
+          clientId={user.id}
+          onLogout={logout}
+          onDeleted={logout}
+          onProfileSaved={(fullName) => updateCurrentUser({ name: fullName })}
+        />
+      ) : null}
     </AuthGuard>
   );
 }

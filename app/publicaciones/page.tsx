@@ -9,7 +9,7 @@ export default function PublicacionesPage() {
 
   return (
     <AuthGuard mode="require-auth">
-      <ProductsScreen view="publicaciones" clientId={user?.id ?? null} />
+      {user ? <ProductsScreen view="publicaciones" clientId={user.id} /> : null}
     </AuthGuard>
   );
 }

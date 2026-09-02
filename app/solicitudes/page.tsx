@@ -9,7 +9,7 @@ export default function SolicitudesPage() {
 
   return (
     <AuthGuard mode="require-auth">
-      <ProductsScreen view="solicitudes" clientId={user?.id ?? null} />
+      {user ? <ProductsScreen view="solicitudes" clientId={user.id} /> : null}
     </AuthGuard>
   );
 }

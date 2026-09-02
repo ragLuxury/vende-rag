@@ -9,7 +9,7 @@ export default function DevolucionesPage() {
 
   return (
     <AuthGuard mode="require-auth">
-      <ProductsScreen view="devoluciones" clientId={user?.id ?? null} />
+      {user ? <ProductsScreen view="devoluciones" clientId={user.id} /> : null}
     </AuthGuard>
   );
 }

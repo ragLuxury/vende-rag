@@ -2,7 +2,10 @@ import {
   findProductStatusByCode,
   normalizeStatusText,
 } from '@/src/features/product-views/domain/product-status';
-import { isPublicationApproved } from '@/src/features/product-views/domain/publication-status';
+import {
+  PUBLICATION_STAGES,
+  resolvePublicationPillLabel,
+} from '@/src/features/product-views/domain/publication-status';
 import type {
   Product,
   ProductView,
@@ -34,6 +37,15 @@ export interface ViewConfig {
 }
 
 const SALE_PRICE_SECONDARY: CardSecondaryConfig = { label: 'Precio de Venta', amount: 'salePrice' };
+
+const STAGE_ICONS: Record<string, string> = {
+  Preaprobado: 'ion:time-outline',
+  Autentificado: 'ion:shield-checkmark-outline',
+  Bolería: 'ion:cube-outline',
+  'Bolería P/C': 'ion:cube-outline',
+  Etiquetado: 'ion:pricetags-outline',
+  Aprobado: 'ion:checkmark-circle-outline',
+};
 
 function statusIncludes(...needles: readonly string[]) {
   return (product: Product) => {
@@ -101,25 +113,20 @@ export const VIEW_CONFIG: Record<ProductView, ViewConfig> = {
     searchPlaceholder: 'Busca tus publicaciones',
     emptyText: 'No se encontraron publicaciones',
     cardSecondary: SALE_PRICE_SECONDARY,
+    // One filter per internal stage: while the numeric status still reads
+    // "Recibido", the publication's real progress only lives in status_intern.
     summary: [
-      {
-        label: 'Preaprobado',
-        icon: 'ion:time-outline',
-        format: 'count',
-        matches: (product) =>
+      ...PUBLICATION_STAGES.map((stage) => ({
+        label: stage.label,
+        icon: STAGE_ICONS[stage.label] ?? 'ion:ellipse-outline',
+        format: 'count' as const,
+        // Same resolution the card pill uses, so a filter never returns cards
+        // labelled with a different stage.
+        matches: (product: Product) =>
           isReceivedStatus(product) &&
           !!product.statusIntern &&
-          !isPublicationApproved(product.statusIntern),
-      },
-      {
-        label: 'Aprobado',
-        icon: 'ion:checkmark-circle-outline',
-        format: 'count',
-        matches: (product) =>
-          isReceivedStatus(product) &&
-          !!product.statusIntern &&
-          isPublicationApproved(product.statusIntern),
-      },
+          resolvePublicationPillLabel(product.statusIntern) === stage.label,
+      })),
       {
         label: statusLabel(11),
         icon: 'ion:pricetag-outline',

@@ -118,6 +118,11 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
 
   const { data: products, isLoading, isError } = useProducts(view, clientId, '');
 
+  // Sin id de seller la consulta ni siquiera corre, asi que el resultado vacio
+  // no significa que no tenga productos: significa que no sabemos por quien
+  // preguntar.
+  const sessionIncomplete = clientId === null;
+
   useEffect(() => {
     if (view !== 'solicitudes') return;
     if (!products) return;
@@ -291,6 +296,10 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
           <div className="mt-4">
             {isLoading ? (
               <p className="py-12 text-center text-sm text-neutral-400">Cargando...</p>
+            ) : sessionIncomplete ? (
+              <p className="py-12 text-center text-sm text-red-600">
+                No pudimos identificar tu sesión. Vuelve a iniciar sesión.
+              </p>
             ) : isError ? (
               <p className="py-12 text-center text-sm text-red-600">
                 No pudimos cargar la información. Inténtalo de nuevo.
@@ -396,6 +405,10 @@ export function ProductsScreen({ view, clientId }: ProductsScreenProps) {
 
                 {isLoading ? (
                   <p className="py-12 text-center text-sm text-neutral-400">Cargando...</p>
+                ) : sessionIncomplete ? (
+                  <p className="py-12 text-center text-sm text-red-600">
+                    No pudimos identificar tu sesión. Vuelve a iniciar sesión.
+                  </p>
                 ) : isError ? (
                   <p className="py-12 text-center text-sm text-red-600">
                     No pudimos cargar la información. Inténtalo de nuevo.

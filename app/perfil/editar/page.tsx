@@ -15,14 +15,16 @@ export default function EditarPerfilPage() {
 
   return (
     <AuthGuard mode="require-auth">
-      <EditProfileScreen
-        clientId={user?.id ?? 0}
-        onSaved={(fullName) => {
-          updateCurrentUser({ name: fullName });
-          queueToast('Información actualizada correctamente');
-          router.push('/perfil');
-        }}
-      />
+      {user ? (
+        <EditProfileScreen
+          clientId={user.id}
+          onSaved={(fullName) => {
+            updateCurrentUser({ name: fullName });
+            queueToast('Información actualizada correctamente');
+            router.push('/perfil');
+          }}
+        />
+      ) : null}
     </AuthGuard>
   );
 }
