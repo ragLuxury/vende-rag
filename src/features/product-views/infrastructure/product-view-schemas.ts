@@ -9,8 +9,11 @@ export const productsResponseSchema = z.object({
       marca: z.string(),
       modelo: z.string().nullish(),
       nombre: z.string().nullish(),
-      original_price: z.number(),
-      precio: z.number(),
+      // Coerce, como el resto de los precios de este mismo objeto: el API los
+      // envia desde columnas DECIMAL y a veces llegan como texto. Un z.number()
+      // estricto convertia eso en un error de pantalla completa.
+      original_price: z.coerce.number(),
+      precio: z.coerce.number(),
       porcentaje_descuento: z.coerce.number().nullish(),
       precio_descuento: z.coerce.number().nullish(),
       Estado: z.string(),
@@ -41,8 +44,8 @@ export const productDetailResponseSchema = z.object({
     initial_status: z.string().nullish(),
     state: z.coerce.number().nullish(),
     Fecha: z.string().nullish(),
-    original_price: z.number(),
-    precio: z.number(),
+    original_price: z.coerce.number(),
+    precio: z.coerce.number(),
     porcentaje_descuento: z.coerce.number().nullish(),
     precio_descuento: z.coerce.number().nullish(),
     rag: z.coerce.number().nullish(),
