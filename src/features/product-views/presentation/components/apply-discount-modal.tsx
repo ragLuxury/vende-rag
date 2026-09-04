@@ -171,7 +171,7 @@ export function ApplyDiscountModal({
 
       <div className="mt-5 space-y-2 rounded-xl bg-neutral-50 p-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-neutral-500">Precio final</span>
+          <span className="text-sm text-neutral-500">Precio Final</span>
           <span className="text-sm font-semibold text-neutral-900">
             {currencyFormatter.format(finalPrice)}
           </span>

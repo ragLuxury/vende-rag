@@ -173,8 +173,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 </div>
 
                 {view === 'publicaciones' &&
-                product.statusIntern &&
-                product.status.trim().toLowerCase() !== 'activo' ? (
+                  product.statusIntern &&
+                  product.status.trim().toLowerCase() !== 'activo' ? (
                   <div className="mt-4 px-6">
                     {isPublicationApproved(product.statusIntern) ? (
                       <>
@@ -243,9 +243,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                     </span>
                     <Icon
                       icon="ion:chevron-down-outline"
-                      className={`size-5 text-neutral-500 transition-transform ${
-                        infoOpen ? 'rotate-180' : ''
-                      }`}
+                      className={`size-5 text-neutral-500 transition-transform ${infoOpen ? 'rotate-180' : ''
+                        }`}
                     />
                   </button>
 
@@ -274,9 +273,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       </span>
                       <Icon
                         icon="ion:chevron-down-outline"
-                        className={`size-5 text-neutral-500 transition-transform ${
-                          detailOpen ? 'rotate-180' : ''
-                        }`}
+                        className={`size-5 text-neutral-500 transition-transform ${detailOpen ? 'rotate-180' : ''
+                          }`}
                       />
                     </button>
                     {detailOpen ? (
@@ -320,7 +318,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                           value={currencyFormatter.format(discountAmount)}
                         />
                         <PriceRow
-                          label="Precio final"
+                          bold
+                          label="Precio Final"
                           value={currencyFormatter.format(finalPrice)}
                         />
                       </>
@@ -443,8 +442,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                 </div>
 
                 {view === 'publicaciones' &&
-                product.statusIntern &&
-                product.status.trim().toLowerCase() !== 'activo' ? (
+                  product.statusIntern &&
+                  product.status.trim().toLowerCase() !== 'activo' ? (
                   <div className="mt-6">
                     {isPublicationApproved(product.statusIntern) ? (
                       <>
@@ -517,9 +516,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                           </span>
                           <Icon
                             icon="ion:chevron-down-outline"
-                            className={`size-5 text-neutral-500 transition-transform ${
-                              infoOpen ? 'rotate-180' : ''
-                            }`}
+                            className={`size-5 text-neutral-500 transition-transform ${infoOpen ? 'rotate-180' : ''
+                              }`}
                           />
                         </button>
                         {infoOpen ? (
@@ -575,9 +573,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         </span>
                         <Icon
                           icon="ion:chevron-down-outline"
-                          className={`size-5 text-neutral-500 transition-transform ${
-                            detailOpen ? 'rotate-180' : ''
-                          }`}
+                          className={`size-5 text-neutral-500 transition-transform ${detailOpen ? 'rotate-180' : ''
+                            }`}
                         />
                       </button>
                       {detailOpen ? (
@@ -626,7 +623,8 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                               value={currencyFormatter.format(discountAmount)}
                             />
                             <PriceRow
-                              label="Precio final"
+                              bold
+                              label="Precio Final"
                               value={currencyFormatter.format(finalPrice)}
                             />
                           </>
@@ -745,8 +743,8 @@ function resolvePriceLabel({
   discountAmount: number;
 }): string {
   if (isNegotiation) return 'Precio de Negociación';
-  if (discountAmount > 0) return 'Precio original';
-  return isSale ? 'Precio de venta' : 'Precio de producto';
+  if (discountAmount > 0) return 'Precio Original';
+  return isSale ? 'Precio de Venta' : 'Precio de Producto';
 }
 
 function InfoRow({ label, value }: RowProps) {
@@ -758,7 +756,12 @@ function InfoRow({ label, value }: RowProps) {
   );
 }
 
-function PriceRow({ label, value, negative = false }: RowProps & { negative?: boolean }) {
+function PriceRow({
+  label,
+  value,
+  negative = false,
+  bold = false,
+}: RowProps & { negative?: boolean; bold?: boolean }) {
   const valueNode = (
     <span className="relative">
       {negative ? <span className="absolute -left-3">-</span> : null}
@@ -767,8 +770,14 @@ function PriceRow({ label, value, negative = false }: RowProps & { negative?: bo
   );
   return (
     <div className="grid grid-cols-[4fr_3fr] items-center gap-x-8">
-      <dt className="text-xs font-medium text-neutral-700">{label}</dt>
-      <dd className="text-xs text-neutral-400">{valueNode}</dd>
+      <dt
+        className={`text-xs ${bold ? 'font-semibold text-neutral-900' : 'font-medium text-neutral-700'}`}
+      >
+        {label}
+      </dt>
+      <dd className={`text-xs ${bold ? 'font-semibold text-neutral-900' : 'text-neutral-400'}`}>
+        {valueNode}
+      </dd>
     </div>
   );
 }
