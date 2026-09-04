@@ -58,7 +58,7 @@ function amountFor(
     const resolved = resolvePayment(product.status, product.earning, itemizedPaid);
     return amount === 'paid' ? resolved.paid : resolved.pending;
   }
-  if (amount === 'salePrice') return Math.max(product.salePrice - product.discountAmount, 0);
+  if (amount === 'salePrice') return product.finalPrice;
   return product.earning;
 }
 

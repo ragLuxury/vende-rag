@@ -83,6 +83,19 @@ export const productIdByUuidResponseSchema = z.object({
   }),
 });
 
+export const productPriceResponseSchema = z.object({
+  success: z.boolean(),
+  data: z.object({
+    product_id: z.coerce.number(),
+    original_price: z.coerce.number(),
+    fixed_discount: z.coerce.number().nullish(),
+    percentage_discount: z.coerce.number().nullish(),
+    commission_rate: z.coerce.number(),
+    commission_amount: z.coerce.number(),
+    seller_price: z.coerce.number(),
+  }),
+});
+
 export const commissionResponseSchema = z.object({
   success: z.boolean(),
   data: z.object({

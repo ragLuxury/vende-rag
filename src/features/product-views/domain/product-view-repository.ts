@@ -7,6 +7,7 @@ export interface Product {
   brand: string;
   salePrice: number;
   discountAmount: number;
+  finalPrice: number;
   earning: number;
   status: string;
   statusIntern: string;
@@ -24,6 +25,15 @@ export interface SellerPayment {
   date: string;
   method: string;
   receiptUrl: string | null;
+}
+
+export interface ProductPrice {
+  originalPrice: number;
+  discountAmount: number;
+  finalPrice: number;
+  commissionRate: number;
+  commissionAmount: number;
+  sellerPrice: number;
 }
 
 export interface ProductCommission {
@@ -51,6 +61,7 @@ export interface ProductDetail {
   soldDate: string;
   salePrice: number;
   discountAmount: number;
+  finalPrice: number;
   discountPercent: number;
   negotiationPrice: number;
   earning: number;
@@ -85,6 +96,7 @@ export interface ProductViewRepository {
   getSellerPayments(productId: number, signal?: AbortSignal): Promise<readonly SellerPayment[]>;
   getProductDetail(productId: number, signal?: AbortSignal): Promise<ProductDetail>;
   getProductIdByUuid(uuid: string, signal?: AbortSignal): Promise<number>;
+  getProductPrice(productId: number, signal?: AbortSignal): Promise<ProductPrice>;
   getCommission(price: number, clientId: number, signal?: AbortSignal): Promise<ProductCommission>;
   respondNegotiation(
     productId: number,

@@ -18,6 +18,7 @@ import {
 import { LandingFooter } from '@/src/features/auth/presentation/components/landing-footer';
 import { useCommission } from '../hooks/use-commission';
 import { useProductDetail } from '../hooks/use-product-detail';
+import { useProductPrice } from '../hooks/use-product-price';
 import { useRespondNegotiation } from '../hooks/use-respond-negotiation';
 import { useSellerPayments } from '../hooks/use-seller-payments';
 import { ApplyDiscountModal } from './apply-discount-modal';
@@ -65,17 +66,26 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
   const isNegotiation = product?.state === NEGOTIATION_STATE;
   const respondNegotiation = useRespondNegotiation();
   const discountAmount = isNegotiation ? 0 : (product?.discountAmount ?? 0);
-  const discountedPrice = (product?.salePrice ?? 0) - discountAmount;
-  const priceForCommission = (isNegotiation ? product?.negotiationPrice : discountedPrice) ?? 0;
+  const finalPrice = isNegotiation ? 0 : (product?.finalPrice ?? 0);
+  // The stored price is read from the API because that is the only place the
+  // per-product commission rules are applied; the commission endpoint only
+  // knows price and client, so it is kept for the negotiation what-if, where
+  // there is no stored price to read yet.
+  const { data: price } = useProductPrice(productId, product !== undefined && !isNegotiation);
+  const negotiationPrice = product?.negotiationPrice ?? 0;
   const { data: commission } = useCommission(
-    priceForCommission,
+    negotiationPrice,
     product?.clientId ?? 0,
-    product !== undefined && priceForCommission > 0,
+    product !== undefined && isNegotiation && negotiationPrice > 0,
   );
   const { data: payments } = useSellerPayments(productId, isSale);
 
+  const commissionAmount =
+    (isNegotiation ? commission?.amount : price?.commissionAmount) ?? product?.commission ?? 0;
   const earning =
-    commission?.sellerNet ?? (isNegotiation ? product?.negotiationPrice : product?.earning) ?? 0;
+    (isNegotiation
+      ? (commission?.sellerNet ?? product?.negotiationPrice)
+      : (price?.sellerPrice ?? product?.earning)) ?? 0;
   const itemizedPaid = (payments ?? []).reduce((total, payment) => total + payment.amount, 0);
   const { isPaid, paid, pending } = resolvePayment(product?.status ?? '', earning, itemizedPaid);
   const isReceived = (product?.status ?? '').trim().toLowerCase() === 'recibido';
@@ -293,32 +303,32 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                   </div>
                   <dl className="mt-4 space-y-3">
                     <PriceRow
-                      label={
-                        isNegotiation
-                          ? 'Precio de Negociación'
-                          : isSale
-                            ? 'Precio de venta'
-                            : 'Precio de producto'
-                      }
+                      label={resolvePriceLabel({ isNegotiation, isSale, discountAmount })}
                       value={currencyFormatter.format(
                         isNegotiation ? product.negotiationPrice : product.salePrice,
                       )}
                     />
                     {discountAmount > 0 ? (
-                      <PriceRow
-                        negative
-                        label={
-                          product.discountPercent > 0
-                            ? `Descuento (${product.discountPercent}%)`
-                            : 'Descuento'
-                        }
-                        value={currencyFormatter.format(discountAmount)}
-                      />
+                      <>
+                        <PriceRow
+                          negative
+                          label={
+                            product.discountPercent > 0
+                              ? `Descuento (${product.discountPercent}%)`
+                              : 'Descuento'
+                          }
+                          value={currencyFormatter.format(discountAmount)}
+                        />
+                        <PriceRow
+                          label="Precio final"
+                          value={currencyFormatter.format(finalPrice)}
+                        />
+                      </>
                     ) : null}
                     <PriceRow
                       negative
                       label="Comisión RAG"
-                      value={currencyFormatter.format(commission?.amount ?? product.commission)}
+                      value={currencyFormatter.format(commissionAmount)}
                     />
                     <div className="grid grid-cols-[4fr_3fr] items-center gap-x-8 pt-1">
                       <dt className="text-sm font-semibold text-neutral-900">Tu Ganancia</dt>
@@ -599,32 +609,32 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       ) : null}
                       <dl className="col-span-2 space-y-3">
                         <PriceRow
-                          label={
-                            isNegotiation
-                              ? 'Precio de Negociación'
-                              : isSale
-                                ? 'Precio de venta'
-                                : 'Precio de producto'
-                          }
+                          label={resolvePriceLabel({ isNegotiation, isSale, discountAmount })}
                           value={currencyFormatter.format(
                             isNegotiation ? product.negotiationPrice : product.salePrice,
                           )}
                         />
                         {discountAmount > 0 ? (
-                          <PriceRow
-                            negative
-                            label={
-                              product.discountPercent > 0
-                                ? `Descuento (${product.discountPercent}%)`
-                                : 'Descuento'
-                            }
-                            value={currencyFormatter.format(discountAmount)}
-                          />
+                          <>
+                            <PriceRow
+                              negative
+                              label={
+                                product.discountPercent > 0
+                                  ? `Descuento (${product.discountPercent}%)`
+                                  : 'Descuento'
+                              }
+                              value={currencyFormatter.format(discountAmount)}
+                            />
+                            <PriceRow
+                              label="Precio final"
+                              value={currencyFormatter.format(finalPrice)}
+                            />
+                          </>
                         ) : null}
                         <PriceRow
                           negative
                           label="Comisión RAG"
-                          value={currencyFormatter.format(commission?.amount ?? product.commission)}
+                          value={currencyFormatter.format(commissionAmount)}
                         />
                         <div className="grid grid-cols-[4fr_3fr] items-center gap-x-8">
                           <dt className="text-sm font-semibold text-neutral-900">Tu Ganancia</dt>
@@ -707,8 +717,9 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
               <ApplyDiscountModal
                 open={discountModalOpen}
                 productId={product.id}
+                clientId={product.clientId}
                 currentPrice={product.salePrice}
-                commissionAmount={commission?.amount ?? product.commission}
+                commissionAmount={commissionAmount}
                 onClose={() => setDiscountModalOpen(false)}
               />
             ) : null}
@@ -722,6 +733,20 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 interface RowProps {
   label: string;
   value: string;
+}
+
+function resolvePriceLabel({
+  isNegotiation,
+  isSale,
+  discountAmount,
+}: {
+  isNegotiation: boolean;
+  isSale: boolean;
+  discountAmount: number;
+}): string {
+  if (isNegotiation) return 'Precio de Negociación';
+  if (discountAmount > 0) return 'Precio original';
+  return isSale ? 'Precio de venta' : 'Precio de producto';
 }
 
 function InfoRow({ label, value }: RowProps) {

@@ -10,6 +10,7 @@ export const productViewQueryKeys = {
     [...productViewQueryKeys.all, 'seller-payments', productId] as const,
   detail: (productId: number) => [...productViewQueryKeys.all, 'detail', productId] as const,
   byUuid: (uuid: string) => [...productViewQueryKeys.all, 'by-uuid', uuid] as const,
+  price: (productId: number) => [...productViewQueryKeys.all, 'price', productId] as const,
   commission: (price: number, clientId: number) =>
     [...productViewQueryKeys.all, 'commission', { price, clientId }] as const,
 };

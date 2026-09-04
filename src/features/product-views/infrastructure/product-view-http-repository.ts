@@ -1,3 +1,4 @@
+import { calculateSellerPriceBreakdown } from '@/src/features/product-views/domain/price-breakdown';
 import { findProductStatusByCode } from '@/src/features/product-views/domain/product-status';
 import type { ProductViewRepository } from '@/src/features/product-views/domain/product-view-repository';
 import { httpRequest } from '@/src/shared/infrastructure/http/http-client';
@@ -9,6 +10,7 @@ import {
   negotiationResponseSchema,
   productDetailResponseSchema,
   productIdByUuidResponseSchema,
+  productPriceResponseSchema,
   productsResponseSchema,
   sellerPaymentsResponseSchema,
 } from './product-view-schemas';
@@ -33,11 +35,10 @@ export const productViewHttpRepository = {
     });
 
     return response.data.map((item) => {
-      const discountPercent = item.porcentaje_descuento ?? 0;
-      const discountAmount =
-        discountPercent > 0
-          ? Math.round((item.original_price * discountPercent) / 100)
-          : (item.precio_descuento ?? 0);
+      const { discountAmount, finalPrice } = calculateSellerPriceBreakdown(item.original_price, {
+        fixedDiscount: item.precio_descuento,
+        percentageDiscount: item.porcentaje_descuento,
+      });
 
       return {
         id: item.id,
@@ -46,6 +47,7 @@ export const productViewHttpRepository = {
         brand: item.marca,
         salePrice: item.original_price,
         discountAmount,
+        finalPrice,
         earning: item.precio,
         status: item.Estado,
         statusIntern: item.status_intern ?? '',
@@ -79,10 +81,10 @@ export const productViewHttpRepository = {
     const data = response.data;
     const salePrice = data.original_price || (data.rag ?? 0);
     const discountPercent = data.porcentaje_descuento ?? 0;
-    const discountAmount =
-      discountPercent > 0
-        ? Math.round((salePrice * discountPercent) / 100)
-        : (data.precio_descuento ?? 0);
+    const { discountAmount, finalPrice } = calculateSellerPriceBreakdown(salePrice, {
+      fixedDiscount: data.precio_descuento,
+      percentageDiscount: data.porcentaje_descuento,
+    });
     return {
       id: data.id,
       clientId: data.client_id,
@@ -102,6 +104,7 @@ export const productViewHttpRepository = {
       soldDate: data.Fecha ?? '',
       salePrice,
       discountAmount,
+      finalPrice,
       discountPercent,
       negotiationPrice: data.rag || data.precio,
       earning: data.precio,
@@ -123,6 +126,29 @@ export const productViewHttpRepository = {
     });
 
     return response.data.id;
+  },
+
+  async getProductPrice(productId, signal) {
+    const params = new URLSearchParams({ product_id: String(productId) });
+    const response = await httpRequest(`/web/products/price?${params.toString()}`, {
+      schema: productPriceResponseSchema,
+      ...(signal ? { signal } : {}),
+    });
+
+    const data = response.data;
+    const { discountAmount, finalPrice } = calculateSellerPriceBreakdown(data.original_price, {
+      fixedDiscount: data.fixed_discount,
+      percentageDiscount: data.percentage_discount,
+    });
+
+    return {
+      originalPrice: data.original_price,
+      discountAmount,
+      finalPrice,
+      commissionRate: data.commission_rate,
+      commissionAmount: data.commission_amount,
+      sellerPrice: data.seller_price,
+    };
   },
 
   async getCommission(price, clientId, signal) {

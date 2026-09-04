@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
 
 import { HttpError } from '@/src/shared/domain/errors';
 import { Modal } from '@/src/shared/ui/modal';
 import { useToast } from '@/src/shared/ui/toast';
+import { calculateSellerPriceBreakdown } from '@/src/features/product-views/domain/price-breakdown';
 import type { DiscountType } from '@/src/features/product-views/domain/product-view-repository';
 import { useApplyDiscount } from '../hooks/use-apply-discount';
+import { useCommission } from '../hooks/use-commission';
 
 const currencyFormatter = new Intl.NumberFormat('es-MX', {
   style: 'currency',
@@ -15,19 +17,17 @@ const currencyFormatter = new Intl.NumberFormat('es-MX', {
   maximumFractionDigits: 0,
 });
 
+const PRICE_DEBOUNCE_MS = 400;
 const SUCCESS_MESSAGE = 'Descuento aplicado correctamente';
 const GENERIC_ERROR_MESSAGE = 'No se pudo aplicar el descuento. Intenta de nuevo.';
 
 interface ApplyDiscountModalProps {
   open: boolean;
   productId: number;
+  clientId: number;
   currentPrice: number;
   commissionAmount: number;
   onClose: () => void;
-}
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(Math.max(value, min), max);
 }
 
 function resolveErrorMessage(error: unknown): string {
@@ -49,6 +49,7 @@ function isMessageBody(body: unknown): body is { message: string } {
 export function ApplyDiscountModal({
   open,
   productId,
+  clientId,
   currentPrice,
   commissionAmount,
   onClose,
@@ -62,9 +63,32 @@ export function ApplyDiscountModal({
   const numericValue = Number(rawValue);
   const hasValidValue = rawValue.trim() !== '' && Number.isFinite(numericValue) && numericValue > 0;
 
-  const discountAmount = isPercentage ? currentPrice * (numericValue / 100) : numericValue;
-  const finalPrice = clamp(currentPrice - discountAmount, 0, currentPrice);
-  const estimatedProfit = clamp(finalPrice - commissionAmount, 0, finalPrice);
+  const appliedValue = hasValidValue ? numericValue : null;
+  const { finalPrice } = calculateSellerPriceBreakdown(currentPrice, {
+    fixedDiscount: isPercentage ? null : appliedValue,
+    percentageDiscount: isPercentage ? appliedValue : null,
+  });
+
+  // Commission is charged on the discounted price and its rate depends on the
+  // amount, so the undiscounted one cannot be reused: the preview asks the API
+  // again for the final price that would be saved.
+  const [debouncedFinalPrice, setDebouncedFinalPrice] = useState(finalPrice);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setDebouncedFinalPrice(finalPrice), PRICE_DEBOUNCE_MS);
+    return () => clearTimeout(timeout);
+  }, [finalPrice]);
+
+  const { data: previewCommission } = useCommission(
+    debouncedFinalPrice,
+    clientId,
+    open && debouncedFinalPrice > 0,
+  );
+  const isPreviewStale = debouncedFinalPrice !== finalPrice;
+  const estimatedProfit =
+    !isPreviewStale && previewCommission
+      ? previewCommission.sellerNet
+      : Math.max(finalPrice - commissionAmount, 0);
 
   function resetAndClose() {
     setDiscountType('percentage');
