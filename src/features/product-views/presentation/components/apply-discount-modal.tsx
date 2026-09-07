@@ -209,7 +209,7 @@ export function ApplyDiscountModal({
           </span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-sm text-neutral-500">Tu ganancia</span>
+          <span className="text-sm text-neutral-500">Tu Ganancia</span>
           <span className="text-sm font-semibold text-neutral-900">
             {currencyFormatter.format(estimatedProfit)}
           </span>
