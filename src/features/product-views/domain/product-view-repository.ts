@@ -109,4 +109,5 @@ export interface ProductViewRepository {
     value: number,
     signal?: AbortSignal,
   ): Promise<ApplyDiscountResult>;
+  removeDiscount(productId: number, signal?: AbortSignal): Promise<void>;
 }

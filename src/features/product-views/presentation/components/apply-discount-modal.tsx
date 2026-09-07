@@ -28,6 +28,10 @@ interface ApplyDiscountModalProps {
   currentPrice: number;
   commissionAmount: number;
   onClose: () => void;
+  // Descuento activo existente (o null si no hay). El valor es el porcentaje
+  // cuando es 'percentage' y el monto fijo cuando es 'fixed'.
+  existingDiscountType?: DiscountType | null;
+  existingDiscountValue?: number;
 }
 
 function resolveErrorMessage(error: unknown): string {
@@ -53,11 +57,23 @@ export function ApplyDiscountModal({
   currentPrice,
   commissionAmount,
   onClose,
+  existingDiscountType = null,
+  existingDiscountValue = 0,
 }: ApplyDiscountModalProps) {
-  const [discountType, setDiscountType] = useState<DiscountType>('percentage');
-  const [rawValue, setRawValue] = useState('');
+  // Preselecciona el descuento activo. El componente se remonta al abrir
+  // (via `key` en el padre), así que el inicializador corre con props frescas.
+  const [discountType, setDiscountType] = useState<DiscountType>(
+    existingDiscountType ?? 'percentage',
+  );
+  const [rawValue, setRawValue] = useState(
+    existingDiscountType && existingDiscountValue > 0 ? String(existingDiscountValue) : '',
+  );
   const { showToast } = useToast();
   const applyDiscount = useApplyDiscount();
+
+  const willReplaceExisting =
+    existingDiscountType !== null && discountType !== existingDiscountType;
+  const existingTypeLabel = existingDiscountType === 'percentage' ? 'porcentaje' : 'monto fijo';
 
   const isPercentage = discountType === 'percentage';
   const numericValue = Number(rawValue);
@@ -107,7 +123,7 @@ export function ApplyDiscountModal({
           showToast(SUCCESS_MESSAGE);
           resetAndClose();
         },
-        onError: (error) => showToast(resolveErrorMessage(error)),
+        onError: (error) => showToast(resolveErrorMessage(error), 'error'),
       },
     );
   }
@@ -152,6 +168,19 @@ export function ApplyDiscountModal({
           $
         </button>
       </div>
+
+      {willReplaceExisting ? (
+        <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber-300 bg-amber-50 px-3 py-2.5">
+          <Icon
+            icon="ion:information-circle-outline"
+            className="mt-0.5 size-4 shrink-0 text-amber-700"
+          />
+          <p className="text-xs text-amber-800">
+            Ya tienes un descuento por {existingTypeLabel} activo. Al aplicar este se eliminará el
+            anterior.
+          </p>
+        </div>
+      ) : null}
 
       <label className="mt-5 block">
         <span className="text-sm font-medium text-neutral-900">Descuento</span>

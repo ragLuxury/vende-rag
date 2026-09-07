@@ -76,6 +76,10 @@ export const applyDiscountResponseSchema = z.object({
   }),
 });
 
+export const removeDiscountResponseSchema = z.object({
+  success: z.boolean(),
+});
+
 export const productIdByUuidResponseSchema = z.object({
   success: z.boolean(),
   data: z.object({

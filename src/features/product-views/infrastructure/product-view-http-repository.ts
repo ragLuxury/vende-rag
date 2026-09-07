@@ -6,6 +6,7 @@ import { getProductImageUrl } from '@/src/shared/infrastructure/images/product-i
 import { resolveReceiptUrl } from '@/src/shared/infrastructure/images/receipt-document';
 import {
   applyDiscountResponseSchema,
+  removeDiscountResponseSchema,
   commissionResponseSchema,
   negotiationResponseSchema,
   productDetailResponseSchema,
@@ -196,5 +197,13 @@ export const productViewHttpRepository = {
       discountedPrice: response.data.discounted_price,
       costoSeller: response.data.costo_seller,
     };
+  },
+
+  async removeDiscount(productId, signal) {
+    await httpRequest(`/web/products/${productId}/discount`, {
+      method: 'DELETE',
+      schema: removeDiscountResponseSchema,
+      ...(signal ? { signal } : {}),
+    });
   },
 } satisfies ProductViewRepository;

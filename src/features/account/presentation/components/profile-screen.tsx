@@ -78,8 +78,8 @@ export function ProfileScreen({
     setOpenSection((current) => (current === section ? null : section));
 
   useEffect(() => {
-    const message = consumeQueuedToast();
-    if (message) showToast(message);
+    const queued = consumeQueuedToast();
+    if (queued) showToast(queued.message, queued.variant);
   }, [showToast]);
 
   function handleProfileSaved(fullName: string) {

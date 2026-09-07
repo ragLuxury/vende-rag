@@ -13,32 +13,39 @@ import {
 
 const TOAST_DURATION_MS = 3000;
 
+export type ToastVariant = 'success' | 'error';
+
 interface ToastContextValue {
-  showToast: (message: string) => void;
+  showToast: (message: string, variant?: ToastVariant) => void;
+}
+
+interface Toast {
+  message: string;
+  variant: ToastVariant;
 }
 
 const ToastContext = createContext<ToastContextValue | null>(null);
 
-let queuedMessage: string | null = null;
+let queuedToast: Toast | null = null;
 
-export function queueToast(message: string) {
-  queuedMessage = message;
+export function queueToast(message: string, variant: ToastVariant = 'success') {
+  queuedToast = { message, variant };
 }
 
-export function consumeQueuedToast(): string | null {
-  const message = queuedMessage;
-  queuedMessage = null;
-  return message;
+export function consumeQueuedToast(): Toast | null {
+  const toast = queuedToast;
+  queuedToast = null;
+  return toast;
 }
 
 export function ToastProvider({ children }: { children: ReactNode }) {
-  const [message, setMessage] = useState<string | null>(null);
+  const [toast, setToast] = useState<Toast | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const showToast = useCallback((next: string) => {
+  const showToast = useCallback((message: string, variant: ToastVariant = 'success') => {
     if (timerRef.current) clearTimeout(timerRef.current);
-    setMessage(next);
-    timerRef.current = setTimeout(() => setMessage(null), TOAST_DURATION_MS);
+    setToast({ message, variant });
+    timerRef.current = setTimeout(() => setToast(null), TOAST_DURATION_MS);
   }, []);
 
   useEffect(() => () => clearTimeout(timerRef.current ?? undefined), []);
@@ -48,13 +55,17 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={value}>
       {children}
-      {message ? (
+      {toast ? (
         <div
-          role="status"
+          role={toast.variant === 'error' ? 'alert' : 'status'}
           className="pointer-events-none fixed inset-x-0 bottom-[calc(80px+env(safe-area-inset-bottom))] z-[300] mx-auto w-full max-w-md px-4"
         >
-          <div className="rounded-xl bg-green-600 px-4 py-3 text-sm font-medium text-white shadow-lg">
-            {message}
+          <div
+            className={`rounded-xl px-4 py-3 text-sm font-medium text-white shadow-lg ${
+              toast.variant === 'error' ? 'bg-red-600' : 'bg-green-600'
+            }`}
+          >
+            {toast.message}
           </div>
         </div>
       ) : null}

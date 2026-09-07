@@ -1,8 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Icon } from '@iconify/react';
+
+import { ConfirmDialog } from '@/src/shared/ui/confirm-dialog';
+import { useToast } from '@/src/shared/ui/toast';
 
 import { resolvePayment } from '@/src/features/product-views/domain/payment-status';
 import type { SellerPayment } from '@/src/features/product-views/domain/product-view-repository';
@@ -19,8 +22,10 @@ import { LandingFooter } from '@/src/features/auth/presentation/components/landi
 import { useCommission } from '../hooks/use-commission';
 import { useProductDetail } from '../hooks/use-product-detail';
 import { useProductPrice } from '../hooks/use-product-price';
+import { useRemoveDiscount } from '../hooks/use-remove-discount';
 import { useRespondNegotiation } from '../hooks/use-respond-negotiation';
 import { useSellerPayments } from '../hooks/use-seller-payments';
+import type { DiscountType } from '@/src/features/product-views/domain/product-view-repository';
 import { ApplyDiscountModal } from './apply-discount-modal';
 import { ProductGallery } from './product-gallery';
 import { getStatusStyle } from './product-status';
@@ -96,6 +101,46 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
   const isPreaprobada = pillStatus.trim().toLowerCase() === 'preaprobado';
   const showDiscountButton =
     view === 'publicaciones' && product?.status.trim().toLowerCase() === 'activo';
+  const existingDiscountType: DiscountType | null =
+    (product?.discountPercent ?? 0) > 0
+      ? 'percentage'
+      : (product?.discountAmount ?? 0) > 0
+        ? 'fixed'
+        : null;
+  const existingDiscountValue =
+    existingDiscountType === 'percentage'
+      ? (product?.discountPercent ?? 0)
+      : existingDiscountType === 'fixed'
+        ? (product?.discountAmount ?? 0)
+        : 0;
+
+  const { showToast } = useToast();
+  const removeDiscount = useRemoveDiscount();
+  const [confirmRemoveOpen, setConfirmRemoveOpen] = useState(false);
+
+  function handleRemoveDiscount() {
+    if (removeDiscount.isPending) return;
+    removeDiscount.mutate(productId, {
+      onSuccess: () => {
+        setConfirmRemoveOpen(false);
+        showToast('Descuento eliminado correctamente');
+      },
+      onError: () => showToast('No se pudo eliminar el descuento. Intenta de nuevo.', 'error'),
+    });
+  }
+
+  // Ícono de borrar junto al label "Descuento", visible solo en publicaciones activas.
+  const removeDiscountAction: ReactNode = showDiscountButton ? (
+    <button
+      type="button"
+      aria-label="Quitar descuento"
+      onClick={() => setConfirmRemoveOpen(true)}
+      disabled={removeDiscount.isPending}
+      className="text-red-600 transition-colors hover:cursor-pointer hover:text-red-700 disabled:opacity-50"
+    >
+      <Icon icon="ion:trash-outline" className="size-4" />
+    </button>
+  ) : null;
 
   function handleApprove() {
     if (!product) return;
@@ -315,6 +360,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                               ? `Descuento (${product.discountPercent}%)`
                               : 'Descuento'
                           }
+                          labelAction={removeDiscountAction}
                           value={currencyFormatter.format(discountAmount)}
                         />
                         <PriceRow
@@ -620,6 +666,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                                   ? `Descuento (${product.discountPercent}%)`
                                   : 'Descuento'
                               }
+                              labelAction={removeDiscountAction}
                               value={currencyFormatter.format(discountAmount)}
                             />
                             <PriceRow
@@ -713,14 +760,28 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
 
             {showDiscountButton ? (
               <ApplyDiscountModal
+                key={discountModalOpen ? 'discount-open' : 'discount-closed'}
                 open={discountModalOpen}
                 productId={product.id}
                 clientId={product.clientId}
                 currentPrice={product.salePrice}
                 commissionAmount={commissionAmount}
+                existingDiscountType={existingDiscountType}
+                existingDiscountValue={existingDiscountValue}
                 onClose={() => setDiscountModalOpen(false)}
               />
             ) : null}
+
+            <ConfirmDialog
+              open={confirmRemoveOpen}
+              title="Eliminar descuento"
+              description="¿Estás seguro de que deseas eliminar el descuento aplicado?"
+              cancelLabel="Cancelar"
+              confirmLabel={removeDiscount.isPending ? 'Eliminando...' : 'Eliminar'}
+              onCancel={() => setConfirmRemoveOpen(false)}
+              onConfirm={handleRemoveDiscount}
+              destructive
+            />
           </>
         )}
       </div>
@@ -761,7 +822,8 @@ function PriceRow({
   value,
   negative = false,
   bold = false,
-}: RowProps & { negative?: boolean; bold?: boolean }) {
+  labelAction,
+}: RowProps & { negative?: boolean; bold?: boolean; labelAction?: ReactNode }) {
   const valueNode = (
     <span className="relative">
       {negative ? <span className="absolute -left-3">-</span> : null}
@@ -771,9 +833,10 @@ function PriceRow({
   return (
     <div className="grid grid-cols-[4fr_3fr] items-center gap-x-8">
       <dt
-        className={`text-xs ${bold ? 'font-semibold text-neutral-900' : 'font-medium text-neutral-700'}`}
+        className={`flex items-center gap-1.5 text-xs ${bold ? 'font-semibold text-neutral-900' : 'font-medium text-neutral-700'}`}
       >
         {label}
+        {labelAction}
       </dt>
       <dd className={`text-xs ${bold ? 'font-semibold text-neutral-900' : 'text-neutral-400'}`}>
         {valueNode}

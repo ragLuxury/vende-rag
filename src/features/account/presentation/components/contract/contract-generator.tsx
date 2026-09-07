@@ -55,7 +55,7 @@ export function ContractGenerator({ clientId, onClose }: ContractGeneratorProps)
 
   const handleSave = async () => {
     if (!hasSignature) {
-      showToast('Por favor firma el contrato antes de guardar');
+      showToast('Por favor firma el contrato antes de guardar', 'error');
       return;
     }
     if (!page1Ref.current || !page2Ref.current) return;
@@ -71,7 +71,7 @@ export function ContractGenerator({ clientId, onClose }: ContractGeneratorProps)
       onClose();
     } catch (error) {
       console.error('[ContractGenerator] Error al guardar contrato:', error);
-      showToast('Error al guardar el contrato');
+      showToast('Error al guardar el contrato', 'error');
     } finally {
       setIsGenerating(false);
     }
