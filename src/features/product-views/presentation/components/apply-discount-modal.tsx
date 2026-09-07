@@ -140,9 +140,6 @@ export function ApplyDiscountModal({
       </button>
 
       <h2 className="text-center text-xl font-semibold text-neutral-900">Agregar descuento</h2>
-      <p className="mt-2 text-sm text-neutral-500">
-        Precio actual: {currencyFormatter.format(currentPrice)}
-      </p>
 
       <div className="mt-5 flex gap-1 rounded-full bg-neutral-100 p-1">
         <button
@@ -199,6 +196,12 @@ export function ApplyDiscountModal({
       </label>
 
       <div className="mt-5 space-y-2 rounded-xl bg-neutral-50 p-4">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-neutral-500">Precio Actual</span>
+          <span className="text-sm font-semibold text-neutral-900">
+            {currencyFormatter.format(currentPrice)}
+          </span>
+        </div>
         <div className="flex items-center justify-between">
           <span className="text-sm text-neutral-500">Precio Final</span>
           <span className="text-sm font-semibold text-neutral-900">
