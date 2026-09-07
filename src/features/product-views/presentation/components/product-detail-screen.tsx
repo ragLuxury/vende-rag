@@ -355,11 +355,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                       <>
                         <PriceRow
                           negative
-                          label={
-                            product.discountPercent > 0
-                              ? `Descuento (${product.discountPercent}%)`
-                              : 'Descuento'
-                          }
+                          label="Descuento"
                           labelAction={removeDiscountAction}
                           value={currencyFormatter.format(discountAmount)}
                         />
@@ -661,11 +657,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                           <>
                             <PriceRow
                               negative
-                              label={
-                                product.discountPercent > 0
-                                  ? `Descuento (${product.discountPercent}%)`
-                                  : 'Descuento'
-                              }
+                              label="Descuento"
                               labelAction={removeDiscountAction}
                               value={currencyFormatter.format(discountAmount)}
                             />
