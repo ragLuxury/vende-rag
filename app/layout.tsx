@@ -2,8 +2,11 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { fontVariables } from '@/src/shared/ui/fonts/fonts';
 import { AppShell } from '@/src/shared/ui/app-shell';
+import { GoogleTag } from '@/src/shared/ui/google-tag';
 import { TopNavActions } from '@/src/features/auth/presentation/components/top-nav-actions';
 import { Providers } from './providers';
+
+const GOOGLE_TAG_ID = 'GT-5M3LS27P';
 
 export const metadata: Metadata = {
   title: 'RAG',
@@ -21,6 +24,7 @@ export default function RootLayout({
         <Providers>
           <AppShell topRight={<TopNavActions />}>{children}</AppShell>
         </Providers>
+        <GoogleTag tagId={GOOGLE_TAG_ID} />
       </body>
     </html>
   );
