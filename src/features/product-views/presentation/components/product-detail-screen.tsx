@@ -637,7 +637,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         <button
                           type="button"
                           onClick={() => setDiscountModalOpen(true)}
-                          className="text-brand absolute -top-9 left-0 col-start-2 cursor-pointer text-xs font-medium"
+                          className="text-brand absolute -top-9 left-0 col-start-2 cursor-pointer text-xs font-medium hidden"
                         >
                           <Icon
                             icon="ion:pricetag-outline"
