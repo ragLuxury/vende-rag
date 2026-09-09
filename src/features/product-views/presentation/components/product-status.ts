@@ -14,6 +14,7 @@ const DEFAULT_COLOR = '#F3F4F6';
  */
 const SUPPLEMENTARY_STATUS_COLORS: Record<string, string> = {
   rechazada: '#EB6A6A',
+  preaprobado: '#DBE3F3',
   aprobada: '#DBE3F3',
   aprobado: '#d6e5fb',
   activa: '#81BD53',

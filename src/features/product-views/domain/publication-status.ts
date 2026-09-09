@@ -87,12 +87,13 @@ export function isPublicationApproved(statusIntern: string): boolean {
 }
 
 /**
- * Pill text for a card while the publication is still in "Recibido". Shows the
- * real stage (Autentificado, Bolería, …) instead of collapsing everything into
- * Preaprobado/Aprobado, which hid the progress from the seller.
+ * Pill text for a card while the publication is still in "Recibido".
+ * Shows only the public milestone — Aprobado once the product is fully
+ * processed internally, Preaprobado while it is still in progress.
+ * Internal stages (Autentificado, Bolería, etc.) are not exposed to sellers.
  */
 export function resolvePublicationPillLabel(statusIntern: string): string {
-  return findPublicationStage(statusIntern)?.label ?? FIRST_STAGE.label;
+  return isPublicationApproved(statusIntern) ? 'Aprobado' : FIRST_STAGE.label;
 }
 
 /** "Información" is only fully generated once the internal status reaches "completado". */
