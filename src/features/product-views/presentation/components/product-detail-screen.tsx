@@ -136,7 +136,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
       aria-label="Quitar descuento"
       onClick={() => setConfirmRemoveOpen(true)}
       disabled={removeDiscount.isPending}
-      className="text-red-600 transition-colors hover:cursor-pointer hover:text-red-700 disabled:opacity-50"
+      className="hidden text-red-600 transition-colors hover:cursor-pointer hover:text-red-700 disabled:opacity-50"
     >
       <Icon icon="ion:trash-outline" className="size-4" />
     </button>
@@ -637,7 +637,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         <button
                           type="button"
                           onClick={() => setDiscountModalOpen(true)}
-                          className="text-brand absolute -top-9 left-0 col-start-2 cursor-pointer text-xs font-medium hidden"
+                          className="text-brand absolute -top-9 left-0 col-start-2 cursor-pointer text-xs font-medium"
                         >
                           <Icon
                             icon="ion:pricetag-outline"
