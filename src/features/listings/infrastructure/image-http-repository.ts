@@ -4,12 +4,14 @@ import { tokenStorage } from '@/src/shared/infrastructure/http/token-storage';
 import { uploadImagesResponseSchema } from './image-schemas';
 
 export const imageHttpRepository = {
-  async uploadImages(files, productId, signal) {
+  async uploadStagingImages(files, signal) {
     const formData = new FormData();
     for (const file of files) {
       formData.append('files', file);
     }
-    formData.append('productId', String(productId));
+    // Sin productId: el proxy /api/upload lo envía a products/staging. Las
+    // imágenes se promueven al folder del producto al crearlo, en una sola
+    // transacción del backend.
 
     const token = tokenStorage.get();
     const headers: Record<string, string> = {};

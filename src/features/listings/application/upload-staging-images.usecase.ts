@@ -1,10 +1,9 @@
 import type { ImageRepository } from '@/src/features/listings/domain/image-repository';
 
-export async function uploadImagesUseCase(
+export async function uploadStagingImagesUseCase(
   repository: ImageRepository,
   files: readonly File[],
-  productId: number,
   signal?: AbortSignal,
 ): Promise<readonly string[]> {
-  return repository.uploadImages(files, productId, signal);
+  return repository.uploadStagingImages(files, signal);
 }

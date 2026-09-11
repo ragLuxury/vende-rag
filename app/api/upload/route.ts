@@ -1,6 +1,8 @@
 import { env } from '@/src/shared/infrastructure/env/env';
 import { uploadImagesResponseSchema } from '@/src/features/listings/infrastructure/image-schemas';
 
+const BACKEND_UPLOAD_TIMEOUT_MS = 60_000;
+
 export async function POST(request: Request): Promise<Response> {
   const formData = await request.formData();
   const files = formData.getAll('files').filter((value): value is File => value instanceof File);
@@ -26,11 +28,26 @@ export async function POST(request: Request): Promise<Response> {
 
   const backendUrl = `${env.server.BACKEND_URL}${backendPath}`;
 
-  const backendResponse = await fetch(backendUrl, {
-    method: 'POST',
-    body: proxyForm,
-    headers: authHeader ? { Authorization: authHeader } : {},
-  });
+  let backendResponse: Response;
+  try {
+    backendResponse = await fetch(backendUrl, {
+      method: 'POST',
+      body: proxyForm,
+      headers: authHeader ? { Authorization: authHeader } : {},
+      signal: AbortSignal.timeout(BACKEND_UPLOAD_TIMEOUT_MS),
+    });
+  } catch (error) {
+    const isTimeout = error instanceof DOMException && error.name === 'TimeoutError';
+    return Response.json(
+      {
+        success: false,
+        message: isTimeout
+          ? 'La subida de imágenes tardó demasiado, inténtalo de nuevo'
+          : 'No se pudo contactar el servidor de imágenes',
+      },
+      { status: isTimeout ? 504 : 502 },
+    );
+  }
 
   const json: unknown = await backendResponse.json().catch(() => null);
 
