@@ -141,26 +141,35 @@ export function ApplyDiscountModal({
 
       <h2 className="text-center text-xl font-semibold text-neutral-900">Agregar descuento</h2>
 
+      <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber-300 bg-amber-50 px-3 py-2.5">
+        <Icon
+          icon="ion:information-circle-outline"
+          className="mt-0.5 size-4 shrink-0 text-amber-700"
+        />
+        <p className="text-xs leading-5 text-amber-800">
+          Una vez agregado el descuento, no se puede modificar ni eliminar por este medio. Para
+          realizar cualquier cambio, es necesario contactar a Servicio al Cliente.
+        </p>
+      </div>
+
       <div className="mt-5 flex gap-1 rounded-full bg-neutral-100 p-1">
         <button
           type="button"
           onClick={() => setDiscountType('percentage')}
-          className={`flex-1 rounded-full py-2 text-sm font-medium transition-colors ${
-            isPercentage
+          className={`flex-1 rounded-full py-2 text-sm font-medium transition-colors ${isPercentage
               ? 'border border-neutral-200 bg-white text-neutral-900 shadow-sm'
               : 'text-neutral-400'
-          }`}
+            }`}
         >
           %
         </button>
         <button
           type="button"
           onClick={() => setDiscountType('fixed')}
-          className={`flex-1 rounded-full py-2 text-sm font-medium transition-colors ${
-            !isPercentage
+          className={`flex-1 rounded-full py-2 text-sm font-medium transition-colors ${!isPercentage
               ? 'border border-neutral-200 bg-white text-neutral-900 shadow-sm'
               : 'text-neutral-400'
-          }`}
+            }`}
         >
           $
         </button>
