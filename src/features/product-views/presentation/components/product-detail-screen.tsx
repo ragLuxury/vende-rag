@@ -100,7 +100,10 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
       : (product?.status ?? '');
   const isPreaprobada = pillStatus.trim().toLowerCase() === 'preaprobado';
   const showDiscountButton =
-    view === 'publicaciones' && product?.status.trim().toLowerCase() === 'activo';
+    view === 'publicaciones' &&
+    product?.status.trim().toLowerCase() === 'activo' &&
+    (product?.discountAmount ?? 0) <= 0 &&
+    (product?.discountPercent ?? 0) <= 0;
   const existingDiscountType: DiscountType | null =
     (product?.discountPercent ?? 0) > 0
       ? 'percentage'
@@ -356,6 +359,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                         <PriceRow
                           negative
                           label="Descuento"
+                          labelInfo="Una vez aceptado el descuento, no se puede editar ni eliminar por este medio. Para realizar cualquier cambio, es necesario contactar a Servicio al Cliente."
                           labelAction={removeDiscountAction}
                           value={currencyFormatter.format(discountAmount)}
                         />
@@ -658,6 +662,7 @@ export function ProductDetailScreen({ productId, view }: ProductDetailScreenProp
                             <PriceRow
                               negative
                               label="Descuento"
+                              labelInfo="Una vez aceptado el descuento, no se puede editar ni eliminar por este medio. Para realizar cualquier cambio, es necesario contactar a Servicio al Cliente."
                               labelAction={removeDiscountAction}
                               value={currencyFormatter.format(discountAmount)}
                             />
@@ -814,8 +819,15 @@ function PriceRow({
   value,
   negative = false,
   bold = false,
+  labelInfo,
   labelAction,
-}: RowProps & { negative?: boolean; bold?: boolean; labelAction?: ReactNode }) {
+}: RowProps & {
+  negative?: boolean;
+  bold?: boolean;
+  labelInfo?: string;
+  labelAction?: ReactNode;
+}) {
+  const [infoOpen, setInfoOpen] = useState(false);
   const valueNode = (
     <span className="relative">
       {negative ? <span className="absolute -left-3">-</span> : null}
@@ -828,6 +840,25 @@ function PriceRow({
         className={`flex items-center gap-1.5 text-xs ${bold ? 'font-semibold text-neutral-900' : 'font-medium text-neutral-700'}`}
       >
         {label}
+        {labelInfo ? (
+          <span className="group relative inline-flex">
+            <button
+              type="button"
+              aria-label="Más información sobre el descuento"
+              aria-expanded={infoOpen}
+              onClick={() => setInfoOpen((open) => !open)}
+              className="text-neutral-400 transition-colors hover:text-neutral-600"
+            >
+              <Icon icon="ion:information-circle-outline" className="size-4" />
+            </button>
+            <span
+              role="tooltip"
+              className={`pointer-events-none invisible absolute top-full left-1/2 z-20 mt-2 w-64 -translate-x-1/2 rounded-md bg-neutral-900 px-3 py-2 text-left text-xs leading-4 font-normal text-white opacity-0 transition-opacity md:w-80 md:group-hover:visible md:group-hover:opacity-100 ${infoOpen ? 'visible opacity-100' : ''}`}
+            >
+              {labelInfo}
+            </span>
+          </span>
+        ) : null}
         {labelAction}
       </dt>
       <dd className={`text-xs ${bold ? 'font-semibold text-neutral-900' : 'text-neutral-400'}`}>
