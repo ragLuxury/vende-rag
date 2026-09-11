@@ -148,7 +148,7 @@ export function ApplyDiscountModal({
         />
         <p className="text-xs leading-5 text-amber-800">
           Una vez agregado el descuento, no se puede modificar ni eliminar por este medio. Para
-          realizar cualquier cambio, es necesario contactar a Servicio al Cliente.
+          realizar cualquier cambio, es necesario contactar a Atención a Sellers.
         </p>
       </div>
 
